@@ -22,7 +22,9 @@ function LandingPage() {
 
         <div className="flex gap-9 mt-8">
           <RoundButton text="Cadastre-se" />
-          <RoundButton text="Entrar" />
+         <Link to="/login">
+            <RoundButton text="Entrar" />
+          </Link>
         </div>
       </section>
 

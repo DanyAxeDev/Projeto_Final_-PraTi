@@ -10,6 +10,7 @@ type Historia = {
 
 // modificar o conteudo do (image, title e description)
 function HistoryPage() {
+    
     const baseHistorias: Historia[] = [
         {
             image: "https://placekitten.com/200/200",

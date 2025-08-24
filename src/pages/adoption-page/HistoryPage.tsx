@@ -46,7 +46,6 @@ function HistoryPage() {
                 title: `${historia.title} (nova ${(Math.random() * 100).toFixed(0)})`,
                 image: `https://placekitten.com/${200 + Math.floor(Math.random() * 50)}/${200 + Math.floor(Math.random() * 50)}`
             }
-            
         })
 
         setHistorias(prev => [...prev, ...novos])

@@ -1,7 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Tilt+Warp&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
+
+@theme {
+  /* - Cores - */
+  --color-blue: #7ABCCD; /* Azul */
+  --color-brown: #726157; /* Marrom */
+  --color-sand: #F1ECE0; /* Bege */
+  --color-lightgray: #EEEEEE; /* Cinza */
+
+  /* - Fontes - */
+  --font-tilt: "Tilt Warp", sans-serif;
+  --font-raleway: "Raleway", sans-serif;
+}
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);

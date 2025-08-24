@@ -1,10 +1,12 @@
 type RoundButtonProps = {
-  text: string
+  text: string,
+  color: string,
+  onClick: () => void
 }
 
-function RoundButton({ text }: RoundButtonProps) {
+function RoundButton({ text, color, onClick }: RoundButtonProps) {
   return (
-    <button className="bg-gray-300 py-2 px-8 rounded-full transition-all duration-300 hover:brightness-85">
+    <button onClick={onClick} className={`${color === "blue" ? "bg-blue hover:bg-darkblue" : "bg-brown hover:bg-darkbrown"} text-white font-bold py-2 px-8 rounded-full transition-colors duration-300 cursor-pointer`}>
       {text}
     </button>
   )

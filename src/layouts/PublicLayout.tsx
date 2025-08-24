@@ -5,7 +5,7 @@ function PublicLayout() {
   return (
     <>
       <PublicHeader />
-      <main className="bg-gray-200 h-screen">
+      <main className="bg-sand min-h-screen h-full pt-20">
         <Outlet />
       </main>
     </>

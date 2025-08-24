@@ -9,12 +9,12 @@ function AdoptionStorySection() {
       </div>
       
       <div className="text-sm">
-        <p className="max-w-[270px]">
+        <p className="max-w-[270px] mb-1 font-medium">
           Maria, Felipe e outras 60 pessoas já conectaram os fios com seus pets.
         </p>
         <Link 
         to="#" 
-        className="font-semibold flex items-center gap-2 hover:underline"
+        className="font-semibold text-brown flex items-center gap-2 hover:underline"
         >
           Ver histórias de adoção <FaArrowRight />
         </Link>

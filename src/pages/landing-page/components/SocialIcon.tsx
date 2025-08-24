@@ -8,7 +8,10 @@ type SocialIconProps = {
 
 function SocialIcon({ icon, url }: SocialIconProps) {
   return (
-    <Link to={url} className="text-2xl">
+    <Link 
+    to={url} 
+    className="text-2xl text-brown hover:text-darkbrown transition-all duration-300 p-1"
+    >
       {icon}
     </Link>
   )

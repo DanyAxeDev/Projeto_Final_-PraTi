@@ -10,6 +10,10 @@
   --color-brown: #726157; /* Marrom */
   --color-sand: #F1ECE0; /* Bege */
   --color-lightgray: #EEEEEE; /* Cinza */
+  /* Hover */
+  --color-darkblue: #4CAEC7;
+  --color-darkbrown: #5A4D45;
+  --color-darkred: #DE5457;
 
   /* - Fontes - */
   --font-tilt: "Tilt Warp", sans-serif;

@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Tilt+Warp&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
+@import url("")
 
 @custom-variant dark (&:is(.dark *));
 

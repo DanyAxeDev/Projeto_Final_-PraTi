@@ -1,8 +1,12 @@
 import { NavLink, Link } from "react-router"
 
-function PublicHeader() {
+type PublicHeaderProps = {
+  bg?: boolean
+}
+
+function PublicHeader({ bg = true }: PublicHeaderProps) {
   return (
-    <header className="bg-transparent absolute w-full">
+    <header className={`${bg ? "bg-white" : "bg-transparent"} absolute w-full`}>
       <nav className="max-w-[1100px] mx-auto flex justify-between items-center w-full gap-8 p-8">
         <Link to="/">
           <span>Logo</span>

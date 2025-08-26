@@ -9,14 +9,14 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        {/* Rotas públicas com Header */}
+        {/* Rotas públicas com Header (branca) */}
         <Route element={<PublicLayout />}>
-          <Route path="/" element={<LandingPage />} />
           <Route path="/adoption-page" element={<HistoryPage />} />
           
         </Route>
 
         {/* Rotas públicas */}
+        <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
 
         {/* Rotas privadas (usuário logado) */}

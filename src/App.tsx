@@ -4,6 +4,7 @@ import LoggedInLayout from "./layouts/LoggedInLayout"
 import LandingPage from "./pages/landing-page/LandingPage"
 import HistoryPage from "./pages/adoption-page/HistoryPage"
 import LoginPage from "./pages/login/LoginPage"
+import RegisterPage from "./pages/register/RegisterPage"
 import CuidadosEDicasPage from "./pages/cuidados-e-dicas/cuidadosEDicasPage"
 import PetProfilePage, { type Pet } from "./pages/pet-profile/PetProfilePage";
 
@@ -40,6 +41,8 @@ export default function App() {
         {/* Rotas públicas */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} /> 
+
 
         {/* Rotas privadas (usuário logado) */}
         <Route element={<LoggedInLayout />}>

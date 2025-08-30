@@ -51,7 +51,7 @@ export default function RegisterPage() {
                     </Button>
                 </Link>
                 <div className="hidden lg:block lg:w-1/2 bg-gray-200">
-                    <img src="/backgrounds/cadastro-bg-desktop.jpg" alt="Dois cachorros" className="object-cover w-full h-full" />
+                    <img src="/backgrounds/cadastro-bg-desktop.jpg" alt="Dois gatos" className="object-cover w-full h-full" />
                 </div>
                 <div className="flex flex-col justify-center w-full p-8 space-y-6 lg:w-1/2 sm:p-12 overflow-y-auto">
                     <div className="text-center">

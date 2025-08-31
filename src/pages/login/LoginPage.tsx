@@ -1,13 +1,20 @@
+import { useRef } from "react";
 import { Link } from "react-router";
 import { Button } from "@/components/ui/button";
+import RoundButton from "@/components/RoundButton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import SocialLoginButton from "../../components/SocialLoginButton";
-import { FaGoogle, FaFacebookF, FaLinkedinIn } from "react-icons/fa";
-import { IoIosArrowBack } from "react-icons/io"; 
+import SocialLoginButton from "@/components/SocialLoginButton";
+import { IoIosArrowBack } from "react-icons/io";
+
+import googleIcon from "@/assets/icons/icon-google.png";
+import faceIcon from "@/assets/icons/icon-facebook.png";
+import linkedinIcon from "@/assets/icons/icon-linkedin.png";
 
 export default function LoginPage() {
-// Funções de exemplo para a lógica de login
+    const formRef = useRef<HTMLFormElement>(null);
+
+    // Funções de exemplo para a lógica de login
     const handleGoogleLogin = () => {
         console.log("Iniciando login com Google...");
     };
@@ -20,13 +27,18 @@ export default function LoginPage() {
         console.log("Iniciando login com LinkedIn...");
     };
 
+    const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault(); 
+        console.log("Login realizado com sucesso!");
+    };
+
     return (
-        <section className="flex items-center justify-center w-full h-full p-4 sm:p-8">
+        <section className="flex items-center justify-center bg-sand w-full h-full p-4 sm:p-8 min-h-screen">
 
             <div className="relative flex w-full max-w-7xl overflow-hidden bg-white rounded-lg shadow-lg" style={{ minHeight: '90vh' }}>
 
                 <Link to="/" className="absolute top-5 left-5 z-10">
-                    <Button variant="ghost" size="icon">                       
+                    <Button variant="ghost" size="icon">
                         <IoIosArrowBack className="size-5" />
                         <span className="sr-only">Voltar para a Home</span>
                     </Button>
@@ -42,9 +54,9 @@ export default function LoginPage() {
                     <div className="text-center">
                         <p className="text-sm text-gray-500">Continuar com</p>
                         <div className="flex justify-center gap-4 mt-3">
-                            <SocialLoginButton icon={<FaGoogle />} onClick={handleGoogleLogin} />
-                            <SocialLoginButton icon={<FaFacebookF />} onClick={handleFacebookLogin} />
-                            <SocialLoginButton icon={<FaLinkedinIn />} onClick={handleLinkedinLogin} />
+                            <SocialLoginButton icon={<img src={googleIcon} alt="Login com Google" className="size-4" />} onClick={handleGoogleLogin} />
+                            <SocialLoginButton icon={<img src={faceIcon} alt="Login com Facebook" className="size-4" />} onClick={handleFacebookLogin} />
+                            <SocialLoginButton icon={<img src={linkedinIcon} alt="Login com LinkedIn" className="size-4" />} onClick={handleLinkedinLogin} />
                         </div>
                     </div>
 
@@ -54,7 +66,7 @@ export default function LoginPage() {
                         <div className="flex-grow border-t border-gray-200"></div>
                     </div>
 
-                    <form className="space-y-5">
+                    <form ref={formRef} className="space-y-5" onSubmit={onFormSubmit}>
                         <div className="space-y-2">
                             <Label htmlFor="email">E-mail</Label>
                             <Input id="email" type="email" placeholder="seu@email.com" />
@@ -63,9 +75,13 @@ export default function LoginPage() {
                             <Label htmlFor="password">Senha</Label>
                             <Input id="password" type="password" placeholder="********" />
                         </div>
-                        <Button type="submit" className="w-full">
-                            Entrar
-                        </Button>
+                        <div className="flex justify-center pt-2 mt-5 mb-2">
+                            <RoundButton
+                                text="Entrar"
+                                color="blue"
+                                onClick={() => formRef.current?.requestSubmit()}
+                            />
+                        </div>
                     </form>
 
                     <p className="text-sm text-center text-gray-600">
@@ -77,7 +93,7 @@ export default function LoginPage() {
                 </div>
 
                 <div className="hidden lg:block lg:w-[70%] bg-gray-200">
-                    {/* <img src="/caminho/para/imagem.jpg" alt="Descrição da imagem" className="object-cover w-full h-full" /> */}
+                    <img src="/backgrounds/login-bg-desktop.jpg" alt="Dois cachorros" className="object-cover w-full h-full" />
                 </div>
 
             </div>

@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import SocialLoginButton from "@/components/SocialLoginButton";
 import { IoIosArrowBack } from "react-icons/io";
+import { useLoginForm } from "@/hooks/useLoginForm";
 
 import googleIcon from "@/assets/icons/icon-google.png";
 import faceIcon from "@/assets/icons/icon-facebook.png";
@@ -13,7 +14,8 @@ import linkedinIcon from "@/assets/icons/icon-linkedin.png";
 
 export default function LoginPage() {
     const formRef = useRef<HTMLFormElement>(null);
-
+    const { formData, errors, handleChange, handleSubmit } = useLoginForm();
+    
     // Funções de exemplo para a lógica de login
     const handleGoogleLogin = () => {
         console.log("Iniciando login com Google...");
@@ -28,8 +30,8 @@ export default function LoginPage() {
     };
 
     const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault(); 
-        console.log("Login realizado com sucesso!");
+        e.preventDefault();
+        handleSubmit(() => alert("Login realizado com sucesso!"));
     };
 
     return (
@@ -69,11 +71,13 @@ export default function LoginPage() {
                     <form ref={formRef} className="space-y-5" onSubmit={onFormSubmit}>
                         <div className="space-y-2">
                             <Label htmlFor="email">E-mail</Label>
-                            <Input id="email" type="email" placeholder="seu@email.com" />
+                            <Input id="email" type="email" placeholder="seu@email.com" value={formData.email} onChange={handleChange}  />
+                             {errors.email && <p className="text-xs text-red-600">{errors.email}</p>}
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="password">Senha</Label>
-                            <Input id="password" type="password" placeholder="********" />
+                            <Input id="password" type="password" placeholder="********" value={formData.password} onChange={handleChange}  />
+                             {errors.password && <p className="text-xs text-red-600">{errors.password}</p>}
                         </div>
                         <div className="flex justify-center pt-2 mt-5 mb-2">
                             <RoundButton

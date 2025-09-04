@@ -7,6 +7,7 @@ import LoginPage from "./pages/login/LoginPage"
 import RegisterPage from "./pages/register/RegisterPage"
 import CuidadosEDicasPage from "./pages/cuidados-e-dicas/cuidadosEDicasPage"
 import PetProfilePage from "./pages/pet-profile/PetProfilePage";
+import Home from "./pages/home/Home"
 
 export default function App() {
   return (
@@ -26,7 +27,7 @@ export default function App() {
 
         {/* Rotas privadas (usuário logado) */}
         <Route element={<LoggedInLayout />}>
-          <Route path="/home" />
+          <Route path="/home" element={<Home />} />
           <Route path="/pet-profile" element={<PetProfilePage />} />
         </Route>
       </Routes>

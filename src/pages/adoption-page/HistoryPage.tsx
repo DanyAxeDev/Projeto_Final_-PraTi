@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react"
 import RoundButton from "../../components/RoundButton"
 import Card from "./components/Card"
+import HeadingWithLine from "@/components/HeadingWithLine"
 
 type Historia = {
     image: string
-    title: string
+    human: string
+    pet: string
     description: string
 }
 
@@ -14,28 +16,32 @@ function HistoryPage() {
     const baseHistorias: Historia[] = [
         {
             image: "https://placekitten.com/200/200",
-            title: "Maria & Pipoca",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nisl tellus..."
-        },
-        {
-            image: "https://placekitten.com/201/200",
-            title: "Felipe & Mario",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nisl tellus..."
+            human: "Maria",
+            pet: "Pipoca",
+            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nisi tellus, interdum et tortor at, porta feugiat felis. Mauris placerat convallis elementum. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
         },
         {
             image: "https://placekitten.com/202/200",
-            title: "Humano & Pet",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nisl tellus..."
+            human: "Sara",
+            pet: "Lulu",
+            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nisi tellus, interdum et tortor at, porta feugiat felis. Mauris placerat convallis elementum. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
+        },
+        {
+            image: "https://placekitten.com/201/200",
+            human: "Felipe",
+            pet: "Mario",
+            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nisi tellus, interdum et tortor at, porta feugiat felis. Mauris placerat convallis elementum. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nisi tellus, interdum et tortor at, porta feugiat felis. Mauris placerat convallis elementum. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
         },
         {
             image: "https://placekitten.com/203/200",
-            title: "João & Rex",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nisl tellus..."
+            human: "João",
+            pet: "Rex",
+            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nisi tellus, interdum et tortor at, porta feugiat felis. Mauris placerat convallis elementum. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
         }
     ]
 
     const [historias, setHistorias] = useState<Historia[]>(baseHistorias)
-    const loadMoreRef = useRef<HTMLDivElement | null>(null)
+    /* const loadMoreRef = useRef<HTMLDivElement | null>(null)
 
     const carregarMais = () => {
         const novos = Array.from({ length: 4 }, () => {
@@ -69,31 +75,31 @@ function HistoryPage() {
                 observer.unobserve(loadMoreRef.current)
             }
         }
-    }, [])
+    }, []) */
 
     return (
-        <section className="p-6 bg-gray-100">
-            <div className="mb-6 text-center">
-                <h1 className="text-3xl font-bold text-gray-800">Histórias de adoção</h1>
-                <hr className="my-2 border-gray-300" />
-                <p className="text-gray-600">
-                    Textinho sobre as adoções e o compatilhamento de histórias
+        <section className="max-w-[1100px] mx-auto flex flex-col justify-between items-center gap-8 h-full py-12 px-8 font-raleway">
+            <div className="flex flex-col gap-8 items-center mb-6 text-center">
+                <HeadingWithLine text="Histórias de adoção" />
+                <p className="text-xl font-semibold">
+                    Textinho sobre as adoções e o compartilhamento de histórias
                 </p>
-                <RoundButton text="Compartilhar minha história" />
+                <RoundButton text="Compartilhar minha história" color="blue" onClick={() => ""} />
             </div>
 
-            <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <section className="columns-2 gap-10 mt-8">
                 {historias.map((historia, index) => (
                     <Card
                         key={index}
                         image={historia.image}
-                        title={historia.title}
+                        human={historia.human}
+                        pet={historia.pet}
                         description={historia.description}
                     />
                 ))}
             </section>
 
-            <div ref={loadMoreRef} className="h-10"></div>
+            {/* <div ref={loadMoreRef} className="h-10"></div> */}
         </section>
     )
 }

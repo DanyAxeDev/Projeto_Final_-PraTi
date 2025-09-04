@@ -1,19 +1,27 @@
 type CardProps = {
   image: string
-  title: string
+  human: string
+  pet: string
   description: string
 }
 
-export default function Card({ image, title, description }: CardProps) {
+export default function Card({ image, human, pet, description }: CardProps) {
   return (
-    <div className="bg-white shadow-lg rounded-lg overflow-hidden p-4 transition-transform transform hover:scale-105">
-      <img
-        src={image}
-        alt={title}
-        className="w-full h-48 object-cover rounded-lg mb-4"
-      />
-      <h2 className="text-xl font-semibold text-gray-800 mb-2">{title}</h2>
-      <p className="text-gray-600 text-sm">{description}</p>
-    </div>
+    <article className="flex flex-col items-center gap-4 w-full max-w-[360px] bg-white shadow-sm rounded-lg overflow-hidden p-5 mb-10">
+      <div className="size-[120px] bg-lightgray rounded-full">
+        <img
+          src={image}
+          alt={`Imagem de ${human} e ${pet}`}
+          className="w-full object-cover"
+        />
+      </div>
+      
+      <h2 className="text-2xl font-semibold">
+        {human} <span className="text-blue font-bold">&</span> {pet}
+      </h2>
+      <p className="font-medium">
+        {description}
+      </p>
+    </article>
   )
 }

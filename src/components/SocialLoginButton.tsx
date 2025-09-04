@@ -8,7 +8,7 @@ type SocialLoginButtonProps = {
 
 function SocialLoginButton({ icon, onClick }: SocialLoginButtonProps) {
   return (
-    <Button onClick={onClick} variant="outline" size="icon">
+    <Button onClick={onClick} variant="outline" size="icon" className="cursor-pointer">
       {icon}
     </Button>
   );

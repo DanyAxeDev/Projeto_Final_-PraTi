@@ -35,26 +35,26 @@ export default function LoginPage() {
     };
 
     return (
-        <section className="flex items-center justify-center bg-sand w-full h-full p-4 sm:p-8 min-h-screen">
+        <section className="flex items-center justify-center bg-sand w-full h-full p-4 sm:p-8 min-h-screen font-raleway font-medium">
 
-            <div className="relative flex w-full max-w-7xl overflow-hidden bg-white rounded-lg shadow-lg" style={{ minHeight: '90vh' }}>
+            <div className="relative flex w-full max-w-6xl overflow-hidden bg-white rounded-lg shadow-lg" style={{ minHeight: '90vh' }}>
 
                 <Link to="/" className="absolute top-5 left-5 z-10">
-                    <Button variant="ghost" size="icon">
+                    <Button variant="ghost" size="icon" className="rounded-full cursor-pointer">
                         <IoIosArrowBack className="size-5" />
                         <span className="sr-only">Voltar para a Home</span>
                     </Button>
                 </Link>
 
-                <div className="flex flex-col justify-center w-full p-8 space-y-8 lg:w-[30%] sm:p-12">
+                <div className="flex flex-col justify-center w-full p-8 space-y-8 lg:w-[35%] sm:p-12">
 
                     <div className="text-center">
-                        <h2 className="text-3xl font-bold">Login</h2>
+                        <h1 className="text-4xl font-tilt text-brown">Login</h1>
                     </div>
 
                     {/* Login com Redes Sociais */}
                     <div className="text-center">
-                        <p className="text-sm text-gray-500">Continuar com</p>
+                        <p className="text-sm">Continuar com</p>
                         <div className="flex justify-center gap-4 mt-3">
                             <SocialLoginButton icon={<img src={googleIcon} alt="Login com Google" className="size-4" />} onClick={handleGoogleLogin} />
                             <SocialLoginButton icon={<img src={faceIcon} alt="Login com Facebook" className="size-4" />} onClick={handleFacebookLogin} />
@@ -63,19 +63,19 @@ export default function LoginPage() {
                     </div>
 
                     <div className="flex items-center">
-                        <div className="flex-grow border-t border-gray-200"></div>
-                        <span className="mx-4 text-xs text-gray-400 uppercase">Ou</span>
-                        <div className="flex-grow border-t border-gray-200"></div>
+                        <hr className="flex-grow border-gray-200" />
+                        <span className="mx-4 text-xs uppercase">Ou</span>
+                        <hr className="flex-grow border-gray-200" />
                     </div>
 
                     <form ref={formRef} className="space-y-5" onSubmit={onFormSubmit}>
                         <div className="space-y-2">
-                            <Label htmlFor="email">E-mail</Label>
+                            <Label htmlFor="email" className="text-sm font-semibold">E-mail</Label>
                             <Input id="email" type="email" placeholder="seu@email.com" value={formData.email} onChange={handleChange}  />
                              {errors.email && <p className="text-xs text-red-600">{errors.email}</p>}
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="password">Senha</Label>
+                            <Label htmlFor="password" className="text-sm font-semibold">Senha</Label>
                             <Input id="password" type="password" placeholder="********" value={formData.password} onChange={handleChange}  />
                              {errors.password && <p className="text-xs text-red-600">{errors.password}</p>}
                         </div>
@@ -88,9 +88,9 @@ export default function LoginPage() {
                         </div>
                     </form>
 
-                    <p className="text-sm text-center text-gray-600">
+                    <p className="text-sm text-center">
                         Ainda não possui uma conta?{" "}
-                        <Link to="/register" className="font-medium text-primary underline-offset-4 hover:underline">
+                        <Link to="/cadastro" className="font-semibold text-brown underline-offset-4 hover:underline">
                             Cadastre-se
                         </Link>
                     </p>

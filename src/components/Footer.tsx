@@ -7,7 +7,7 @@ import { FaSquareXTwitter } from "react-icons/fa6"
 function Footer() {
   return (
     <footer className="bg-blue">
-      <section className="max-w-[1100px] mx-auto flex flex-col gap-12 py-12 px-8 text-sand font-raleway font-semibold">
+      <section className="max-w-[1100px] mx-auto flex flex-col gap-12 py-15 px-8 text-white font-raleway font-semibold">
         <section className="flex justify-between">
           <div className="flex flex-col">
             <span>Logo</span>
@@ -30,18 +30,18 @@ function Footer() {
             <section>
               <h4 className="text-xl font-bold mb-1">Geral</h4>
               <ul>
-                <li><Link to="#" className="hover:text-white hover:underline">FAQ</Link></li>
-                <li><Link to="#" className="hover:text-white hover:underline">Nosso time</Link></li>
+                <li><Link to="#" className="hover:text-brown hover:underline">FAQ</Link></li>
+                <li><Link to="#" className="hover:text-brown hover:underline">Nosso time</Link></li>
               </ul>
             </section>
           </div>
         </section>
         
-        <hr className="w-[95%] self-center border-b-1 border-b-sand" />
+        <hr className="w-[95%] self-center border-b-1 border-b-white" />
 
         <div className="flex justify-between items-center">
           <p>© 2025 PetConect. Todos os direitos reservados.</p>
-          <p>Um projeto <Link to="https://www.maisprati.com.br/" className="hover:text-white hover:underline">+praTi</Link>.</p>
+          <p>Um projeto <Link to="https://www.maisprati.com.br/" className="hover:text-brown hover:underline">+praTi</Link>.</p>
         </div>
       </section>
     </footer>

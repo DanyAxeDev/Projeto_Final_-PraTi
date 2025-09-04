@@ -16,7 +16,7 @@ function LoggedInHeader() {
 
                 <button 
                 onClick={() => setIsOpen(!isOpen)}
-                className="flex gap-2 items-center hover:bg-lightgray p-1 rounded-md transition-colors duration-300 cursor-pointer"
+                className={`flex gap-2 items-center hover:bg-blue ${isOpen ? "bg-blue" : "bg-transparent"} py-1 px-2 rounded-md transition-colors duration-300 cursor-pointer`}
                 >
                     <div className="bg-blue size-10 flex justify-center items-center rounded-full text-xl text-brown">
                         <FaUser />

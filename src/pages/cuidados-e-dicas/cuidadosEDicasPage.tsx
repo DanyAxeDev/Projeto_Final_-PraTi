@@ -21,26 +21,33 @@ export default function CuidadosEDicasPage() {
       <HeadingWithLine text="Cuidados e dicas" />
 
       {/* FAIXA MARROM */}
-      <header className="rounded-md bg-brown px-6 py-6 text-white w-full">
+      <header className="rounded-md bg-brown px-6 py-12 text-sand w-full font-medium mt-2">
         <div className="flex flex-col gap-6 md:flex-row md:items-stretch">
           {/* Texto à esquerda */}
-          <div className="flex-1">
-            <h2 className="font-tilt text-2xl">Hábitos saudáveis para seu cachorro</h2>
-            <p className="mt-1 text-white/80">Subtítulo da matéria</p>
-            <div className="mt-4 space-y-1 text-sm text-white/80">
-              <p>Por Nome Autor</p>
+          <div className="flex-1 flex flex-col justify-between">
+            <div>
+              <h2 className="font-raleway font-bold text-3xl">Hábitos saudáveis para seu cachorro</h2>
+              <p className="mt-1 font-semibold">Subtítulo da matéria</p>
+            </div>
+            
+            <div className="mt-4 space-y-1 text-sm">
+              <p className="font-semibold">Por Nome Autor</p>
               <p>Data desconhecida</p>
             </div>
-            <div className="mt-4 flex items-center gap-4 text-white/90">
+            <div className="mt-4 flex items-center gap-4">
               {/* ícones placeholders */}
-              <FaShare />
-              <IoDownload />
+              <button className="text-xl text-blue cursor-pointer p-1 hover:text-darkblue transition-colors duration-300">
+                <FaShare />
+              </button>
+              <button className="text-2xl text-blue cursor-pointer p-1 hover:text-darkblue transition-colors duration-300">
+                <IoDownload />
+              </button>
             </div>
           </div>
 
           {/* Imagem à direita */}
           <div className="md:w-[360px]">
-            <div className="overflow-hidden rounded-md border-4 border-white/40">
+            <div className="overflow-hidden rounded-md">
               <img
                 src="/imgs/dog-hero.jpg"
                 alt="Cachorro sorrindo"
@@ -52,9 +59,9 @@ export default function CuidadosEDicasPage() {
       </header>
 
       {/* GRID principal */}
-      <section className="mx-auto mt-6 max-w-[1100px] px-6 pb-14 grid grid-cols-1 gap-6 lg:grid-cols-12">
+      <section className="mx-auto mt-2 pb-14 grid grid-cols-1 gap-6 lg:grid-cols-12">
         {/* Esquerda */}
-        <article className="lg:col-span-8 rounded-md border border-border bg-white px-6 py-5 font-raleway text-sm text-foreground/80">
+        <article className="lg:col-span-8 rounded-md border border-border bg-white px-6 py-5 font-medium text-foreground/80">
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget efficitur velit. Nam eget faucibus quam...
           </p>
@@ -75,15 +82,15 @@ export default function CuidadosEDicasPage() {
         <aside className="lg:col-span-4">
           <div className="rounded-md border border-border bg-white">
             <div className="px-5 py-4">
-              <h3 className="font-tilt text-brown text-xl">Outras dicas</h3>
+              <h3 className="text-2xl font-bold">Outras dicas</h3>
             </div>
 
-            <ul className="font-raleway text-sm text-foreground/85">
+            <ul className="text-foreground/85">
               {outrasDicas.map((item, i) => (
                 <li key={item.slug} className={i < outrasDicas.length - 1 ? "border-b border-border" : ""}>
                   <Link
                     to={`/cuidados-e-dicas/${item.slug}`}
-                    className="block px-5 py-3 hover:bg-sand/70 focus:outline-none focus:ring-2 focus:ring-blue/40 rounded-sm"
+                    className="font-semibold text-lg text-brown block px-5 py-3 hover:bg-lightgray focus:outline-none focus:ring-2 focus:ring-blue/40 rounded-sm transition-colors duration-300"
                     aria-label={`Abrir matéria: ${item.titulo}`}
                   >
                     {item.titulo}

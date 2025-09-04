@@ -5,7 +5,7 @@ function LoggedInLayout() {
   return (
     <>
         <LoggedInHeader />
-        <main className="h-screen">
+        <main className="min-h-screen h-full bg-sand">
             <Outlet />
         </main> 
     </>

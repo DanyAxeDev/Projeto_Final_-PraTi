@@ -9,7 +9,7 @@ function LoggedInHeader() {
 
     return (
         <header className="bg-white">
-            <div className="flex justify-between items-center max-w-[1100px] mx-auto py-7 px-8 relative">
+            <div className="flex justify-between items-center max-w-[1100px] mx-auto py-4 px-8 relative">
                 <Link to="/home">
                     <span>Logo</span>
                 </Link>

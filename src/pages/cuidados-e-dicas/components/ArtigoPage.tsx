@@ -1,5 +1,4 @@
 // src/pages/cuidados-e-dicas/ArtigoPage.tsx
-import React from "react";
 import { useParams, Link } from "react-router";
 
 export default function ArtigoPage() {

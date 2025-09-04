@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router";
 import HeadingWithLine from "@/components/HeadingWithLine";
 import { FaShare } from "react-icons/fa"

@@ -31,7 +31,7 @@ function LandingPage() {
                 <RoundButton 
                 text="Cadastre-se" 
                 color="blue" 
-                onClick={() => navigate("/register")} 
+                onClick={() => navigate("/cadastro")} 
                 />
                 <RoundButton 
                 text="Entrar" 

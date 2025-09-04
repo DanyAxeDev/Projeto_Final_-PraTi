@@ -13,7 +13,7 @@ function AdoptionStorySection() {
           Maria, Felipe e outras 60 pessoas já conectaram os fios com seus pets.
         </p>
         <Link 
-        to="#" 
+        to="/historias-de-adocao" 
         className="font-semibold text-brown flex items-center gap-2 hover:underline"
         >
           Ver histórias de adoção <FaArrowRight />

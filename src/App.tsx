@@ -34,14 +34,15 @@ export default function App() {
       <Routes>
         {/* Rotas públicas com Header (branca) */}
         <Route element={<PublicLayout />}>
-          <Route path="/adoption-page" element={<HistoryPage />} />
+          <Route path="/historias-de-adocao" element={<HistoryPage />} />
           <Route path="/cuidados-e-dicas" element={<CuidadosEDicasPage />} />
+          <Route path="/sobre" /* Elemento */ />
         </Route>
 
         {/* Rotas públicas */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/cadastro" element={<RegisterPage />} />
 
         {/* Rotas privadas (usuário logado) */}
         <Route element={<LoggedInLayout />}>

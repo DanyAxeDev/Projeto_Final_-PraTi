@@ -14,13 +14,13 @@ function PublicHeader({ bg = true }: PublicHeaderProps) {
 
         <div className="flex items-center gap-5 font-raleway font-medium">
           <NavLink 
-          to="#"
+          to="/sobre"
           className="hover:text-brown transition-colors duration-300"
           >
             Sobre
           </NavLink>
           <NavLink 
-          to="#"
+          to="/cuidados-e-dicas"
           className="hover:text-brown transition-colors duration-300"
           >
             Cuidados e dicas

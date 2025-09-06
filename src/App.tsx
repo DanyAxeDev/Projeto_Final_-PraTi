@@ -28,7 +28,7 @@ export default function App() {
         {/* Rotas privadas (usuário logado) */}
         <Route element={<LoggedInLayout />}>
           <Route path="/home" element={<Home />} />
-          <Route path="/pet-profile" element={<PetProfilePage />} />
+          <Route path="/pet/:id" element={<PetProfilePage />} />
         </Route>
       </Routes>
     </Router>

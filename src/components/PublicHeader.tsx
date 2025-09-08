@@ -7,7 +7,7 @@ type PublicHeaderProps = {
 function PublicHeader({ bg = true }: PublicHeaderProps) {
   return (
     <header className={`${bg ? "bg-white" : "bg-transparent"} absolute w-full`}>
-      <nav className="max-w-[1100px] mx-auto flex justify-between items-center w-full gap-8 px-8 py-7">
+      <nav className="max-w-[1100px] mx-auto flex justify-between items-center w-full gap-8 px-4 py-7 sm:px-8">
         <Link to="/">
           <span>Logo</span>
         </Link>

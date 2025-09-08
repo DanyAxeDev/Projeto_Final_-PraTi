@@ -78,7 +78,7 @@ function HistoryPage() {
     }, []) */
 
     return (
-        <section className="max-w-[1100px] mx-auto flex flex-col justify-between items-center gap-8 h-full py-12 px-8 font-raleway">
+        <section className="max-w-[1100px] mx-auto flex flex-col justify-between items-center gap-8 h-full py-12 px-4 font-raleway sm:px-8">
             <div className="flex flex-col gap-8 items-center mb-6 text-center">
                 <HeadingWithLine text="Histórias de adoção" />
                 <p className="text-xl font-semibold">
@@ -87,7 +87,7 @@ function HistoryPage() {
                 <RoundButton text="Compartilhar minha história" color="blue" onClick={() => ""} />
             </div>
 
-            <section className="columns-2 gap-10 mt-8">
+            <section className="columns-1 gap-8 mt-8 sm:columns-2 md:gap-10">
                 {historias.map((historia, index) => (
                     <Card
                         key={index}

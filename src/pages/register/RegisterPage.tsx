@@ -43,8 +43,8 @@ export default function RegisterPage() {
     };
 
     return (
-        <section className="flex items-center justify-center w-full p-4 bg-sand sm:p-8 min-h-screen">
-            <div className="relative flex w-full max-w-6xl h-[1000px] overflow-hidden bg-white rounded-lg shadow-lg font-raleway font-medium" /* style={{ minHeight: '90vh' }} */>
+        <section className="flex items-center justify-center w-full px-4 py-12 bg-sand sm:p-8 min-h-screen">
+            <div className="relative flex w-full max-w-6xl h-full overflow-hidden bg-white rounded-lg shadow-lg font-raleway font-medium sm:h-[1000px]">
                 <Link to="/" className="absolute top-5 left-5 z-10">
                     <Button size="icon" className="rounded-full cursor-pointer">
                         <IoIosArrowBack className="size-5" />

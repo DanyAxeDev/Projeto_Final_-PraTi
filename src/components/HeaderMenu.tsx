@@ -15,7 +15,7 @@ function HeaderMenu({ isOpen, setIsOpen }: HeaderMenuProps) {
   return (
     <nav 
     onClick={() => setIsOpen(false)} 
-    className={`w-[240px] py-8 bg-white absolute right-8 shadow-md z-20 transition-all duration-200 ${isOpen ? "top-20 opacity-100 visible" : "top-[-300px] opacity-0 invisible"}`}
+    className={`w-[240px] py-8 bg-white absolute right-4 shadow-md z-20 transition-all duration-200 ${isOpen ? "top-20 opacity-100 visible" : "top-[-300px] opacity-0 invisible"} sm:right-8`}
     >
         <ul className="flex flex-col gap-2">
             <MenuLink 

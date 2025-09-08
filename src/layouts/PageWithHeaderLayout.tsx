@@ -10,7 +10,7 @@ type PageWithHeaderLayoutProps = {
 function PageWithHeaderLayout({ title, children }: PageWithHeaderLayoutProps) {
   return (
     <>
-      <header className="bg-brown py-16 px-8 text-center bg-center bg-no-repeat bg-cover" style={{ backgroundImage: "url('/backgrounds/curve.svg')" }}>
+      <header className="bg-brown py-12 px-8 text-center bg-center bg-no-repeat bg-cover sm:py-16" style={{ backgroundImage: "url('/backgrounds/curve.svg')" }}>
         <HeadingWithLine text={title} color="sand" />
       </header>
       {children}

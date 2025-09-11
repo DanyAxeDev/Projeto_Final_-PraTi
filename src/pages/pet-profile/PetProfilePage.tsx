@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { useNavigate, useParams } from "react-router"
 import RoundButton from "@/components/RoundButton"
 import FavoriteButton from "@/components/FavoriteButton"
@@ -5,43 +6,18 @@ import GalleryCard from "./components/GalleryCard"
 import { IoIosArrowBack } from "react-icons/io"
 import { IoPaw } from "react-icons/io5"
 import { FaMapLocationDot } from "react-icons/fa6"
-
-export type Pet = {
-  name: string;
-  species: string;
-  gender: string;
-  age: string;
-  size: string;
-  neighbourhood: string;
-  city: string;
-  personality: string[];
-  health: string;
-  about: string;
-  photos: string[];
-}
-
-const pet: Pet = {
-  name: "Tico",
-  species: "Cachorro",
-  gender: "Macho",
-  age: "3 anos",
-  size: "Médio",
-  neighbourhood: "Copacabana",
-  city: "Rio de Janeiro",
-  personality: ["Se dá bem com outros pets", "Se dá bem com crianças", "Brincalhão"],
-  health: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget efficitur velit. Nam eget faucibus quam. Orci varius natoque penatibus et magnis dis parturient montes.",
-  about: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget efficitur velit. Nam eget faucibus quam. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nunc interdum risus et ultrices gravida. Pellentesque sollicitudin ipsum id mi consequat, at laoreet dui tincidunt. Vestibulum sagittis commodo dictum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; In nec massa rutrum, laoreet nisi et, sodales felis.",
-  photos: [
-    "https://placedog.net/360/380",
-    "https://placedog.net/360/390",
-    "https://placedog.net/360/370",
-  ]
-};
+import type { Pet } from "@/types/types"
+import pets from "@/data/pets"
 
 export default function PetProfilePage() {
+  // const [pet, setPet] = useState<Pet | undefined>() // Pet real, quando fizer o fetch
   const { id } = useParams() // Pega o id do pet pela url para carregar as informações dele
   const navigate = useNavigate()
 
+  // Simulação de fetch, utilizando o id da url
+  const pet:Pet | undefined = pets.find(pet => pet.id == Number(id))
+
+  if (pet) // Verifica se há informações do pet antes de renderizar
   return (
     <section className="max-w-[1100px] mx-auto py-15 px-4 font-raleway font-medium sm:p-8">
       <button 

@@ -8,6 +8,7 @@ import { IoPaw } from "react-icons/io5"
 import { FaMapLocationDot } from "react-icons/fa6"
 import type { Pet } from "@/types/types"
 import pets from "@/data/pets"
+import { getAge } from "@/utils/helpers"
 
 export default function PetProfilePage() {
   // const [pet, setPet] = useState<Pet | undefined>() // Pet real, quando fizer o fetch
@@ -16,6 +17,9 @@ export default function PetProfilePage() {
 
   // Simulação de fetch, utilizando o id da url
   const pet:Pet | undefined = pets.find(pet => pet.id == Number(id))
+  
+  let petAge = 0
+  if (pet) petAge = getAge(pet.dob)
 
   if (pet) // Verifica se há informações do pet antes de renderizar
   return (
@@ -42,7 +46,7 @@ export default function PetProfilePage() {
                 <span className="font-semibold mr-8.5">Sexo:</span> {pet.gender}
               </p>
               <p className="mb-1">
-                <span className="font-semibold mr-7">Idade:</span> {pet.age}
+                <span className="font-semibold mr-7">Idade:</span> {petAge >= 1 ? `${petAge} anos` : `${petAge * 10} meses`}
               </p>
               <p>
                 <span className="font-semibold mr-7.5">Porte:</span> {pet.size}

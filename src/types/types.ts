@@ -3,7 +3,7 @@ export type Pet = {
   name: string;
   species: string;
   gender: string;
-  age: string;
+  dob: string;
   size: string;
   neighbourhood: string;
   city: string;
@@ -11,4 +11,9 @@ export type Pet = {
   health: string;
   about: string;
   photos: string[];
+  isFavorite: boolean;
+}
+
+export type PetCardProps = Pick<Pet, "id" | "name" | "dob" | "gender" | "city"> & {
+  photo: string
 }

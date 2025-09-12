@@ -31,7 +31,7 @@ function HeaderMenu({ isOpen, setIsOpen }: HeaderMenuProps) {
             <MenuLink 
             icon={<MdFavorite className="text-blue text-2xl" />} 
             text="Favoritos"
-            url="" 
+            url="/favoritos" 
             />
             <MenuLink 
             icon={<IoIosSettings className="text-blue text-2xl" />} 

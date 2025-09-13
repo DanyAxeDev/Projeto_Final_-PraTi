@@ -37,7 +37,7 @@ function MyPetsPage() {
           </button>
         </section>
 
-        <section className="flex flex-col gap-8">
+        <section className="flex flex-col items-center gap-10 sm:items-start sm:gap-8">
           {pets.map(pet => {
             return <MyPet 
             key={pet.id}

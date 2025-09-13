@@ -9,6 +9,7 @@ import CuidadosEDicasPage from "./pages/cuidados-e-dicas/cuidadosEDicasPage"
 import PetProfilePage from "./pages/pet-profile/PetProfilePage";
 import Home from "./pages/home/Home"
 import FavoritesPage from "./pages/favorites/FavoritesPage"
+import MyPetsPage from "./pages/my-pets/MyPetsPage"
 
 export default function App() {
   return (
@@ -31,6 +32,7 @@ export default function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/pet/:id" element={<PetProfilePage />} />
           <Route path="/favoritos" element={<FavoritesPage />} />
+          <Route path="/meus-pets" element={<MyPetsPage />} />
         </Route>
       </Routes>
     </Router>

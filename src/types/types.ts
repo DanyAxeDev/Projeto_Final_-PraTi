@@ -17,3 +17,9 @@ export type Pet = {
 export type PetCardProps = Pick<Pet, "id" | "name" | "dob" | "gender" | "city"> & {
   photo: string
 }
+
+export type MyPetProps = Pick<Pet, "id" | "name"> & {
+  photo: string
+}
+
+export type Order =  "normal" | "ascending" | "descending"

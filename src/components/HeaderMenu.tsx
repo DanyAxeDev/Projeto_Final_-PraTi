@@ -26,7 +26,7 @@ function HeaderMenu({ isOpen, setIsOpen }: HeaderMenuProps) {
             <MenuLink 
             icon={<FaCat className="text-blue text-2xl" />} 
             text="Meus pets" 
-            url="" 
+            url="/meus-pets" 
             />
             <MenuLink 
             icon={<MdFavorite className="text-blue text-2xl" />} 

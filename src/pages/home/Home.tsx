@@ -3,10 +3,8 @@ import PageWithHeaderLayout from "@/layouts/PageWithHeaderLayout"
 import PetCard from "../../components/PetCard"
 import testPets from "@/data/pets"
 import { FaSortAmountDown, FaSortAmountUp } from "react-icons/fa"
-import type { Pet } from "@/types/types"
+import type { Pet, Order } from "@/types/types"
 import { getAge } from "@/utils/helpers"
-
-type Order =  "normal" | "ascending" | "descending"
 
 function Home() {
   const [order, setOrder] = useState<Order>("normal")

@@ -21,7 +21,7 @@ function HeaderMenu({ isOpen, setIsOpen }: HeaderMenuProps) {
             <MenuLink 
             icon={<TbCirclePlus className="text-blue text-2xl" />} 
             text="Adicionar um pet" 
-            url="" 
+            url="/cadastro-de-pet" 
             />
             <MenuLink 
             icon={<FaCat className="text-blue text-2xl" />} 

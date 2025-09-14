@@ -1,4 +1,32 @@
-type FormData = any; 
+// Tipos para os dados dos formulários
+export type AdoptionPreferencesData = {
+    animalTypes: { [key: string]: boolean };
+    sexo: string;
+    porte: string;
+    idade: string;
+};
+
+export type RegistrationStep1Data = {
+    firstName: string;
+    lastName: string;
+    birthDate: string;
+    phone: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+    address: string;
+    number: string;
+    neighborhood: string;
+    city: string;
+    state: string;
+};
+
+export type RegistrationStep2Data = {
+    species: string;
+    gender: string;
+    age: string;
+    size: string;
+};
 
 // --- Validações Individuais ---
 const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/;
@@ -56,8 +84,27 @@ export function validateConfirmPassword(password: string, confirmPassword: strin
     return undefined;
 }
 
+export function validateRequiredField(fieldValue: string, fieldName: string) {
+    if (!fieldValue || fieldValue.trim() === '') return `${fieldName} é obrigatório.`;
+    return undefined;
+}
+
+export const validateAdoptionPreferences = (adoptionData: AdoptionPreferencesData) => {
+    const errors = { animalTypes: "", sexo: "", porte: "", idade: "" };
+
+    const isAnyAnimalTypeChecked = Object.values(adoptionData.animalTypes).some(value => value === true);
+    if (!isAnyAnimalTypeChecked) {
+      errors.animalTypes = "Selecione ao menos um tipo de animal.";
+    }
+    if (!adoptionData.sexo) errors.sexo = "Selecione o sexo.";
+    if (!adoptionData.porte) errors.porte = "Selecione o porte.";
+    if (!adoptionData.idade) errors.idade = "Selecione a idade.";
+    
+    return errors;
+}
+
 // --- Validação da Etapa 1 ---
-export const validateRegistrationStep1 = (formData: FormData) => {
+export const validateRegistrationStep1 = (formData: RegistrationStep1Data) => {
     const errors: { [key: string]: string } = {};
     const validations = {
         firstName: validateName(formData.firstName, "Nome"),
@@ -66,25 +113,23 @@ export const validateRegistrationStep1 = (formData: FormData) => {
         phone: validatePhone(formData.phone),
         email: validateEmail(formData.email),
         password: validatePassword(formData.password),
-        confirmPassword: validateConfirmPassword(formData.password, formData.confirmPassword),
+        confirmPassword: validateConfirmPassword(formData.password, formData.confirmPassword),       
+        address: validateRequiredField(formData.address, "Endereço"),
+        number: validateRequiredField(formData.number, "Número"),
+        neighborhood: validateRequiredField(formData.neighborhood, "Bairro"),
+        city: validateRequiredField(formData.city, "Cidade"),
+        state: validateRequiredField(formData.state, "Estado"),
     };
 
     for (const [key, value] of Object.entries(validations)) {
         if (value) errors[key] = value;
     }
     
-    // Validações simples de campos obrigatórios
-    if (!formData.address) errors.address = "Endereço é obrigatório.";
-    if (!formData.number) errors.number = "Número é obrigatório.";
-    if (!formData.neighborhood) errors.neighborhood = "Bairro é obrigatório.";
-    if (!formData.city) errors.city = "Cidade é obrigatória.";
-    if (!formData.state) errors.state = "Estado é obrigatório.";
-
     return errors;
 };
 
 // --- Validação da Etapa 2 ---
-export const validateRegistrationStep2 = (formData: FormData) => {
+export const validateRegistrationStep2 = (formData: RegistrationStep2Data) => {
     const errors: { [key: string]: string } = {};
     if (!formData.species) errors.species = "Por favor, selecione uma espécie.";
     if (!formData.gender) errors.gender = "Por favor, selecione um gênero.";

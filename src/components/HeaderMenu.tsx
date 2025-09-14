@@ -36,7 +36,7 @@ function HeaderMenu({ isOpen, setIsOpen }: HeaderMenuProps) {
             <MenuLink 
             icon={<IoIosSettings className="text-blue text-2xl" />} 
             text="Minha conta" 
-            url="" 
+            url="/minha-conta" 
             />
             <li className="p-3">
                 <RoundButtonDanger text="Sair" />

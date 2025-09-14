@@ -11,6 +11,7 @@ import Home from "./pages/home/Home"
 import FavoritesPage from "./pages/favorites/FavoritesPage"
 import MyPetsPage from "./pages/my-pets/MyPetsPage"
 import PetRegisterPage from "./pages/pet-register/PetRegisterPage"
+import MyAccountPage from "./pages/my-account/MyAccountPage"
 
 export default function App() {
   return (
@@ -35,6 +36,7 @@ export default function App() {
           <Route path="/favoritos" element={<FavoritesPage />} />
           <Route path="/meus-pets" element={<MyPetsPage />} />
           <Route path="/cadastro-de-pet" element={<PetRegisterPage />} />
+          <Route path="/minha-conta" element={<MyAccountPage />} />
         </Route>
       </Routes>
     </Router>

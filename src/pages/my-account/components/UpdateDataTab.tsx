@@ -2,16 +2,15 @@ import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import RoundButton from "@/components/RoundButton";
 import { useUpdateDataForm } from "@/hooks/useUpdateDataForm";
+import RoundButton from "@/components/RoundButton";
 
 type UpdateDataTabProps = {
-  onOpenSaveModal: (message: string) => void;
-  onOpenChangePasswordModal: () => void;
+  onSaveSuccess: () => void;
 }
 
-function UpdateDataTab({ onOpenSaveModal, onOpenChangePasswordModal }: UpdateDataTabProps) {
-  const { formData, errors, handleChange, validateAll } = useUpdateDataForm();
+function UpdateDataTab({ onSaveSuccess }: UpdateDataTabProps) {
+  const { formData, errors, handleChange, validateAll, handleCancel } = useUpdateDataForm();
   
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -40,22 +39,22 @@ function UpdateDataTab({ onOpenSaveModal, onOpenChangePasswordModal }: UpdateDat
       reader.readAsDataURL(file);
     }
   };
- 
-  const handleSave = (e?: React.MouseEvent<HTMLButtonElement>) => {
-    e?.preventDefault(); 
-    const isFormValid = validateAll();
 
+  const handleSave = () => {
+    const isFormValid = validateAll();
     if (isFormValid) {
       if (newImageBase64) {
         localStorage.setItem('userProfileImage', newImageBase64);
         setNewImageBase64(null); 
       }
-      onOpenSaveModal("Seus dados foram atualizados com sucesso.");
+      console.log("Salvando dados do usuário:", formData);
+      onSaveSuccess();
     }
   };
 
   return (
     <form className="flex flex-col gap-6 font-raleway">
+      <h2 className="text-xl font-bold">Atualizar Dados</h2>
       <input 
         type="file"
         accept="image/png, image/jpeg"
@@ -79,8 +78,8 @@ function UpdateDataTab({ onOpenSaveModal, onOpenChangePasswordModal }: UpdateDat
           Alterar Foto
         </Button>
       </div>
-     
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      
+       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="grid gap-2">
           <Label htmlFor="nome">Nome</Label>
           <Input id="nome" value={formData.nome} onChange={handleChange} />
@@ -94,68 +93,61 @@ function UpdateDataTab({ onOpenSaveModal, onOpenChangePasswordModal }: UpdateDat
       </div>
       
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+         <div className="grid gap-2">
+          <Label htmlFor="dataNascimento">Data de nascimento</Label>
+          <Input id="dataNascimento" type="date" value={formData.dataNascimento} onChange={handleChange} />
+           {errors.dataNascimento && <p className="text-xs text-destructive">{errors.dataNascimento}</p>}
+        </div>
         <div className="grid gap-2">
           <Label htmlFor="telefone">Telefone</Label>
           <Input id="telefone" type="tel" value={formData.telefone} onChange={handleChange} />
           {errors.telefone && <p className="text-xs text-destructive">{errors.telefone}</p>}
         </div>
-        <div className="grid gap-2">
-          <Label htmlFor="email">Email</Label>
+      </div>
+
+       <div className="grid gap-2">
+          <Label htmlFor="email">E-mail</Label>
           <Input id="email" type="email" value={formData.email} onChange={handleChange} />
           {errors.email && <p className="text-xs text-destructive">{errors.email}</p>}
-        </div>
-      </div>
+       </div>
       
-      <div className="grid gap-2">
-        <Label htmlFor="endereco">Endereço</Label>
-        <Input id="endereco" value={formData.endereco} onChange={handleChange} />
-        {errors.endereco && <p className="text-xs text-destructive">{errors.endereco}</p>}
+      <div className="grid grid-cols-1 sm:grid-cols-[2fr_1fr] gap-4">
+        <div className="grid gap-2">
+            <Label htmlFor="endereco">Endereço</Label>
+            <Input id="endereco" value={formData.endereco} onChange={handleChange} />
+             {errors.endereco && <p className="text-xs text-destructive">{errors.endereco}</p>}
+        </div>
+        <div className="grid gap-2">
+            <Label htmlFor="numero">Número</Label>
+            <Input id="numero" value={formData.numero} onChange={handleChange} />
+             {errors.numero && <p className="text-xs text-destructive">{errors.numero}</p>}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="grid gap-2">
-          <Label htmlFor="numero">Número</Label>
-          <Input id="numero" value={formData.numero} onChange={handleChange} />
-          {errors.numero && <p className="text-xs text-destructive">{errors.numero}</p>}
-        </div>
         <div className="grid gap-2">
           <Label htmlFor="bairro">Bairro</Label>
           <Input id="bairro" value={formData.bairro} onChange={handleChange} />
           {errors.bairro && <p className="text-xs text-destructive">{errors.bairro}</p>}
         </div>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="grid gap-2">
           <Label htmlFor="cidade">Cidade</Label>
           <Input id="cidade" value={formData.cidade} onChange={handleChange} />
           {errors.cidade && <p className="text-xs text-destructive">{errors.cidade}</p>}
         </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="grid gap-2">
           <Label htmlFor="estado">Estado</Label>
           <Input id="estado" value={formData.estado} onChange={handleChange} />
-          {errors.estado && <p className="text-xs text-destructive">{errors.estado}</p>}
+           {errors.estado && <p className="text-xs text-destructive">{errors.estado}</p>}
         </div>
       </div>
-
-      <div className="grid gap-2">
-        <Label>Senha</Label>      
-        <Button 
-          variant="secondary" 
-          className="w-fit" 
-          type="button" 
-          onClick={onOpenChangePasswordModal}
-        >
-          Alterar Senha
-        </Button>
-      </div>
-
-      <div className="mt-4 flex justify-end">       
-        <RoundButton 
-          text="Salvar Alterações" 
-          color="blue" 
-          onClick={handleSave} 
-        />
+      
+      <div className="flex justify-end gap-3 pt-6 border-t mt-4">
+        <RoundButton text="Cancelar" color="gray" onClick={handleCancel} />
+        <RoundButton text="Salvar" color="blue" onClick={handleSave} />
       </div>
     </form>
   )

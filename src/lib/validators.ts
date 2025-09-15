@@ -1,9 +1,10 @@
 // Tipos para os dados dos formulários
 export type AdoptionPreferencesData = {
-    animalTypes: { [key: string]: boolean };
+    animalTypes: string;
     sexo: string;
     porte: string;
     idade: string;
+    personalidade: { [key: string]: boolean };
 };
 
 export type RegistrationStep1Data = {
@@ -90,15 +91,32 @@ export function validateRequiredField(fieldValue: string, fieldName: string) {
 }
 
 export const validateAdoptionPreferences = (adoptionData: AdoptionPreferencesData) => {
-    const errors = { animalTypes: "", sexo: "", porte: "", idade: "" };
+    const errors = { animalTypes: "", sexo: "", porte: "", idade: "", personalidade: "" };
 
-    const isAnyAnimalTypeChecked = Object.values(adoptionData.animalTypes).some(value => value === true);
-    if (!isAnyAnimalTypeChecked) {
-      errors.animalTypes = "Selecione ao menos um tipo de animal.";
+    if (!adoptionData.animalTypes || adoptionData.animalTypes === "Não tenho preferência") {
+    } else if (!adoptionData.animalTypes) {
+        errors.animalTypes = "Selecione o tipo de animal.";
     }
-    if (!adoptionData.sexo) errors.sexo = "Selecione o sexo.";
-    if (!adoptionData.porte) errors.porte = "Selecione o porte.";
-    if (!adoptionData.idade) errors.idade = "Selecione a idade.";
+    
+    if (!adoptionData.sexo || adoptionData.sexo === "Não tenho preferência") {
+    } else if (!adoptionData.sexo) {
+        errors.sexo = "Selecione o sexo.";
+    }
+    
+    if (!adoptionData.porte || adoptionData.porte === "Não tenho preferência") {
+    } else if (!adoptionData.porte) {
+        errors.porte = "Selecione o porte.";
+    }
+
+    if (!adoptionData.idade || adoptionData.idade === "Não tenho preferência") {   
+    } else if (!adoptionData.idade) {
+        errors.idade = "Selecione a idade.";
+    }
+
+    const isAnyPersonalityChecked = Object.values(adoptionData.personalidade).some(value => value === true);
+    if (!isAnyPersonalityChecked) {
+      errors.personalidade = "Selecione ao menos uma característica de personalidade.";
+    }
     
     return errors;
 }

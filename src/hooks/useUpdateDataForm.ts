@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { validateName, validateEmail, validatePhone, validateRequiredField } from '@/lib/validators';
+import { validateName, validateEmail, validatePhone, validateRequiredField, validateBirthDate } from '@/lib/validators';
 
 // Campos do estado inicial
 const initialUserData = {
     nome: "Nome",
     sobrenome: "Sobrenome",
+    dataNascimento: "1995-05-15",
     telefone: "(99) 99999-9999",
     email: "usuario@email.com",
     endereco: "Rua Exemplo",
@@ -15,6 +16,7 @@ const initialUserData = {
 };
 
 export const useUpdateDataForm = () => {
+   const [originalData] = useState(initialUserData);
     const [formData, setFormData] = useState(initialUserData);
     const [errors, setErrors] = useState<{ [key: string]: string | undefined }>({});   
 
@@ -40,13 +42,15 @@ export const useUpdateDataForm = () => {
             case 'sobrenome':
                 error = validateName(finalValue, "Sobrenome");
                 break;
+            case 'dataNascimento':
+                error = validateBirthDate(finalValue);
+                break;
             case 'email':
                 error = validateEmail(finalValue);
                 break;
             case 'telefone':
                 error = validatePhone(finalValue);
                 break;
-
             case 'endereco':
                 error = validateRequiredField(finalValue, "Endereço");
                 break;
@@ -72,6 +76,7 @@ export const useUpdateDataForm = () => {
         const validationErrors: { [key: string]: string | undefined } = {
             nome: validateName(formData.nome, "Nome"),
             sobrenome: validateName(formData.sobrenome, "Sobrenome"),
+            dataNascimento: validateBirthDate(formData.dataNascimento),
             email: validateEmail(formData.email),
             telefone: validatePhone(formData.telefone),
             endereco: validateRequiredField(formData.endereco, "Endereço"),
@@ -92,5 +97,10 @@ export const useUpdateDataForm = () => {
         return Object.keys(validErrors).length === 0;
     };
 
-    return { formData, errors, handleChange, validateAll, setFormData };
+    const handleCancel = () => {
+        setFormData(originalData);
+        setErrors({});
+    };
+
+    return { formData, errors, handleChange, validateAll, setFormData, handleCancel };
 };

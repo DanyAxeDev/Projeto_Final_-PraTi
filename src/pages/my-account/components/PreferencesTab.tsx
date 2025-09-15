@@ -6,12 +6,12 @@ import RoundButton from "@/components/RoundButton";
 
 export type PreferencesData = {
     adoption: {
-        animalTypes: string;
-        sexo: string;
-        porte: string;
-        idade: string;
-        personalidade: { [key: string]: boolean };
-        distancia: number;
+        animalType: string; 
+        gender: string;
+        size: string;
+        age: string;
+        personality: { [key: string]: boolean };
+        distance: number;
     };
 };
 
@@ -22,11 +22,11 @@ type TabProps = {
     onCancel: () => void;
     errors?: { 
       adoption?: { 
-        animalTypes?: string;
-        sexo?: string;
-        porte?: string;
-        idade?: string;
-        personalidade?: string; 
+        animalType?: string; 
+        gender?: string;
+        size?: string;
+        age?: string;
+        personality?: string; 
       };
     }
 }
@@ -48,13 +48,13 @@ function PreferencesTab({ preferencesData, onPreferencesChange, onSave, onCancel
     const handleCheckboxChange = (checked: boolean, value: string) => {
         onPreferencesChange({
             target: {
-                name: 'personalidade',
-                value: { ...adoption.personalidade, [value]: checked }
+                name: 'personality',
+                value: { ...adoption.personality, [value]: checked }
             }
         });
     };
 
-    const personalidadeOptions = [
+    const personalityOptions = [
         ['Ativo', 'Calmo', 'Extrovertido', 'Introvertido'],
         ['Se dá bem com outros pets', 'Se dá bem com crianças']
     ];
@@ -66,46 +66,50 @@ function PreferencesTab({ preferencesData, onPreferencesChange, onSave, onCancel
             <section data-section="adoption">
                 <h3 className="text-lg font-semibold pb-2">Preferências de pets</h3>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 mt-4">               
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 mt-4"> 
                     <div>
-                        <Label className="font-medium">Eu desejo ver...</Label>
-                        <RadioButtons name="animalTypes" options={["Cães", "Gatos", "Outros", "Não tenho preferência"]} selectedValue={adoption.animalTypes} onChange={onPreferencesChange} />
-                        {errors?.adoption?.animalTypes && <p className="text-xs text-destructive mt-1">{errors.adoption.animalTypes}</p>}
+                        <Label className="font-medium">Eu desejo ver...</Label>                     
+                        <RadioButtons name="animalType" options={["Cão", "Gato", "Não tenho preferência"]} selectedValue={adoption.animalType} onChange={onPreferencesChange} />
+                        {errors?.adoption?.animalType && <p className="text-xs text-destructive mt-1">{errors.adoption.animalType}</p>}
                     </div>
 
                     <div>
                         <Label className="font-medium">Prefiro um pet...</Label>
-                        <RadioButtons name="sexo" options={["Macho", "Fêmea", "Não tenho preferência"]} selectedValue={adoption.sexo} onChange={onPreferencesChange} />
-                        {errors?.adoption?.sexo && <p className="text-xs text-destructive mt-1">{errors.adoption.sexo}</p>}
+                        <RadioButtons name="gender" options={["Macho", "Fêmea", "Não tenho preferência"]} selectedValue={adoption.gender} onChange={onPreferencesChange} />
+                        {errors?.adoption?.gender && <p className="text-xs text-destructive mt-1">{errors.adoption.gender}</p>}
                     </div>
 
                     <div>
                         <Label className="font-medium">Com idade...</Label>
-                        <RadioButtons name="idade" options={["até 2 anos", "até 5 anos", "Não tenho preferência"]} selectedValue={adoption.idade} onChange={onPreferencesChange} />
-                        {errors?.adoption?.idade && <p className="text-xs text-destructive mt-1">{errors.adoption.idade}</p>}
+                        <RadioButtons name="age" options={["Filhote", "Jovem", "Adulto", "Idoso", "Não tenho preferência"]} selectedValue={adoption.age} onChange={onPreferencesChange} />
+                        {errors?.adoption?.age && <p className="text-xs text-destructive mt-1">{errors.adoption.age}</p>}
                     </div>
 
                     <div>
                         <Label className="font-medium">De porte...</Label>
-                        <RadioButtons name="porte" options={["Pequeno", "Médio", "Grande", "Não tenho preferência"]} selectedValue={adoption.porte} onChange={onPreferencesChange} />
-                        {errors?.adoption?.porte && <p className="text-xs text-destructive mt-1">{errors.adoption.porte}</p>}
+                        <RadioButtons name="size" options={["Pequeno", "Médio", "Grande", "Não tenho preferência"]} selectedValue={adoption.size} onChange={onPreferencesChange} />
+                        {errors?.adoption?.size && <p className="text-xs text-destructive mt-1">{errors.adoption.size}</p>}
                     </div>
 
                     <div className="md:col-span-2">
                         <Label className="font-medium">Personalidade que procuro em um pet</Label>
                         <div className="grid md:grid-cols-2 gap-x-8 mt-2">
-                            {personalidadeOptions.map((column, colIndex) => (
+                            {personalityOptions.map((column, colIndex) => (
                                 <div key={colIndex} className="flex flex-col gap-y-2">
                                     {column.map(p => (
                                         <div key={p} className="flex items-center space-x-2">
-                                            <Checkbox id={p} checked={!!adoption.personalidade[p]} onCheckedChange={(checked) => handleCheckboxChange(checked as boolean, p)} />
+                                            <Checkbox 
+                                                id={p} 
+                                                checked={!!adoption.personality[p]} 
+                                                onCheckedChange={(checked) => handleCheckboxChange(checked as boolean, p)} 
+                                            />
                                             <Label htmlFor={p} className="font-normal ">{p}</Label>
                                         </div>
                                     ))}
                                 </div>
                             ))}
                         </div>
-                        {errors?.adoption?.personalidade && <p className="text-xs text-destructive mt-1">{errors.adoption.personalidade}</p>}
+                        {errors?.adoption?.personality && <p className="text-xs text-destructive mt-1">{errors.adoption.personality}</p>}
                     </div>
                 </div>
                 
@@ -113,15 +117,15 @@ function PreferencesTab({ preferencesData, onPreferencesChange, onSave, onCancel
                     <Label className="font-medium">Distância máxima</Label>
                     <div className="flex items-center gap-4 mt-2">
                         <Slider 
-                           id="distancia"
-                           name="distancia"
+                           id="distance" 
+                           name="distance"
                            min={1} 
                            max={100} 
                            step={1} 
-                           value={[adoption.distancia]} 
-                           onValueChange={(value) => onPreferencesChange({ target: { name: 'distancia', value: value[0] } })}
+                           value={[adoption.distance]} 
+                           onValueChange={(value) => onPreferencesChange({ target: { name: 'distance', value: value[0] } })}
                         />
-                        <span className="font-semibold text-gray-700 w-12 text-center">{adoption.distancia} km</span>
+                        <span className="font-semibold text-gray-700 w-12 text-center">{adoption.distance} km</span>
                     </div>
                 </div>
             </section>
@@ -131,7 +135,7 @@ function PreferencesTab({ preferencesData, onPreferencesChange, onSave, onCancel
                 <RoundButton text="Salvar" color="blue" onClick={onSave} />
             </div>
         </div>
-    )
+    );
 }
 
 export default PreferencesTab;

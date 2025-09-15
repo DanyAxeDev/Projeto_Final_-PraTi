@@ -1,36 +1,45 @@
 import { useState } from 'react';
 import { validateAdoptionPreferences } from '@/lib/validators';
+import type { 
+    AdoptionPreferencesData, 
+    AnimalType, 
+    Gender, 
+    Size, 
+    Age 
+} from '@/lib/validators';
 
 export type PreferencesData = {
-    adoption: {
-        animalTypes: string;
-        sexo: string;
-        porte: string;
-        idade: string;
-        personalidade: { [key: string]: boolean };
-        distancia: number;
+    adoption: AdoptionPreferencesData & {
+        distance: number;
     };
 };
 
 type PreferencesErrorState = {
     adoption?: {
-        animalTypes?: string;
-        sexo?: string;
-        porte?: string;
-        idade?: string;
-        personalidade?: string;
-    }
-}
+        animalType?: string;
+        gender?: string;
+        size?: string;
+        age?: string;
+        personality?: string;
+        distance?: string;
+    };
+};
 
-// Campos do estado inicial
 const initialPreferences: PreferencesData = {
     adoption: {
-        animalTypes: "Não tenho preferência",
-        sexo: "Não tenho preferência", 
-        porte: "Não tenho preferência", 
-        idade: "Não tenho preferência",
-        personalidade: { 'Se dá bem com outros pets': true, 'Se dá bem com crianças': true },
-        distancia: 5
+        animalType: "" as AnimalType,
+        gender: "" as Gender,
+        size: "" as Size,
+        age: "" as Age,
+        personality: { 
+            'Ativo': false, 
+            'Calmo': false, 
+            'Se dá bem com outros pets': false, 
+            'Se dá bem com crianças': false, 
+            'Extrovertido': false, 
+            'Introvertido': false 
+        },
+        distance: 5
     }
 };
 
@@ -41,32 +50,35 @@ export const usePreferencesForm = (initialData: PreferencesData = initialPrefere
 
     const handleChange = (change: { target: { name: string, value: any } }) => {
         const { name, value } = change.target;
-        
-        setDraftData(prev => {
-            const newAdoptionState = { ...prev.adoption };
+        const key = name;
+     
+        const newDraftData = { ...draftData };
+        const newAdoptionState = { ...newDraftData.adoption };
 
-            if (name === 'personalidade') {
-                newAdoptionState.personalidade = value;
-            } else if (name === 'distancia') {
-                newAdoptionState.distancia = Number(value);
-            } else {                
-                (newAdoptionState as any)[name] = value;
-            }
-            
-            return { ...prev, adoption: newAdoptionState };
-        });
+        if (key === 'personality') {
+            newAdoptionState.personality = value;
+        } else if (key === 'distance') {
+            newAdoptionState.distance = Number(value);
+        } else {
+            (newAdoptionState as any)[key] = value;
+        }
+
+        newDraftData.adoption = newAdoptionState;
+        setDraftData(newDraftData);        
+       
+        const validationResult = validateAdoptionPreferences(newAdoptionState as AdoptionPreferencesData);
+        setErrors({ adoption: validationResult });
     };
 
     const validate = () => {
-        // Usa a função de validação externa
-        const validationResult = validateAdoptionPreferences(draftData.adoption);
-        const hasErrors = Object.values(validationResult).some(errorMsg => errorMsg !== "");
+        const validationResult = validateAdoptionPreferences(draftData.adoption as AdoptionPreferencesData);
+        const hasErrors = Object.keys(validationResult).length > 0;
         
-        if (hasErrors) {        
+        if (hasErrors) {
             setErrors({ adoption: validationResult });
             return false;
         }
-     
+    
         setErrors({});
         return true;
     };

@@ -3,6 +3,7 @@ import {
     validateRegistrationStep1,
     validatePetRegistration,
     validateBirthDate,
+    validatePetBirthDate,
     validateEmail,
     validateName,
     validatePassword,
@@ -17,20 +18,31 @@ import type {
     Size,
 } from '@/lib/validators';
 
-type FullFormData = RegistrationStep1Data & PetRegistrationData & {
-    personality: {
-        active: boolean; goodWithPets: boolean; calm: boolean; goodWithKids: boolean;
-        extrovert: boolean; introvert: boolean;
-    };
+type PetFormFields = PetRegistrationData;
+
+type FullFormData = RegistrationStep1Data & PetFormFields & {
     maxDistance: number;
 };
 
-// Dados iniciais do formulário
 const initialFormData: FullFormData = {
     firstName: "", lastName: "", birthDate: "", phone: "", address: "",
     number: "", neighborhood: "", city: "", state: "", email: "",
     password: "", confirmPassword: "",
-    species: "", gender: "" as Gender, age: "" as Age, size: "" as Size,
+    name: "",
+    species: "",
+    gender: "" as Gender,
+    age: "" as Age,
+    size: "" as Size,
+    dob: "",
+    petAddress: "",
+    health: "",
+    about: "",
+    castrationReceipt: null,
+    vaccinationReceipt: null,
+    photo1: null,
+    photo2: null, 
+    photo3: null,
+    contactOption: "",
     personality: {
         active: false, goodWithPets: false, calm: false, goodWithKids: false,
         extrovert: false, introvert: false,
@@ -41,40 +53,30 @@ const initialFormData: FullFormData = {
 export const useRegisterForm = () => {
     const [formData, setFormData] = useState<FullFormData>(initialFormData);
     const [errors, setErrors] = useState<{ [key: string]: any }>({});
-  
+
     const handleChange = (eventOrValue: any) => {
         let name: string;
         let value: any;
 
-        if (eventOrValue && eventOrValue.target) {        
-            const { id, name: targetName, value: targetValue, type, checked } = eventOrValue.target;
+        if (eventOrValue && eventOrValue.target) {
+            const { id, name: targetName, value: targetValue, type, checked, files } = eventOrValue.target;
             name = targetName || id;
-            value = (type === 'checkbox' || type === 'radio') ? checked : targetValue;
 
-            if (eventOrValue.target.name === 'species' || eventOrValue.target.name === 'gender' || eventOrValue.target.name === 'age' || eventOrValue.target.name === 'size') {
-                name = eventOrValue.target.name;
-                value = eventOrValue.target.value;
+            if (type === 'checkbox') {
+                value = checked;
+            } else if (type === 'file') {
+                value = files && files.length > 0 ? files[0] : null;
+            } else {
+                value = targetValue;
             }
         } else if (Array.isArray(eventOrValue)) {
             name = 'maxDistance';
             value = eventOrValue[0];
-        } else {         
+        } else {
             name = eventOrValue.name;
             value = eventOrValue.value;
         }
-      
-        if (name === 'maxDistance') {
-            setFormData(prev => ({
-                ...prev,
-                [name]: Number(value),
-            }));
-            setErrors(prev => {
-                const newErrors = { ...prev };
-                delete newErrors.maxDistance; 
-                return newErrors;
-            });
-            return;
-        }
+
         let finalValue = value;
         if (name === 'firstName' || name === 'lastName') {
             finalValue = value.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ\s]/g, '');
@@ -83,52 +85,59 @@ export const useRegisterForm = () => {
             finalValue = value.replace(/\D/g, '');
         }
 
-        // Atualiza o estado do formulário
         setFormData(prev => {
-            if (name.startsWith('personality')) {
+            if (name.startsWith('personality-')) {
                 const personalityKey = name.replace('personality-', '');
-                const isChecked = typeof value === 'boolean' ? value : false;
                 return {
                     ...prev,
-                    personality: { ...prev.personality, [personalityKey]: isChecked }
+                    personality: { ...prev.personality, [personalityKey]: value }
                 };
             }
             return { ...prev, [name]: finalValue };
         });
-    
+
         setErrors(prev => {
             const newErrors = { ...prev };
+            delete newErrors[name];
             
             if (name.startsWith('personality-')) {
                 const personalityKey = name.replace('personality-', '');
-                const updatedPersonality = { ...formData.personality, [personalityKey]: typeof value === 'boolean' ? value : false };
-                const isAnyPersonalityChecked = Object.values(updatedPersonality).some(val => val === true);
-                
-                if (!isAnyPersonalityChecked) {
-                    newErrors.personality = "Selecione ao menos uma característica de personalidade.";
-                } else {
+                const updatedPersonality = { ...formData.personality, [personalityKey]: value };
+                const isAnyChecked = Object.values(updatedPersonality).some(isChecked => isChecked === true);
+
+                if (isAnyChecked) {
                     delete newErrors.personality;
                 }
-                return newErrors;
             }            
-     
-            delete newErrors[name];
-            if (finalValue.trim() !== '') {
-                let error: string | undefined;
-                switch (name) {
-                    case 'firstName': error = validateName(finalValue, "Nome"); break;
-                    case 'lastName': error = validateName(finalValue, "Sobrenome"); break;
-                    case 'birthDate': error = validateBirthDate(finalValue); break;
-                    case 'email': error = validateEmail(finalValue); break;
-                    case 'password': error = validatePassword(finalValue); break;
-                    case 'confirmPassword': error = validateConfirmPassword(formData.password, finalValue); break;                  
-                }
-                if (error) {
-                    newErrors[name] = error;
-                }
+
+            let error: string | undefined;
+            switch (name) {
+                case 'firstName':
+                    error = validateName(finalValue, "Nome");
+                    break;
+                case 'lastName':
+                    error = validateName(finalValue, "Sobrenome");
+                    break;
+                case 'email':
+                    error = validateEmail(finalValue);
+                    break;
+                case 'birthDate':
+                    error = validateBirthDate(finalValue);
+                    break;
+                case 'password':
+                    error = validatePassword(finalValue);
+                    break;
+                case 'confirmPassword':
+                    error = validateConfirmPassword(formData.password, finalValue);
+                    break;           
+                 case 'dob': 
+                error = validatePetBirthDate(value);
+            }
+
+            if (error) {
+                newErrors[name] = error;
             }
             
-            // Lógica para sincronizar senha e confirmação
             if (name === 'password' || name === 'confirmPassword') {
                 const confirmError = validateConfirmPassword(
                     name === 'password' ? finalValue : formData.password,
@@ -145,8 +154,8 @@ export const useRegisterForm = () => {
         });
     };
 
-    const validateStep1 = () => {
-        const step1Data = {
+    const validateRegistrationForm = () => {
+        const step1Data: RegistrationStep1Data = {
             firstName: formData.firstName,
             lastName: formData.lastName,
             birthDate: formData.birthDate,
@@ -165,18 +174,29 @@ export const useRegisterForm = () => {
         return Object.keys(validationErrors).length === 0;
     };
 
-    const validateStep2 = () => {
+    const validatePetForm = () => {
         const petData: PetRegistrationData = {
+            name: formData.name,
             species: formData.species,
             gender: formData.gender,
-            age: formData.age,
             size: formData.size,
+            dob: formData.dob,
+            petAddress: formData.petAddress,
+            health: formData.health,
+            about: formData.about,
+            castrationReceipt: formData.castrationReceipt,
+            vaccinationReceipt: formData.vaccinationReceipt,
+            contactOption: formData.contactOption,
+            photo1: formData.photo1,
+            photo2: formData.photo2,
+            photo3: formData.photo3,
             personality: formData.personality,
+            age: '' as Age,
         };
         const validationErrors = validatePetRegistration(petData);
         setErrors(validationErrors);
         return Object.keys(validationErrors).length === 0;
     };
 
-    return { formData, errors, handleChange, validateStep1, validateStep2 };
+    return { formData, errors, handleChange, validateRegistrationForm, validatePetForm };
 };

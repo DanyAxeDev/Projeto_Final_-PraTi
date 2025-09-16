@@ -27,37 +27,45 @@ export type RegistrationStep1Data = {
     state: string;
 };
 
+export type RegistrationStep2Data = {
+    animalType: AnimalType;
+    gender: Gender;
+    size: Size;
+    age: Age;
+    personality: { [key: string]: boolean };
+};
+
 export type PetRegistrationData = {
     name: string;
     species: string;
     gender: Gender;
     dob: string;
-    age: Age;
     size: Size;
     petAddress: string;
-    health: string;  
-    about: string;  
+    health: string;
+    about: string;
     castrationReceipt: File | null;
     vaccinationReceipt: File | null;
     personality: { [key: string]: boolean };
     photo1: File | null;
-    photo2: File | null; 
-    photo3: File | null;  
+    photo2: File | null;
+    photo3: File | null;
     contactOption: string;
 };
 
 // Validar a data de nascimento do pet
 export function validatePetBirthDate(dateStr: string) {
     if (!dateStr) return "Data de nascimento é obrigatória.";
+    
     const birthDate = new Date(dateStr + 'T00:00:00');
     const today = new Date();
-    today.setHours(0, 0, 0, 0);    
- 
+    today.setHours(0, 0, 0, 0);
+  
     if (birthDate > today) {
         return "A data não pode ser no futuro.";
     }
-    
-    return undefined;
+
+    return undefined; 
 }
 
 //  Validar se um arquivo foi enviado
@@ -136,7 +144,7 @@ export const validateAdoptionPreferences = (adoptionData: AdoptionPreferencesDat
         age: "idade",
     };
 
-    (Object.keys(validationMap) as (keyof typeof validationMap)[]).forEach(key => {        
+    (Object.keys(validationMap) as (keyof typeof validationMap)[]).forEach(key => {
         const errorMessage = validateField(adoptionData[key] as string, `Selecione um ${validationMap[key]}.`);
         if (errorMessage) errors[key] = errorMessage;
     });
@@ -179,19 +187,30 @@ export const validateRegistrationStep1 = (formData: RegistrationStep1Data) => {
     return errors;
 };
 
-// --- Validação da Etapa 2 e cadastro de pet 
-export const validatePetRegistration = (formData: PetRegistrationData) => {
+// --- Validação da Etapa 2
+export const validateRegistrationStep2 = (formData: AdoptionPreferencesData) => {
     const errors: { [key: string]: string } = {};
-    if (!formData.species) errors.species = "Por favor, selecione uma espécie.";
+    if (!formData.animalType) errors.animalType = "Por favor, selecione um tipo de animal.";
     if (!formData.gender) errors.gender = "Por favor, selecione um gênero.";
     if (!formData.age) errors.age = "Por favor, selecione uma faixa de idade.";
     if (!formData.size) errors.size = "Por favor, selecione um porte.";
-  
+    return errors;
+};
+
+// --- Validação do cadastro de pet 
+export const validatePetRegistration = (formData: PetRegistrationData) => {
+    const errors: { [key: string]: string } = {};
+
+    if (!formData.name) errors.name = "O nome do pet é obrigatório.";
+    if (!formData.species) errors.species = "Por favor, selecione uma espécie.";    
+    if (!formData.gender) errors.gender = "Por favor, selecione um gênero.";
+    if (!formData.size) errors.size = "Por favor, selecione um porte.";
+
     const dobError = validatePetBirthDate(formData.dob);
     if (dobError) errors.dob = dobError;
 
-    const addressError = validateRequiredField(formData.petAddress, "Localização"); 
-    if (addressError) errors.petAddress = addressError; 
+    const addressError = validateRequiredField(formData.petAddress, "Localização");
+    if (addressError) errors.petAddress = addressError;
 
     const healthError = validateRequiredField(formData.health, "Descrição de saúde");
     if (healthError) errors.health = healthError;
@@ -205,9 +224,15 @@ export const validatePetRegistration = (formData: PetRegistrationData) => {
     const vaccinationError = validateFile(formData.vaccinationReceipt, "Comprovante de vacinação");
     if (vaccinationError) errors.vaccinationReceipt = vaccinationError;
 
-  if (!formData.photo1 && !formData.photo2 && !formData.photo3) {
-      errors.photos = "Envie pelo menos uma foto do pet.";
-  }
+  const photos = [formData.photo1, formData.photo2, formData.photo3];
+    const hasAtLeastOnePhoto = photos.some(p => p !== null);
+    const hasInvalidFileType = photos.some(p => p && !p.type.startsWith('image/'));
+
+    if (!hasAtLeastOnePhoto) {
+        errors.photos = "Envie pelo menos uma foto do pet.";
+    } else if (hasInvalidFileType) {
+        errors.photos = "Por favor, envie apenas arquivos de imagem (JPG, PNG, etc.).";
+    }
 
     if (!formData.contactOption) errors.contactOption = "Por favor, escolha uma forma de contato.";
 

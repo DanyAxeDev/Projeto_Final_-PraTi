@@ -1,25 +1,29 @@
 import { useState, useRef } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router"; 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import SocialIcon from "@/components/SocialLoginButton";
 import { IoIosArrowBack } from "react-icons/io";
-import { useRegisterForm } from "@/hooks/useRegisterForm";
+import { useUserRegisterForm } from "@/hooks/useUserRegisterForm";
 import RoundButton from "@/components/RoundButton";
 import FormStepHeading from "@/components/FormStepHeading";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
+import Modal from "@/components/Modal"; 
 
 import googleIcon from "@/assets/icons/icon-google.png";
 
 export default function RegisterPage() {
     const [currentStep, setCurrentStep] = useState(1);
-    const { formData, errors, handleChange, validateRegistrationForm, validatePetForm } = useRegisterForm();
+    const [isModalOpen, setIsModalOpen] = useState(false); 
+    const { formData, errors, handleChange, validateRegistrationForm , validatePreferenceForm } = useUserRegisterForm();
 
     const formStep1Ref = useRef<HTMLFormElement>(null);
     const formStep2Ref = useRef<HTMLFormElement>(null);
+
+    const navigate = useNavigate(); 
 
     const handleGoogleLogin = () => {
         console.log("Iniciando cadastro com Google...");
@@ -38,11 +42,17 @@ export default function RegisterPage() {
 
     const handleRegister = (e: React.FormEvent) => {
         e.preventDefault();
-        if (validatePetForm()) {
-            console.log("Validação da Etapa 2 passou! Finalizando cadastro com os dados:", formData);
+        if (validatePreferenceForm()) {                   
+            setIsModalOpen(true);
         } else {
             console.log("Validação da Etapa 2 falhou.");
         }
+    };
+
+    const handleConfirmRegistration = () => {
+        console.log("Usuário confirmou o cadastro. Redirecionando para login...");
+        setIsModalOpen(false); 
+        navigate("/login");     
     };
 
     return (
@@ -160,26 +170,26 @@ export default function RegisterPage() {
                                 <div>
                                     <Label className="mb-1 font-semibold">Eu desejo ver...</Label>
                                     <RadioGroup
-                                        name="species"
-                                        value={formData.species}
-                                        onValueChange={(value) => handleChange({ target: { name: 'species', value } })}
+                                        name="animalType"
+                                        value={formData.animalType}
+                                        onValueChange={(value) => handleChange({ target: { name: 'animalType', value } })}
                                     >
                                         <div className="flex flex-wrap gap-4 mt-2 text-sm">
                                             <div className="flex items-center gap-2">
-                                                <RadioGroupItem value="cão" id="species-cão" />
-                                                <Label htmlFor="species-cão">Cães</Label>
+                                                <RadioGroupItem value="cão" id="animalType-cão" />
+                                                <Label htmlFor="animalType-cão">Cães</Label>
                                             </div>
                                             <div className="flex items-center gap-2">
-                                                <RadioGroupItem value="gato" id="species-gato" />
-                                                <Label htmlFor="species-gato">Gatos</Label>
+                                                <RadioGroupItem value="gato" id="animalType-gato" />
+                                                <Label htmlFor="animalType-gato">Gatos</Label>
                                             </div>
                                             <div className="flex items-center gap-2">
-                                                <RadioGroupItem value="no-preference" id="species-no-preference" />
-                                                <Label htmlFor="species-no-preference">Não tenho preferência</Label>
+                                                <RadioGroupItem value="no-preference" id="animalType-no-preference" />
+                                                <Label htmlFor="animalType-no-preference">Não tenho preferência</Label>
                                             </div>
                                         </div>
                                     </RadioGroup>
-                                    {errors.species && <p className="text-xs text-red-600">{errors.species}</p>}
+                                    {errors.animalType && <p className="text-xs text-red-600">{errors.animalType}</p>}
                                 </div>
                                 <div>
                                     <Label className="mb-1 font-semibold">Eu prefiro um pet...</Label>
@@ -361,6 +371,17 @@ export default function RegisterPage() {
                     </p>
                 </div>
             </div>
+
+            {/*  Modal */}
+            <Modal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                title="Cadastro realizado com sucesso!"
+                confirmText="Ir para o Login"
+                onConfirm={handleConfirmRegistration}
+            >
+                <p>Sua conta foi criada e suas preferências foram salvas. Agora você já pode encontrar seu novo melhor amigo!</p>
+            </Modal>
         </section>
     );
 }

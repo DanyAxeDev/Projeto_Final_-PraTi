@@ -1,26 +1,40 @@
+import React, { useState, useRef } from "react";
+import { useNavigate } from "react-router"
 import PageWithHeaderLayout from "@/layouts/PageWithHeaderLayout"
 import FormStepHeading from "@/components/FormStepHeading"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import RoundButton from "@/components/RoundButton"
 import Tooltip from "../../components/Tooltip"
-import { useRegisterForm } from "@/hooks/useRegisterForm"
+import { usePetRegisterForm } from "@/hooks/usePetRegisterForm"
+import Modal from "@/components/Modal"
 
-function PetRegisterPage() {  
-  const { formData, errors, handleChange, validatePetForm } = useRegisterForm();
-  const handleSubmit = () => {
-  const isPetFormValid = validatePetForm();
-  if (isPetFormValid) {
-    console.log("Formulário válido!", formData);
-  } else {
-    console.log("Erros de validação:", errors);
-  }
-};
+function PetRegisterPage() {
+  const formRef = useRef<HTMLFormElement>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
+  const { formData, errors, handleChange, validatePetForm } = usePetRegisterForm();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const isPetFormValid = validatePetForm();
+    if (isPetFormValid) {
+      console.log("Formulário válido!", formData);
+      setIsModalOpen(true);
+    } else {
+      console.log("Erros de validação:", errors);
+    }
+  };
+
+  const handleCloseModalAndRedirect = () => {
+    setIsModalOpen(false);
+    navigate("/home");
+  };
 
   return (
     <PageWithHeaderLayout title="Cadastro de Pet">
       <section className="max-w-[1100px] mx-auto flex justify-center items-center h-full pt-15 pb-20 px-4 font-raleway font-medium mt-4 sm:py-20 sm:px-8">
-        <form className="flex flex-col gap-12 bg-white py-12 px-4 rounded-sm max-w-[695px] w-full sm:px-8">
+        <form noValidate ref={formRef} onSubmit={handleSubmit} className="flex flex-col gap-12 bg-white py-12 px-4 rounded-sm max-w-[695px] w-full sm:px-8">
           {/* Seção 1 */}
           <section>
             <FormStepHeading step={1} title="Dados do pet" />
@@ -33,11 +47,11 @@ function PetRegisterPage() {
 
               <div className="col-span-2 sm:col-span-1">
                 <Label htmlFor="species" className="mb-1 font-semibold">Espécie</Label>
-                <select id="species" value={formData.species} onChange={handleChange} className="w-full h-9 rounded-md border bg-transparent px-3 py-1 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-[color,box-shadow] md:text-sm">
+                <select id="species" name="species" value={formData.species} onChange={handleChange} className="w-full h-9 rounded-md border bg-transparent px-3 py-1 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-[color,box-shadow] md:text-sm">
                   <option value="">Selecione</option>
                   <option value="dog">Cachorro</option>
-                  <option value="cat">Gato</option>  
-                  <option value="other">Outro</option>                
+                  <option value="cat">Gato</option>
+                  <option value="other">Outro</option>
                 </select>
                 {errors.species && <p className="text-red-500 text-xs mt-1">{errors.species}</p>}
               </div>
@@ -60,13 +74,13 @@ function PetRegisterPage() {
               <div className="col-span-2 sm:col-span-1">
                 <div className="flex items-center gap-2 mb-1">
                   <Label htmlFor="dob" className="font-semibold">Data de nascimento</Label>
-                  <Tooltip 
-                  type="help" 
-                  tip="Se não souber, informe uma data aproximada."
-                  label="Ajuda sobre a data de nascimento"
+                  <Tooltip
+                    type="help"
+                    tip="Se não souber, informe uma data aproximada."
+                    label="Ajuda sobre a data de nascimento"
                   />
                 </div>
-                <Input id="dob" type="date" value={formData.dob} onChange={handleChange} required />
+                <Input id="dob" name="dob" type="date" value={formData.dob} onChange={handleChange} required />
                 {errors.dob && <p className="text-red-500 text-xs mt-1">{errors.dob}</p>}
               </div>
 
@@ -104,37 +118,37 @@ function PetRegisterPage() {
               <div className="col-span-2 sm:col-span-1">
                 <Label htmlFor="address" className="mb-1 font-semibold">Localização</Label>
                 <Input type="text" id="petAddress" name="petAddress" value={formData.petAddress} onChange={handleChange} placeholder="Rua, Cidade, Estado" required />
-              {errors.petAddress && <p className="text-red-500 text-xs mt-1">{errors.petAddress}</p>}
+                {errors.petAddress && <p className="text-red-500 text-xs mt-1">{errors.petAddress}</p>}
               </div>
 
               <div className="col-span-2">
                 <Label htmlFor="health" className="mb-1 font-semibold">Descrição sobre a saúde do pet</Label>
-                <textarea 
-                id="health" 
-                name="health"
-                value={formData.health} onChange={handleChange}
-                required 
-                rows={8} 
-                placeholder="Detalhes sobre o histórico de saúde do pet, se precisa de cuidados, etc..."
-                className="resize-none w-full rounded-md border bg-transparent px-3 py-1 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-[color,box-shadow] md:text-sm"></textarea>
+                <textarea
+                  id="health"
+                  name="health"
+                  value={formData.health} onChange={handleChange}
+                  required
+                  rows={8}
+                  placeholder="Detalhes sobre o histórico de saúde do pet, se precisa de cuidados, etc..."
+                  className="resize-none w-full rounded-md border bg-transparent px-3 py-1 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-[color,box-shadow] md:text-sm"></textarea>
                 {errors.health && <p className="text-red-500 text-xs mt-1">{errors.health}</p>}
               </div>
 
               <div className="col-span-2">
                 <Label htmlFor="about" className="mb-1 font-semibold">História do pet</Label>
-                <textarea 
-                id="about" 
-                name="about" 
-                value={formData.about} onChange={handleChange}
-                required 
-                rows={8} 
-                placeholder="Detalhes sobre a história do pet, características dele, etc..."
-                className="resize-none w-full rounded-md border bg-transparent px-3 py-1 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-[color,box-shadow] md:text-sm"></textarea>
+                <textarea
+                  id="about"
+                  name="about"
+                  value={formData.about} onChange={handleChange}
+                  required
+                  rows={8}
+                  placeholder="Detalhes sobre a história do pet, características dele, etc..."
+                  className="resize-none w-full rounded-md border bg-transparent px-3 py-1 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-[color,box-shadow] md:text-sm"></textarea>
                 {errors.about && <p className="text-red-500 text-xs mt-1">{errors.about}</p>}
               </div>
             </div>
           </section>
-          
+
           {/* Seção 2 */}
           <section>
             <FormStepHeading step={2} title="Personalidade" />
@@ -164,7 +178,7 @@ function PetRegisterPage() {
                 <input type="checkbox" name="personality-introvert" onChange={handleChange} checked={!!formData.personality.introvert} className="size-4 text-primary rounded" />
                 Introvertido
               </label>
-            </div>           
+            </div>
             {errors.personality && <p className="text-red-500 text-xs mt-1">{errors.personality}</p>}
           </section>
 
@@ -172,7 +186,7 @@ function PetRegisterPage() {
           <section>
             <FormStepHeading step={3} title="Fotos" />
             <p className="mb-2">Selecione até 3 fotos.</p>
-             {errors.photos && <p className="text-red-500 text-xs mb-2">{errors.photos}</p>}
+            {errors.photos && <p className="text-red-500 text-xs mb-2">{errors.photos}</p>}
             <div className="flex flex-col gap-3 max-w-[300px]">
               <Input type="file" id="photo1" name="photo1" onChange={handleChange} className="rounded-full font-semibold text-brown bg-gray-100" required />
               <Input type="file" id="photo2" name="photo2" onChange={handleChange} className="rounded-full font-semibold text-brown bg-gray-100" />
@@ -186,20 +200,30 @@ function PetRegisterPage() {
             <p className="mb-2">Receber contatos de interessados via:</p>
             <div>
               <label className="flex items-center gap-2">
-                  <input type="radio" name="contactOption" value="whatsapp" onChange={handleChange} checked={formData.contactOption === 'whatsapp'} className="size-4" />
-                  WhatsApp
-                </label>
-                <label className="flex items-center gap-2">
-                  <input type="radio" name="contactOption" value="email" onChange={handleChange} checked={formData.contactOption === 'email'} className="size-4" />
-                  E-mail
-                </label>
+                <input type="radio" name="contactOption" value="whatsapp" onChange={handleChange} checked={formData.contactOption === 'whatsapp'} className="size-4" />
+                WhatsApp
+              </label>
+              <label className="flex items-center gap-2">
+                <input type="radio" name="contactOption" value="email" onChange={handleChange} checked={formData.contactOption === 'email'} className="size-4" />
+                E-mail
+              </label>
             </div>
             {errors.contactOption && <p className="text-red-500 text-xs mt-1">{errors.contactOption}</p>}
           </section>
 
-          <RoundButton color="blue" text="Cadastrar pet" onClick={handleSubmit} />
+          <RoundButton color="blue" text="Cadastrar pet" onClick={() => formRef.current?.requestSubmit()} />
         </form>
       </section>
+
+      {/* Modal */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={handleCloseModalAndRedirect}
+        title="Pet Cadastrado com Sucesso!"
+      >
+        <p>Seu pet foi cadastrado e logo encontrará um novo lar!</p>
+        <p className="mt-2">Você será redirecionado para a página inicial.</p>
+      </Modal>
     </PageWithHeaderLayout>
   )
 }

@@ -1,7 +1,7 @@
 // --- Tipos para valores que se repetem
 export type AnimalType = 'cão' | 'gato' | 'no-preference';
-export type Gender = 'macho' | 'fêmea' | 'no-preference';
-export type Size = 'pequeno' | 'medio' | 'grande' | 'no-preference';
+export type Gender = 'male' | 'female' | 'no-preference';
+export type Size = 'small' | 'medium' | 'large' | 'no-preference';
 export type Age = 'filhote' | 'jovem' | 'adulto' | 'idoso' | 'no-preference';
 
 export type AdoptionPreferencesData = {
@@ -28,12 +28,43 @@ export type RegistrationStep1Data = {
 };
 
 export type PetRegistrationData = {
+    name: string;
     species: string;
     gender: Gender;
+    dob: string;
     age: Age;
     size: Size;
+    petAddress: string;
+    health: string;  
+    about: string;  
+    castrationReceipt: File | null;
+    vaccinationReceipt: File | null;
     personality: { [key: string]: boolean };
+    photo1: File | null;
+    photo2: File | null; 
+    photo3: File | null;  
+    contactOption: string;
 };
+
+// Validar a data de nascimento do pet
+export function validatePetBirthDate(dateStr: string) {
+    if (!dateStr) return "Data de nascimento é obrigatória.";
+    const birthDate = new Date(dateStr + 'T00:00:00');
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);    
+ 
+    if (birthDate > today) {
+        return "A data não pode ser no futuro.";
+    }
+    
+    return undefined;
+}
+
+//  Validar se um arquivo foi enviado
+export function validateFile(file: File | null, fieldName: string) {
+    if (!file) return `${fieldName} é obrigatório.`;
+    return undefined;
+}
 
 // --- Validações Individuais
 const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/;
@@ -148,13 +179,37 @@ export const validateRegistrationStep1 = (formData: RegistrationStep1Data) => {
     return errors;
 };
 
-// --- Validação da Etapa 2 
+// --- Validação da Etapa 2 e cadastro de pet 
 export const validatePetRegistration = (formData: PetRegistrationData) => {
     const errors: { [key: string]: string } = {};
     if (!formData.species) errors.species = "Por favor, selecione uma espécie.";
     if (!formData.gender) errors.gender = "Por favor, selecione um gênero.";
     if (!formData.age) errors.age = "Por favor, selecione uma faixa de idade.";
     if (!formData.size) errors.size = "Por favor, selecione um porte.";
+  
+    const dobError = validatePetBirthDate(formData.dob);
+    if (dobError) errors.dob = dobError;
+
+    const addressError = validateRequiredField(formData.petAddress, "Localização"); 
+    if (addressError) errors.petAddress = addressError; 
+
+    const healthError = validateRequiredField(formData.health, "Descrição de saúde");
+    if (healthError) errors.health = healthError;
+
+    const aboutError = validateRequiredField(formData.about, "História do pet");
+    if (aboutError) errors.about = aboutError;
+
+    const castrationError = validateFile(formData.castrationReceipt, "Comprovante de castração");
+    if (castrationError) errors.castrationReceipt = castrationError;
+
+    const vaccinationError = validateFile(formData.vaccinationReceipt, "Comprovante de vacinação");
+    if (vaccinationError) errors.vaccinationReceipt = vaccinationError;
+
+  if (!formData.photo1 && !formData.photo2 && !formData.photo3) {
+      errors.photos = "Envie pelo menos uma foto do pet.";
+  }
+
+    if (!formData.contactOption) errors.contactOption = "Por favor, escolha uma forma de contato.";
 
     const isAnyPersonalityChecked = Object.values(formData.personality).some(value => value === true);
     if (!isAnyPersonalityChecked) {

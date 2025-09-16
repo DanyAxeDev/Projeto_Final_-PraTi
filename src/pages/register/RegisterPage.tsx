@@ -16,7 +16,7 @@ import googleIcon from "@/assets/icons/icon-google.png";
 
 export default function RegisterPage() {
     const [currentStep, setCurrentStep] = useState(1);
-    const { formData, errors, handleChange, validateStep1, validateStep2 } = useRegisterForm();
+    const { formData, errors, handleChange, validateRegistrationForm, validatePetForm } = useRegisterForm();
 
     const formStep1Ref = useRef<HTMLFormElement>(null);
     const formStep2Ref = useRef<HTMLFormElement>(null);
@@ -27,7 +27,7 @@ export default function RegisterPage() {
 
     const handleNextStep = (e: React.FormEvent) => {
         e.preventDefault();
-        if (validateStep1()) {
+        if (validateRegistrationForm()) {
             setCurrentStep(2);
         }
     };
@@ -38,7 +38,7 @@ export default function RegisterPage() {
 
     const handleRegister = (e: React.FormEvent) => {
         e.preventDefault();
-        if (validateStep2()) {
+        if (validatePetForm()) {
             console.log("Validação da Etapa 2 passou! Finalizando cadastro com os dados:", formData);
         } else {
             console.log("Validação da Etapa 2 falhou.");

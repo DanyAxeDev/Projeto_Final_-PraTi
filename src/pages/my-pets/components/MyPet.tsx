@@ -1,8 +1,20 @@
+import { useState } from "react"
 import { Link } from "react-router"
 import { MdEdit, MdDeleteForever } from "react-icons/md"
 import type { MyPetProps } from "@/types/types"
+import AdoptedButton from "./AdoptedButton"
+import Modal from "./Modal"
+import RoundButton from "@/components/RoundButton"
+import petBalloon from "../../../assets/imgs/dog-balloon.png"
 
 function MyPet({ name, id, photo }: MyPetProps) {
+  const [modal, setModal] = useState(false)
+
+  // Função para apagar pet do banco de dados quando for marcado como adotado
+  const handleAdopted = () => {
+    console.log("Pet adotado!")
+  }
+
   return (
     <div className="bg-white flex flex-col items-center gap-6 text-center p-5 rounded-sm w-fit sm:flex-row sm:w-full sm:items-start sm:text-start sm:gap-8">
       <div className="w-full h-[180px] rounded-sm overflow-clip sm:size-[150px]">
@@ -35,9 +47,19 @@ function MyPet({ name, id, photo }: MyPetProps) {
             <MdDeleteForever aria-hidden="true" />
           </button>
           {/* Botão de marcar como adotado */}
-          <button className="font-bold text-brown rounded-full border-3 border-brown py-1 px-5 cursor-pointer transition-colors duration-300 hover:text-darkbrown hover:border-transparent">
-            Marcar como adotado
-          </button>
+          <AdoptedButton openModal={() => setModal(true)} />
+
+          <Modal isModalOpen={modal} closeModal={() => setModal(false)}>
+            <h3 className="text-2xl font-bold">Parabéns pela doação!</h3>
+            <p className="text-center">Ficamos muito felizes em saber que mais um bichinho conseguiu conectar o fio azul com seu humano e está em um novo lar. Continue com a doação responsável!</p>
+            <img src={petBalloon} alt="Ilustração de cachorro com balões" className="size-[170px] sm:size-auto" />
+            <hr className="w-4/5" />
+            <p className="text-center text-sm">Se pressionou o botão por engano, clique em Cancelar.</p>
+            <div className="flex gap-3 mt-4 sm:gap-4">
+              <RoundButton color="brown" text="Cancelar" onClick={() => setModal(false)} />
+              <RoundButton color="blue" text="Ok" onClick={handleAdopted} />
+            </div>
+          </Modal>
         </div>
       </div>
     </div>

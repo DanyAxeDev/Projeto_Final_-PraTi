@@ -1,55 +1,34 @@
-import { Button } from "./ui/button";
+import { useRef, useEffect, type ReactNode } from "react"
 
 type ModalProps = {
-  isOpen: boolean;
-  onClose: () => void;
-  title: string;
-  children: React.ReactNode;
-  confirmText?: string;
-  onConfirm?: () => void;
-  variant?: 'default' | 'danger';
+  isModalOpen: boolean;
+  closeModal: () => void;
+  children: ReactNode;
+  title?: string;
 }
 
-function Modal({ isOpen, onClose, title, children, confirmText, onConfirm, variant = 'default' }: ModalProps) {
-  if (!isOpen) {
-    return null;
-  }
+function Modal({ isModalOpen, closeModal, children, title }: ModalProps) {
+  const modalRef = useRef<HTMLDialogElement>(null)
 
-  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget) {
-      onClose();
+  useEffect(() => {
+    if (isModalOpen) {
+      modalRef.current?.showModal()
+    } else {
+      modalRef.current?.close()
     }
-  }
+  }, [isModalOpen])
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex justify-center items-center p-4"
-      onClick={handleOverlayClick}
+    <dialog 
+    ref={modalRef} 
+    onCancel={closeModal}
+    className={`${isModalOpen ? "" : "hidden"} m-auto py-6 px-4 rounded-sm max-w-[90vw] flex flex-col items-center gap-4 text-center font-medium font-raleway animate-in fade-in-90 zoom-in-95 sm:p-6 sm:max-w-[500px]`}
     >
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-6 flex flex-col gap-4 animate-in fade-in-90 zoom-in-95">
-        <h2 className={`text-xl font-bold font-raleway ${variant === 'danger' ? 'text-destructive' : 'text-blue'}`}>
-          {title}
-        </h2>
-        <div className="text-gray-600 font-raleway">
-          {children}
-        </div>
-        <div className="flex justify-end gap-3 mt-4">
-          <Button variant="outline" onClick={onClose}>
-            {onConfirm ? "Cancelar" : "Fechar"}
-          </Button>
-          {onConfirm && confirmText && (
-            <Button
-              variant={variant === 'danger' ? 'destructive' : 'default'}
-              onClick={onConfirm}
-            >
-              {confirmText}
-            </Button>
-          )}
-        </div>
-      </div>
-    </div>
-  );
+      {title && <h3 className="text-2xl font-bold">{title}</h3>}
+      
+      {children}
+    </dialog>
+  )
 }
 
-export default Modal;
-
+export default Modal

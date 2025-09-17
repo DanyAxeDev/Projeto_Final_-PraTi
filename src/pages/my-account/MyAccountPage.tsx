@@ -6,13 +6,16 @@ import GeneralTab from "./components/GeneralTab";
 import UpdateDataTab from "./components/UpdateDataTab";
 import PreferencesTab from "./components/PreferencesTab";
 import PageWithHeaderLayout from "@/layouts/PageWithHeaderLayout";
-import Modal from "@/components/Modal";
 import { usePreferencesForm } from "@/hooks/usePreferencesForm";
+import Modal from "@/components/Modal";
+import RoundButtonDanger from "@/components/RoundButtonDanger";
+import { IoIosAlert } from "react-icons/io"
+import { toast } from "sonner";
 
 type Tab = 'geral' | 'atualizar-dados' | 'preferencias';
 
 type ModalState = {
-  type: 'none' | 'saveSuccess' | 'deleteConfirm';
+  type: 'none' | 'deleteConfirm';
   message?: string;
 }
 
@@ -26,19 +29,19 @@ function MyAccountPage() {
   const handleSavePreferences = () => {
     if (preferencesForm.validate()) {
         console.log("Salvando preferências:", preferencesForm.draftData);
-        openSaveModal("Suas preferências foram salvas com sucesso.");
+        toast.success("Suas preferências foram salvas com sucesso.")
     } else {
         console.log("Formulário de preferências inválido.");
     }
   };
 
-  const openSaveModal = (message: string) => setModalState({ type: 'saveSuccess', message });
   const openDeleteModal = () => setModalState({ type: 'deleteConfirm' });
   const closeModal = () => setModalState({ type: 'none' });
   
   const handleDeleteConfirm = () => {
     console.log("Conta excluída!");
     closeModal();
+    toast.success("Conta excluída!");
     navigate('/');
   };
   
@@ -53,10 +56,10 @@ function MyAccountPage() {
       case 'geral':       
         return <GeneralTab 
                   onOpenDeleteModal={openDeleteModal} 
-                  onSaveSuccess={openSaveModal} 
+                  onSaveSuccess={() => toast.success("Senha alterada com sucesso!")} 
                />
       case 'atualizar-dados': 
-        return <UpdateDataTab onSaveSuccess={() => openSaveModal("Seus dados foram atualizados com sucesso.")} />
+        return <UpdateDataTab onSaveSuccess={() => toast.success("Seus dados foram atualizados com sucesso.")} />
       case 'preferencias': 
         return <PreferencesTab 
                   preferencesData={preferencesForm.draftData}
@@ -97,13 +100,15 @@ function MyAccountPage() {
           </div>
         </section>
       </PageWithHeaderLayout>
-
-      <Modal isOpen={modalState.type === 'saveSuccess'} onClose={closeModal} title="Sucesso!">
-        <p>{modalState.message || "Suas alterações foram salvas."}</p>
-      </Modal>
-
-      <Modal isOpen={modalState.type === 'deleteConfirm'} onClose={closeModal} title="Excluir Conta" confirmText="Sim, excluir" onConfirm={handleDeleteConfirm} variant="danger">
+      
+      {/* Modal de excluir conta */}
+      <Modal isModalOpen={modalState.type === 'deleteConfirm'} closeModal={closeModal} title="Excluir conta">
+        <IoIosAlert aria-hidden="true" className="text-5xl text-red-400" />
         <p>Você tem certeza que deseja excluir sua conta? Esta ação é irreversível.</p>
+        <div className="flex gap-3 mt-4 sm:gap-4">
+          <button onClick={closeModal} className="font-raleway font-bold hover:text-darkbrown py-1 px-4 cursor-pointer transition-colors duration-300">Cancelar</button>
+          <RoundButtonDanger text="Sim, excluir" onClick={handleDeleteConfirm} />
+        </div>
       </Modal>
     </>
   )

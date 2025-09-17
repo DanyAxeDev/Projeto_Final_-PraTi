@@ -13,9 +13,14 @@ import MyPetsPage from "./pages/my-pets/MyPetsPage"
 import PetRegisterPage from "./pages/pet-register/PetRegisterPage"
 import MyAccountPage from "./pages/my-account/MyAccountPage"
 
+import { Toaster } from "sonner"
+
 export default function App() {
   return (
     <Router>
+      {/* Componente para utilizar notificações toast */}
+      <Toaster position="top-right" richColors />
+      
       <Routes>
         {/* Rotas públicas com Header (branca) */}
         <Route element={<PublicLayout />}>

@@ -11,13 +11,12 @@ import FormStepHeading from "@/components/FormStepHeading";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
-import Modal from "@/components/Modal"; 
+import { toast } from "sonner";
 
 import googleIcon from "@/assets/icons/icon-google.png";
 
 export default function RegisterPage() {
     const [currentStep, setCurrentStep] = useState(1);
-    const [isModalOpen, setIsModalOpen] = useState(false); 
     const { formData, errors, handleChange, validateRegistrationForm , validatePreferenceForm } = useUserRegisterForm();
 
     const formStep1Ref = useRef<HTMLFormElement>(null);
@@ -43,16 +42,11 @@ export default function RegisterPage() {
     const handleRegister = (e: React.FormEvent) => {
         e.preventDefault();
         if (validatePreferenceForm()) {                   
-            setIsModalOpen(true);
+            toast.success("Sua conta foi criada e suas preferências foram salvas. Agora você já pode encontrar seu novo melhor amigo!");
+            navigate("/home");
         } else {
             console.log("Validação da Etapa 2 falhou.");
         }
-    };
-
-    const handleConfirmRegistration = () => {
-        console.log("Usuário confirmou o cadastro. Redirecionando para login...");
-        setIsModalOpen(false); 
-        navigate("/login");     
     };
 
     return (
@@ -371,17 +365,6 @@ export default function RegisterPage() {
                     </p>
                 </div>
             </div>
-
-            {/*  Modal */}
-            <Modal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                title="Cadastro realizado com sucesso!"
-                confirmText="Ir para o Login"
-                onConfirm={handleConfirmRegistration}
-            >
-                <p>Sua conta foi criada e suas preferências foram salvas. Agora você já pode encontrar seu novo melhor amigo!</p>
-            </Modal>
         </section>
     );
 }

@@ -1,17 +1,16 @@
-import React, { useState, useRef } from "react";
+import { useRef } from "react";
 import { useNavigate } from "react-router"
 import PageWithHeaderLayout from "@/layouts/PageWithHeaderLayout"
 import FormStepHeading from "@/components/FormStepHeading"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import RoundButton from "@/components/RoundButton"
-import Tooltip from "../../components/Tooltip"
+import Tooltip from "@/components/Tooltip"
 import { usePetRegisterForm } from "@/hooks/usePetRegisterForm"
-import Modal from "@/components/Modal"
+import { toast } from "sonner";
 
 function PetRegisterPage() {
   const formRef = useRef<HTMLFormElement>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const { formData, errors, handleChange, validatePetForm } = usePetRegisterForm();
 
@@ -20,15 +19,11 @@ function PetRegisterPage() {
     const isPetFormValid = validatePetForm();
     if (isPetFormValid) {
       console.log("Formulário válido!", formData);
-      setIsModalOpen(true);
+      toast.success("Pet cadastrado com sucesso!");
+      navigate("/meus-pets");
     } else {
       console.log("Erros de validação:", errors);
     }
-  };
-
-  const handleCloseModalAndRedirect = () => {
-    setIsModalOpen(false);
-    navigate("/home");
   };
 
   return (
@@ -214,16 +209,6 @@ function PetRegisterPage() {
           <RoundButton color="blue" text="Cadastrar pet" onClick={() => formRef.current?.requestSubmit()} />
         </form>
       </section>
-
-      {/* Modal */}
-      <Modal
-        isOpen={isModalOpen}
-        onClose={handleCloseModalAndRedirect}
-        title="Pet Cadastrado com Sucesso!"
-      >
-        <p>Seu pet foi cadastrado e logo encontrará um novo lar!</p>
-        <p className="mt-2">Você será redirecionado para a página inicial.</p>
-      </Modal>
     </PageWithHeaderLayout>
   )
 }

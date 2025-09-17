@@ -16,7 +16,7 @@ function FavoritesPage() {
               name={pet.name}
               dob={pet.dob}
               gender={pet.gender}
-              city={pet.city}
+              city={pet.location.city}
               photo={pet.photos[0]}
               />
 

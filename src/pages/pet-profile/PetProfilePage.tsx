@@ -9,6 +9,7 @@ import { FaMapLocationDot } from "react-icons/fa6"
 import type { Pet } from "@/types/types"
 import pets from "@/data/pets"
 import { getAge } from "@/utils/helpers"
+import Map from "./components/Map"
 
 export default function PetProfilePage() {
   // const [pet, setPet] = useState<Pet | undefined>() // Pet real, quando fizer o fetch
@@ -79,7 +80,7 @@ export default function PetProfilePage() {
         {/* Parte de baixo */}
         <section className="flex flex-col justify-between items-start gap-10 md:flex-row">
           {/* Sobre */}
-          <section className="flex flex-col justify-between gap-8">
+          <section className="flex flex-col justify-between gap-8 md:max-w-[450px]">
             <div>
               <h2 className="font-semibold text-[28px] text-brown mb-3">Sobre o pet</h2>
               <p>{pet.about}</p>
@@ -91,16 +92,21 @@ export default function PetProfilePage() {
           </section>
 
           {/* Distância */}
-          <section className="flex flex-col justify-between gap-5 mx-auto rounded-sm bg-white p-5 w-full max-w-full sm:flex-row md:max-w-[490px]">
+          <section className="flex flex-col justify-between gap-5 mx-auto rounded-sm bg-white p-5 w-full max-w-full sm:flex-row md:mx-0 lg:max-w-[500px]">
             <section className="flex flex-col gap-3">
               <FaMapLocationDot className="text-blue text-4xl" aria-hidden="true" />
               <h3 className="text-2xl font-semibold text-brown">
                 A <span className="text-blue">10km</span> de você
               </h3>
-              <p>Em {pet.neighbourhood}, {pet.city}</p>
+              <p>Em {pet.location.neighbourhood}, {pet.location.city}</p>
             </section>
             {/* Mapa */}
-            <section className="w-full h-[230px] rounded-sm bg-lightgray sm:w-full md:size-[230px] lg:size-[300px]">
+            <section className="w-full size-fit rounded-sm bg-white">
+              <Map 
+              neighbourhood={pet.location.neighbourhood} 
+              city={pet.location.city} 
+              state={pet.location.state} 
+              />
             </section>
           </section>
         </section>

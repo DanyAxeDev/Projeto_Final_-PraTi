@@ -9,8 +9,11 @@ const testPets: Pet[] = [
     gender: "Macho",
     dob: "2025-06-01",
     size: "Médio",
-    neighbourhood: "Copacabana",
-    city: "Rio de Janeiro",
+    location: {
+      neighbourhood: "Copacabana",
+      city: "Rio de Janeiro",
+      state:"RJ"
+    },
     personality: ["Se dá bem com outros pets", "Se dá bem com crianças", "Brincalhão"],
     health: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget efficitur velit. Nam eget faucibus quam. Orci varius natoque penatibus et magnis dis parturient montes.",
     about: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget efficitur velit. Nam eget faucibus quam. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nunc interdum risus et ultrices gravida. Pellentesque sollicitudin ipsum id mi consequat, at laoreet dui tincidunt. Vestibulum sagittis commodo dictum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; In nec massa rutrum, laoreet nisi et, sodales felis.",
@@ -27,8 +30,11 @@ const testPets: Pet[] = [
     gender: "Macho",
     dob: "2018-08-12",
     size: "Grande",
-    neighbourhood: "Copacabana",
-    city: "Rio de Janeiro",
+    location: {
+      neighbourhood: "Copacabana",
+      city: "Rio de Janeiro",
+      state:"RJ"
+    },
     personality: ["Se dá bem com outros pets", "Se dá bem com crianças", "Brincalhão"],
     health: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget efficitur velit. Nam eget faucibus quam. Orci varius natoque penatibus et magnis dis parturient montes.",
     about: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget efficitur velit. Nam eget faucibus quam. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nunc interdum risus et ultrices gravida. Pellentesque sollicitudin ipsum id mi consequat, at laoreet dui tincidunt. Vestibulum sagittis commodo dictum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; In nec massa rutrum, laoreet nisi et, sodales felis.",
@@ -45,8 +51,11 @@ const testPets: Pet[] = [
     gender: "Fêmea",
     dob: "2023-02-23",
     size: "Pequeno",
-    neighbourhood: "Copacabana",
-    city: "Rio de Janeiro",
+    location: {
+      neighbourhood: "Copacabana",
+      city: "Rio de Janeiro",
+      state:"RJ"
+    },
     personality: ["Se dá bem com outros pets", "Se dá bem com crianças", "Brincalhão"],
     health: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget efficitur velit. Nam eget faucibus quam. Orci varius natoque penatibus et magnis dis parturient montes.",
     about: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget efficitur velit. Nam eget faucibus quam. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nunc interdum risus et ultrices gravida. Pellentesque sollicitudin ipsum id mi consequat, at laoreet dui tincidunt. Vestibulum sagittis commodo dictum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; In nec massa rutrum, laoreet nisi et, sodales felis.",

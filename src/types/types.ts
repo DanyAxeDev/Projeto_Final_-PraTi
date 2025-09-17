@@ -5,8 +5,11 @@ export type Pet = {
   gender: string;
   dob: string;
   size: string;
-  neighbourhood: string;
-  city: string;
+  location: {
+    neighbourhood: string;
+    city: string;
+    state: string;
+  };
   personality: string[];
   health: string;
   about: string;
@@ -14,7 +17,8 @@ export type Pet = {
   isFavorite: boolean;
 }
 
-export type PetCardProps = Pick<Pet, "id" | "name" | "dob" | "gender" | "city"> & {
+export type PetCardProps = Pick<Pet, "id" | "name" | "dob" | "gender"> & {
+  city: string
   photo: string
 }
 

@@ -15,6 +15,10 @@ const initialPetFormData: PetRegistrationData = {
     size: "" as Size,
     dob: "",
     petAddress: "",
+    petNumber: "",
+    petNeighborhood: "",
+    petCity: "",
+    petState: "",
     health: "",
     about: "",
     castrationReceipt: null,
@@ -45,7 +49,7 @@ export const usePetRegisterForm = () => {
         } else {
             value = event.target.value;
         }
-       
+
         const newFormData = { ...formData };
         if (name.startsWith('personality-')) {
             const personalityKey = name.replace('personality-', '') as keyof typeof newFormData.personality;
@@ -54,7 +58,7 @@ export const usePetRegisterForm = () => {
             (newFormData as any)[name] = value;
         }
         setFormData(newFormData);
-     
+
         setErrors(prevErrors => {
             const newErrors = { ...prevErrors };
             let error: string | undefined;
@@ -67,7 +71,19 @@ export const usePetRegisterForm = () => {
                     error = validatePetBirthDate(value);
                     break;
                 case 'petAddress':
-                    error = validateRequiredField(value, "Localização");
+                    error = validateRequiredField(value, "Endereço");
+                    break;
+                case 'petNumber':
+                    error = validateRequiredField(value, "Número");
+                    break;
+                case 'petNeighborhood':
+                    error = validateRequiredField(value, "Bairro");
+                    break;
+                case 'petCity':
+                    error = validateRequiredField(value, "Cidade");
+                    break;
+                case 'petState':
+                    error = validateRequiredField(value, "Estado");
                     break;
                 case 'health':
                     error = validateRequiredField(value, "Descrição de saúde");
@@ -100,7 +116,7 @@ export const usePetRegisterForm = () => {
             } else {
                 delete (newErrors as any)[name];
             }
-    
+
             if (name.startsWith('photo') && (newFormData.photo1 || newFormData.photo2 || newFormData.photo3)) {
                 delete newErrors.photos;
             }
@@ -110,7 +126,7 @@ export const usePetRegisterForm = () => {
                     delete newErrors.personality;
                 }
             }
-            
+
             return newErrors;
         });
     };

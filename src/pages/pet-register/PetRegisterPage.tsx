@@ -108,12 +108,32 @@ function PetRegisterPage() {
                 <Label className="mb-1 font-semibold">Comprovante da última vacinação</Label>
                 <Input type="file" id="vaccination-receipt" name="vaccinationReceipt" onChange={handleChange} className="rounded-full max-w-[300px] font-semibold text-brown bg-gray-100" required />
                 {errors.vaccinationReceipt && <p className="text-red-500 text-xs mt-1">{errors.vaccinationReceipt}</p>}
-              </div>
+              </div>              
 
+              <div className="col-span-2">
+                <Label htmlFor="petAddress" className="mb-1 font-semibold">Endereço</Label>
+                <Input id="petAddress" name="petAddress" placeholder="Rua, Avenida, etc." required value={formData.petAddress} onChange={handleChange} />
+                {errors.petAddress && <p className="text-xs text-red-600">{errors.petAddress}</p>}
+              </div>
               <div className="col-span-2 sm:col-span-1">
-                <Label htmlFor="address" className="mb-1 font-semibold">Localização</Label>
-                <Input type="text" id="petAddress" name="petAddress" value={formData.petAddress} onChange={handleChange} placeholder="Rua, Cidade, Estado" required />
-                {errors.petAddress && <p className="text-red-500 text-xs mt-1">{errors.petAddress}</p>}
+                <Label htmlFor="petNumber" className="mb-1 font-semibold">Número</Label>
+                <Input id="petNumber" name="petNumber" placeholder="123 ou S/N" required value={formData.petNumber} onChange={handleChange} />
+                {errors.petNumber && <p className="text-xs text-red-600">{errors.petNumber}</p>}
+              </div>
+              <div className="col-span-2 sm:col-span-1">
+                <Label htmlFor="petNeighborhood" className="mb-1 font-semibold">Bairro</Label>
+                <Input id="petNeighborhood" name="petNeighborhood" placeholder="Seu bairro" required value={formData.petNeighborhood} onChange={handleChange} />
+                {errors.petNeighborhood && <p className="text-xs text-red-600">{errors.petNeighborhood}</p>}
+              </div>
+              <div className="col-span-2 sm:col-span-1">
+                <Label htmlFor="petCity" className="mb-1 font-semibold">Cidade</Label>
+                <Input id="petCity" name="petCity" placeholder="Sua cidade" required value={formData.petCity} onChange={handleChange} />
+                {errors.petCity && <p className="text-xs text-red-600">{errors.petCity}</p>}
+              </div>
+              <div className="col-span-2 sm:col-span-1">
+                <Label htmlFor="petState" className="mb-1 font-semibold">Estado</Label>
+                <Input id="petState" name="petState" placeholder="Seu estado" required value={formData.petState} onChange={handleChange} />
+                {errors.petState && <p className="text-xs text-red-600">{errors.petState}</p>}
               </div>
 
               <div className="col-span-2">

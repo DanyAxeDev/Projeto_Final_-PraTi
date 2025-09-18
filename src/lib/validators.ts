@@ -42,6 +42,10 @@ export type PetRegistrationData = {
     dob: string;
     size: Size;
     petAddress: string;
+    petNumber: string;
+    petNeighborhood: string;
+    petCity: string;
+    petState: string;
     health: string;
     about: string;
     castrationReceipt: File | null;
@@ -209,8 +213,20 @@ export const validatePetRegistration = (formData: PetRegistrationData) => {
     const dobError = validatePetBirthDate(formData.dob);
     if (dobError) errors.dob = dobError;
 
-    const addressError = validateRequiredField(formData.petAddress, "Localização");
+    const addressError = validateRequiredField(formData.petAddress, "Endereço");
     if (addressError) errors.petAddress = addressError;
+
+    const numberError = validateRequiredField(formData.petNumber, "Número");
+    if (numberError) errors.petNumber = numberError;
+
+    const neighborhoodError = validateRequiredField(formData.petNeighborhood, "Bairro");
+    if (neighborhoodError) errors.petNeighborhood = neighborhoodError;
+
+    const cityError = validateRequiredField(formData.petCity, "Cidade");
+    if (cityError) errors.petCity = cityError;
+
+    const stateError = validateRequiredField(formData.petState, "Estado");
+    if (stateError) errors.petState = stateError;
 
     const healthError = validateRequiredField(formData.health, "Descrição de saúde");
     if (healthError) errors.health = healthError;

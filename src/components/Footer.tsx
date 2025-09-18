@@ -31,7 +31,7 @@ function Footer() {
               <h4 className="text-xl font-bold mb-1">Geral</h4>
               <ul>
                 <li><Link to="#" className="hover:text-brown hover:underline">FAQ</Link></li>
-                <li><Link to="#" className="hover:text-brown hover:underline">Nosso time</Link></li>
+                <li><Link to="/nosso-time" className="hover:text-brown hover:underline">Nosso time</Link></li>
               </ul>
             </section>
           </div>

@@ -12,6 +12,7 @@ import FavoritesPage from "./pages/favorites/FavoritesPage"
 import MyPetsPage from "./pages/my-pets/MyPetsPage"
 import PetRegisterPage from "./pages/pet-register/PetRegisterPage"
 import MyAccountPage from "./pages/my-account/MyAccountPage"
+import TeamPage from "./pages/teams/TeamPage"
 
 import { Toaster } from "sonner"
 
@@ -27,6 +28,7 @@ export default function App() {
           <Route path="/historias-de-adocao" element={<HistoryPage />} />
           <Route path="/cuidados-e-dicas" element={<CuidadosEDicasPage />} />
           <Route path="/sobre" /* Elemento */ />
+          <Route path="/nosso-time" element={<TeamPage/>} />
         </Route>
 
         {/* Rotas públicas */}

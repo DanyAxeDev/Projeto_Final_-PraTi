@@ -83,7 +83,7 @@ export default function RegisterPage() {
                     </div>
 
                     {currentStep === 1 && (
-                        <form ref={formStep1Ref} onSubmit={handleNextStep} className="space-y-4">
+                        <form noValidate ref={formStep1Ref} onSubmit={handleNextStep} className="space-y-4">
                             <FormStepHeading step={1} title="Dados pessoais" />
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="col-span-2 sm:col-span-1">

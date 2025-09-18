@@ -8,6 +8,7 @@ import RegisterPage from "./pages/register/RegisterPage"
 import CuidadosEDicasPage from "./pages/cuidados-e-dicas/cuidadosEDicasPage"
 import PetProfilePage from "./pages/pet-profile/PetProfilePage";
 import Home from "./pages/home/Home"
+import SobrePage from "./pages/sobre/SobrePage";
 
 export default function App() {
   return (
@@ -17,7 +18,7 @@ export default function App() {
         <Route element={<PublicLayout />}>
           <Route path="/historias-de-adocao" element={<HistoryPage />} />
           <Route path="/cuidados-e-dicas" element={<CuidadosEDicasPage />} />
-          <Route path="/sobre" /* Elemento */ />
+          <Route path="/sobre" element={< SobrePage />} />
         </Route>
 
         {/* Rotas públicas */}

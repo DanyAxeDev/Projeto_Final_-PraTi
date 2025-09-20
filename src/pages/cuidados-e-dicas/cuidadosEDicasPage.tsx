@@ -15,7 +15,7 @@ const outrasDicas = [
 
 export default function CuidadosEDicasPage() {
   return (
-    <section className="max-w-[1100px] mx-auto flex flex-col justify-between items-center gap-8 h-full py-12 px-8 font-raleway">
+    <section className="max-w-[1100px] mx-auto flex flex-col justify-between items-center gap-8 h-full py-12 px-4 font-raleway sm:px-8">
       {/* TÍTULO CENTRAL (sem a barra clara de Logo) */}
       <HeadingWithLine text="Cuidados e dicas" />
 

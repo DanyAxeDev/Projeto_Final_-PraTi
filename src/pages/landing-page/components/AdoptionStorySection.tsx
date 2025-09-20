@@ -3,13 +3,13 @@ import { FaArrowRight } from "react-icons/fa"
 
 function AdoptionStorySection() {
   return (
-    <section className="flex gap-4 items-center">
-      <div className="bg-gray-300 rounded-full size-15">
+    <section className="flex gap-4 items-center ">
+      <div className="bg-gray-300 rounded-full size-15 min-w-15">
         <img src="#" alt="" />
       </div>
       
       <div className="text-sm">
-        <p className="max-w-[270px] mb-1 font-medium">
+        <p className="max-w-[270px] break-words mb-1 font-medium">
           Maria, Felipe e outras 60 pessoas já conectaram os fios com seus pets.
         </p>
         <Link 

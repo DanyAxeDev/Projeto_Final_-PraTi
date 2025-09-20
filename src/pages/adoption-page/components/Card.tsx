@@ -7,7 +7,7 @@ type CardProps = {
 
 export default function Card({ image, human, pet, description }: CardProps) {
   return (
-    <article className="flex flex-col items-center gap-4 w-full max-w-[360px] bg-white shadow-sm rounded-lg overflow-hidden p-5 mb-10">
+    <article className="flex flex-col items-center gap-4 w-full max-w-[360px] bg-white shadow-sm rounded-lg overflow-hidden p-5 mb-8 md:mb-10">
       <div className="size-[120px] bg-lightgray rounded-full">
         <img
           src={image}

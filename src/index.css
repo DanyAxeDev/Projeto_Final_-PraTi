@@ -135,3 +135,22 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* --- Background da landing page --- */
+#landing-page {
+  background-image: url('/backgrounds/landing-page-bg-desktop.png');
+}
+
+/* Telas menores */
+@media screen and (max-width: 1024px) {
+  #landing-page {
+    background-image: url('/backgrounds/landing-page-bg-tablet.png');
+  }
+}
+
+/* Mobile */
+@media screen and (max-width: 640px) {
+  #landing-page {
+    background-image: url('/backgrounds/landing-page-bg-mobile.png');
+  }
+}

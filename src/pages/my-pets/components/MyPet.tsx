@@ -1,14 +1,16 @@
 import { useState } from "react"
-import { Link } from "react-router"
+import { Link, useNavigate } from "react-router"
 import { MdEdit, MdDeleteForever } from "react-icons/md"
 import type { MyPetProps } from "@/types/types"
 import AdoptedButton from "./AdoptedButton"
 import Modal from "@/components/Modal"
 import RoundButton from "@/components/RoundButton"
-import petBalloon from "../../../assets/imgs/dog-balloon.png"
+import petBalloon from "@/assets/imgs/dog-balloon.png"
 
 function MyPet({ name, id, photo }: MyPetProps) {
   const [modal, setModal] = useState(false)
+
+  const navigate = useNavigate()
 
   // Função para apagar pet do banco de dados quando for marcado como adotado
   const handleAdopted = () => {
@@ -34,6 +36,7 @@ function MyPet({ name, id, photo }: MyPetProps) {
         <div className="flex justify-center items-center gap-4 flex-wrap sm:justify-start sm:gap-3">
           {/* Botão de editar */}
           <button 
+          onClick={() => navigate(`/editar-pet/${id}`)}
           aria-label={`Editar informações de ${name}`}
           className="flex justify-center items-center text-2xl size-10 rounded-full bg-blue hover:bg-darkblue text-white cursor-pointer transition-colors duration-300"
           >

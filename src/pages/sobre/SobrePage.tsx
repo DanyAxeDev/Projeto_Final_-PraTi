@@ -1,104 +1,84 @@
-// src/pages/sobre/SobrePage.tsx
-import React from "react";
-import {
-  PawPrint,
-  HeartHandshake,
-  ShieldCheck,
-  Users,
-  Home,
-  Smile,
-} from "lucide-react";
+import ValueCard from "./components/ValueCard";
+import NumberInfoItem from "./components/NumberInfoItem";
+import handAndPaw from "@/assets/imgs/sobre-img-1.jpg";
+import adoptMeDog from "@/assets/imgs/sobre-img-2.jpg";
+import responsabilidade from "@/assets/icons/responsabilidade.png";
+import amor from "@/assets/icons/amor.png";
+import honestidade from "@/assets/icons/honestidade.png";
 
-// caminhos sugeridos (pasta public/)
-const heroImg = "/src/assets/sobre/pata-mao.jpg";
-const processImg = "/src/assets/sobre/cachorro-adotar.jpg";
-
-export default function SobrePage(): JSX.Element {
+function SobrePage() {
   return (
-    <main className="min-h-screen bg-stone-100 text-stone-800">
+    <section className="flex flex-col gap-10 min-h-screen font-raleway font-medium pb-20">
 
       {/* HERO — faixa marrom sem moldura / padding: 80px 32px */}
-      <section className="bg-brown text-stone-50">
-        <div className="mx-auto max-w-6xl py-20 px-8 grid grid-cols-1 md:grid-cols-2 items-center gap-2 md:gap-4">
+      <section className="bg-brown text-sand">
+        <article className="flex flex-col-reverse gap-10 mx-auto max-w-[1100px] py-20 px-4 sm:px-8 md:flex-row lg:gap-16">
           {/* coluna esquerda: imagem com max 300x400 */}
-          <figure className="order-1 md:order-1 justify-self-start">
+          <div className="w-full max-w-full h-[420px] rounded-[5px] overflow-clip md:max-w-[300px] md:h-[400px]">
             <img
-              src={heroImg}
+              src={handAndPaw}
               alt="Mão e pata de cachorro em contato"
-              className="w-full h-auto max-w-[300px] max-h-[400px] object-cover rounded-2xl"
+              className="w-full h-full object-cover"
               loading="lazy"
             />
-          </figure>
+          </div>
 
           {/* coluna direita: texto */}
-          <div className="order-2 md:order-2">
-            <h1 className="text-[clamp(48px,4.2vw,56px)] font-bold leading-[1.1]">
-              Sobre o <span className="text-emerald-300">PetConect</span>
+          <div className="flex flex-col gap-4">
+            <h1 className="font-tilt text-5xl mb-2">
+              Sobre o PetConect
             </h1>
-            <p className="mt-4 leading-relaxed text-stone-100/90">
+            <p>
               O PetConect aproxima animais que precisam de um lar de pessoas
               dispostas a adotar com responsabilidade. Unimos ONGs, protetores e
               adotantes em um processo simples, humano e seguro.
             </p>
-            <p className="mt-4 leading-relaxed text-stone-100/90">
+            <p>
               Aqui você encontra histórias, orientações e um fluxo de adoção
               transparente do início ao pós-adoção.
             </p>
           </div>
-        </div>
+        </article>
       </section>
 
       {/* VALORES — padding: 80px 32px */}
-      <section className="bg-sand">
-        <div className="mx-auto max-w-6xl py-20 px-8">
-          <h2 className="text-center text-xl md:text-3xl font-semibold mb-8 text-brown">
+      <section>
+        <div className="flex flex-col gap-4 mx-auto max-w-[1100px] py-20 px-4 sm:px-8">
+          <h2 className="text-center font-bold text-3xl text-brown mb-4">
             Nós acreditamos em
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <article className="rounded-2xl border border-stone-200 bg-white p-6 shadow-sm">
-              <div className="mb-3 inline-flex items-center justify-center rounded-xl border border-stone-200 p-3">
-                <PawPrint className="size-6" />
-              </div>
-              <h3 className="font-semibold mb-2">Responsabilidade</h3>
-              <p className="text-sm text-stone-600 leading-relaxed">
-                Acompanhamos cada etapa para garantir o bem-estar do animal e a
-                segurança do adotante.
-              </p>
-            </article>
+          <div className="flex justify-center gap-8 flex-wrap">
+            <ValueCard 
+            img={responsabilidade} 
+            title="Responsabilidade" 
+            text="Acompanhamos cada etapa para garantir o bem-estar do animal e a segurança do adotante." 
+            />
+            
+            <ValueCard 
+            img={amor} 
+            title="Amor" 
+            text="Vínculos duradouros baseados em cuidado, paciência e compromisso." 
+            />
 
-            <article className="rounded-2xl border border-stone-200 bg-white p-6 shadow-sm">
-              <div className="mb-3 inline-flex items-center justify-center rounded-xl border border-stone-200 p-3">
-                <HeartHandshake className="size-6" />
-              </div>
-              <h3 className="font-semibold mb-2">Amor</h3>
-              <p className="text-sm text-stone-600 leading-relaxed">
-                Vínculos duradouros baseados em cuidado, paciência e compromisso.
-              </p>
-            </article>
-
-            <article className="rounded-2xl border border-stone-200 bg-white p-6 shadow-sm">
-              <div className="mb-3 inline-flex items-center justify-center rounded-xl border border-stone-200 p-3">
-                <ShieldCheck className="size-6" />
-              </div>
-              <h3 className="font-semibold mb-2">Honestidade</h3>
-              <p className="text-sm text-stone-600 leading-relaxed">
-                Parcerias com ONGs e protetores verificados para um processo justo.
-              </p>
-            </article>
+            <ValueCard 
+            img={honestidade} 
+            title="Honestidade" 
+            text="Parcerias com ONGs e protetores verificados para um processo justo." 
+            />
           </div>
         </div>
       </section>
 
       {/* PROCESSO DE ADOÇÃO — faixa marrom / padding: 80px 32px */}
-      <section className="bg-brown text-stone-50">
-        <div className="mx-auto max-w-6xl py-20 px-8 grid grid-cols-1 md:grid-cols-2 items-center gap-12">
+      <section className="bg-brown text-sand">
+        <article className="flex flex-col gap-10 mx-auto max-w-[1100px] py-20 px-4 sm:px-8 md:flex-row lg:gap-16">
           {/* texto à esquerda */}
-          <div>
-            <h2 className="text-3xl font-semibold mb-4">
+          <div className="flex flex-col gap-4 w-full">
+            <h2 className="font-bold text-3xl mb-2">
               O processo de adoção
             </h2>
-            <p className="leading-relaxed text-stone-100/90">
+            <p className="md:max-w-[600px]">
             Adotar é um gesto de amor. Você escolhe o pet que mais tocar seu coração,
             preenche um cadastro simples e entra em contato com a ONG.
             Se tudo combinar, marcamos um encontro (on-line ou presencial) para confirmar que o lar está
@@ -109,83 +89,62 @@ export default function SobrePage(): JSX.Element {
           </div>
 
           {/* imagem à direita com max 300x400 */}
-          <figure className="justify-self-end">
+          <div className="w-full max-w-full h-[420px] rounded-[5px] overflow-clip md:max-w-[300px] md:h-[400px]">
             <img
-              src={processImg}
+              src={adoptMeDog}
               alt="Cachorro com plaquinha Adote-me"
-              className="w-full h-auto max-w-[300px] max-h-[400px] object-cover rounded-2xl"
+              className="w-full h-full object-cover sm:object-top md:object-cover"
               loading="lazy"
             />
-          </figure>
-        </div>
+          </div>
+        </article>
       </section>
 
       {/* NOSSOS NÚMEROS — padding: 80px 32px */}
-      <section className="bg-sand">
-        <div className="mx-auto max-w-6xl py-20 px-8">
-          <h2 className="text-center text-xl md:text-3xl font-semibold mb-8 text-brown">
+      <section>
+        <div className="flex flex-col gap-4 mx-auto max-w-[1100px] py-20 px-4 sm:px-8">
+          <h2 className="text-center font-bold text-3xl text-brown mb-4">
             Nossos números
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div className="rounded-2xl border border-stone-200 bg-white p-6 text-center shadow-sm">
-              <div className="mb-2 flex items-center justify-center">
-                <Users className="size-6" />
-              </div>
-              <div className="text-2xl font-bold text-[#7abccd]">60+</div>
-              <div className="text-2xl text-stone-600 text-2xl">Pets adotados</div>
-            </div>
-
-            <div className="rounded-2xl border border-stone-200 bg-white p-6 text-center shadow-sm">
-              <div className="mb-2 flex items-center justify-center">
-                <Home className="size-6" />
-              </div>
-              <div className="text-2xl font-bold text-[#7abccd]">100+</div>
-              <div className="text-2xl text-stone-600">Pets cadastrados</div>
-            </div>
-
-            <div className="rounded-2xl border border-stone-200 bg-white p-6 text-center shadow-sm">
-              <div className="mb-2 flex items-center justify-center">
-                <Smile className="size-6" />
-              </div>
-              <div className="text-2xl font-bold text-[#7abccd]">8</div>
-              <div className="text-2xl text-stone-600"> Estados do Brasil participantes
-              </div>
-            </div>
-          </div>
+          <section className="flex justify-center flex-wrap gap-10 bg-white rounded-[5px] py-8 px-10 w-full max-w-[790px] mx-auto md:justify-between md:px-16">
+            <NumberInfoItem number="60+" info="Pets adotados" />
+            <NumberInfoItem number="100+" info="Pets cadastrados" />
+            <NumberInfoItem number="8" info="Estados do Brasil participantes" />
+          </section>
         </div>
       </section>
 
-      <footer className="bg-brown text-stone-50">
-  <div className="mx-auto max-w-6xl py-20 px-8">
-    
-    
-    {/* título principal */}
-    <h1 className="text-3xl font-semibold mb-6">Requisitos</h1>
+      {/* REQUISITOS — padding: 80px 32px */}
+      <section className="bg-brown text-sand">
+        <article className="mx-auto max-w-[1100px] py-20 px-4 sm:px-8">
+          {/* título principal */}
+          <h2 className="font-bold text-3xl mb-4">Requisitos</h2>
 
+          {/* listas lado a lado */}
+          <div className="flex justify-between gap-10 flex-wrap">
+            <section>
+              <h3 className="text-2xl font-bold mb-2 text-blue">Para adotar</h3>
+              <ul className="space-y-1">
+                <li className="before:content-['•_']">Ser maior de 18 anos.</li>
+                <li className="before:content-['•_']">Ter condição de cuidar e manter o pet.</li>
+                <li className="before:content-['•_']">Possuir ambiente adequado para o pet.</li>
+              </ul>
+            </section>
 
-    {/* títulos lado a lado */}
-    <div className="grid grid-cols-2">
-      <h3 className="text-2xl font-semibold mb-2 text-[#7abccd]">Para adotar</h3>
-      <h3 className="text-2xl font-semibold mb-2 text-[#7abccd]">Para doar</h3>
-    </div>
-
-    {/* listas lado a lado */}
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <ul className="space-y-1 text-stone-100/90">
-        <li>• Ser maior de 18 anos.</li>
-        <li>• Ter condição de cuidar e manter o pet.</li>
-        <li>• Possuir ambiente adequado para o pet.</li>
-      </ul>
-      <ul className="space-y-1 text-stone-100/90">
-        <li>• Ser maior de 18 anos.</li>
-        <li>• Possuir comprovantes de vacinação e castração do pet.</li>
-        <li>• Prover todas as informações necessárias sobre o pet.</li>
-      </ul>
-    </div>
-  </div>
-</footer>
-
-</main> )
-; 
+            <section>
+              <h3 className="text-2xl font-bold mb-2 text-blue">Para doar</h3>
+              <ul className="space-y-1">
+                <li className="before:content-['•_']">Ser maior de 18 anos.</li>
+                <li className="before:content-['•_']">Possuir comprovantes de vacinação e castração do pet.</li>
+                <li className="before:content-['•_']">Prover todas as informações necessárias sobre o pet.</li>
+              </ul>
+            </section>
+          </div>
+        </article>
+      </section>
+    </section>
+  ); 
 }
+
+export default SobrePage;

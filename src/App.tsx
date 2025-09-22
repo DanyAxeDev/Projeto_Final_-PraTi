@@ -15,6 +15,7 @@ import PetRegisterPage from "./pages/pet-register/PetRegisterPage"
 import MyAccountPage from "./pages/my-account/MyAccountPage"
 import TeamPage from "./pages/teams/TeamPage"
 import EditPetPage from "./pages/edit-pet/EditPetPage"
+import NotFoundPage from "./pages/not-found/NotFoundPage"
 import { Toaster } from "sonner"
 
 export default function App() {
@@ -48,6 +49,8 @@ export default function App() {
           <Route path="/editar-pet/:id" element={<EditPetPage />} />
           <Route path="/minha-conta" element={<MyAccountPage />} />
         </Route>
+
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Router>
   )

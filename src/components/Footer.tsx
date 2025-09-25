@@ -18,7 +18,7 @@ function Footer() {
             </div>
           </div>
           
-          <div className="flex gap-10">
+          <div className="flex flex-col gap-10 sm:flex-row">
             <section>
               <h4 className="text-xl font-bold mb-1">Entre em contato</h4>
               <ul>
@@ -30,7 +30,7 @@ function Footer() {
             <section>
               <h4 className="text-xl font-bold mb-1">Geral</h4>
               <ul>
-                <li><Link to="#" className="hover:text-brown hover:underline">FAQ</Link></li>
+                <li><Link to="/historias-de-adocao" className="hover:text-brown hover:underline">Histórias de adoção</Link></li>
                 <li><Link to="/nosso-time" className="hover:text-brown hover:underline">Nosso time</Link></li>
               </ul>
             </section>

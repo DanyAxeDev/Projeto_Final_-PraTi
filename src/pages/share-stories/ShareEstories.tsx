@@ -13,12 +13,12 @@ export default function ShareEstories() {
 
     return (
             <section className="flex-1 py-12 px-4 font-raleway font-medium">
-                <div className="flex flex-col gap-8 items-center mb-6">
+                <div className="flex flex-col gap-8 items-center mb-4 sm:mb-6">
                     <HeadingWithLine text="Compartilhar minha história" />
 
                     <form
                         onSubmit={handleSubmit}
-                        className="bg-white shadow-md rounded-[5px] p-8 space-y-6 w-[500px]"
+                        className="bg-white shadow-md rounded-[5px] p-5 space-y-6 w-full max-w-[400px] sm:p-8 sm:max-w-[500px]"
                     >
                         {/* Nome */}
                         <div>

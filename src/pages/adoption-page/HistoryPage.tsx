@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import RoundButton from "../../components/RoundButton"
 import Card from "./components/Card"
 import HeadingWithLine from "@/components/HeadingWithLine"
+import { Link } from "react-router";
 
 type Historia = {
     image: string
@@ -9,6 +10,7 @@ type Historia = {
     pet: string
     description: string
 }
+
 
 // modificar o conteudo do (image, title e description)
 function HistoryPage() {
@@ -77,6 +79,7 @@ function HistoryPage() {
         }
     }, []) */
 
+
     return (
         <section className="max-w-[1100px] mx-auto flex flex-col justify-between items-center gap-8 h-full py-12 px-4 font-raleway sm:px-8">
             <div className="flex flex-col gap-8 items-center mb-6 text-center">
@@ -84,7 +87,9 @@ function HistoryPage() {
                 <p className="text-xl font-semibold">
                     Textinho sobre as adoções e o compartilhamento de histórias
                 </p>
-                <RoundButton text="Compartilhar minha história" color="blue" onClick={() => ""} />
+                <Link to="/share-stories">
+                    <RoundButton text="Compartilhar minha história" color="blue" />
+                </Link>
             </div>
 
             <section className="columns-1 gap-8 mt-8 sm:columns-2 md:gap-10">
@@ -105,4 +110,3 @@ function HistoryPage() {
 }
 
 export default HistoryPage
-

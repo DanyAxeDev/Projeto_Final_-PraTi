@@ -3,47 +3,13 @@ import RoundButton from "../../components/RoundButton"
 import Card from "./components/Card"
 import HeadingWithLine from "@/components/HeadingWithLine"
 import { useNavigate } from "react-router"
+import stories from "@/data/stories"
+import type { Story } from "@/types/types"
 
-type Historia = {
-    image: string
-    human: string
-    pet: string
-    description: string
-}
-
-
-// modificar o conteudo do (image, title e description)
 function HistoryPage() {
-    const navigate = useNavigate()
-    
-    const baseHistorias: Historia[] = [
-        {
-            image: "https://placekitten.com/200/200",
-            human: "Maria",
-            pet: "Pipoca",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nisi tellus, interdum et tortor at, porta feugiat felis. Mauris placerat convallis elementum. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
-        },
-        {
-            image: "https://placekitten.com/202/200",
-            human: "Sara",
-            pet: "Lulu",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nisi tellus, interdum et tortor at, porta feugiat felis. Mauris placerat convallis elementum. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
-        },
-        {
-            image: "https://placekitten.com/201/200",
-            human: "Felipe",
-            pet: "Mario",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nisi tellus, interdum et tortor at, porta feugiat felis. Mauris placerat convallis elementum. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nisi tellus, interdum et tortor at, porta feugiat felis. Mauris placerat convallis elementum. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
-        },
-        {
-            image: "https://placekitten.com/203/200",
-            human: "João",
-            pet: "Rex",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nisi tellus, interdum et tortor at, porta feugiat felis. Mauris placerat convallis elementum. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
-        }
-    ]
+    const [historias, setHistorias] = useState<Story[]>(stories)
 
-    const [historias, setHistorias] = useState<Historia[]>(baseHistorias)
+    const navigate = useNavigate()
     /* const loadMoreRef = useRef<HTMLDivElement | null>(null)
 
     const carregarMais = () => {

@@ -57,9 +57,9 @@ export default function PetProfilePage() {
             <section>
               <h2 className="font-semibold text-[28px] text-brown mb-3">Personalidade</h2>
               <div className="lg:columns-2">
-                {pet.personality.map(trait => {
+                {pet.personality.map((trait, i) => {
                   return (
-                    <p className="flex items-center gap-2">
+                    <p key={`trait-${i}`} className="flex items-center gap-2">
                       <IoPaw className="text-blue text-lg" aria-hidden="true" /> {trait}
                     </p>
                   )
@@ -87,7 +87,7 @@ export default function PetProfilePage() {
             </div>
             <div className="flex items-between gap-4 mx-auto md:mx-0">
               <RoundButton text="Enviar mensagem" color="blue" onClick={() => ""} />
-              <FavoriteButton isFavorite={false} />
+              <FavoriteButton isFavorite={pet.isFavorite} />
             </div>
           </section>
 

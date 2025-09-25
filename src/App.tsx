@@ -26,7 +26,7 @@ export default function App() {
       <Toaster position="top-right" richColors />
       
       <Routes>
-        {/* Rotas públicas com Header (branca) */}
+        {/* Rotas públicas com Header e Footer */}
         <Route element={<PublicLayout />}>
           <Route path="/historias-de-adocao" element={<HistoryPage />} />
           <Route path="/cuidados-e-dicas" element={<CuidadosEDicasPage />} />

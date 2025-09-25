@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import RoundButton from "../../components/RoundButton"
 import Card from "./components/Card"
 import HeadingWithLine from "@/components/HeadingWithLine"
-import { Link } from "react-router";
+import { useNavigate } from "react-router"
 
 type Historia = {
     image: string
@@ -14,6 +14,7 @@ type Historia = {
 
 // modificar o conteudo do (image, title e description)
 function HistoryPage() {
+    const navigate = useNavigate()
     
     const baseHistorias: Historia[] = [
         {
@@ -87,9 +88,11 @@ function HistoryPage() {
                 <p className="text-xl font-semibold">
                     Textinho sobre as adoções e o compartilhamento de histórias
                 </p>
-                <Link to="/share-stories">
-                    <RoundButton text="Compartilhar minha história" color="blue" />
-                </Link>
+                <RoundButton 
+                text="Compartilhar minha história" 
+                color="blue" 
+                onClick={() => navigate("/compartilhar-historia")} 
+                />
             </div>
 
             <section className="columns-1 gap-8 mt-8 sm:columns-2 md:gap-10">

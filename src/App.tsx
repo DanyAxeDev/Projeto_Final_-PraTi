@@ -16,6 +16,7 @@ import MyAccountPage from "./pages/my-account/MyAccountPage"
 import TeamPage from "./pages/teams/TeamPage"
 import EditPetPage from "./pages/edit-pet/EditPetPage"
 import NotFoundPage from "./pages/not-found/NotFoundPage"
+import ShareEstories from "./pages/share-stories/ShareEstories"
 import { Toaster } from "sonner"
 
 export default function App() {
@@ -32,6 +33,7 @@ export default function App() {
           <Route path="/sobre" element={< SobrePage />} />
           <Route path="/sobre" /* Elemento */ />
           <Route path="/nosso-time" element={<TeamPage/>} />
+          <Route path="/compartilhar-historia" element={<ShareEstories />} />
         </Route>
 
         {/* Rotas públicas */}

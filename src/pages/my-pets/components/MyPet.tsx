@@ -18,8 +18,8 @@ function MyPet({ name, id, photo }: MyPetProps) {
   }
 
   return (
-    <div className="bg-white flex flex-col items-center gap-6 text-center p-5 rounded-sm w-fit sm:flex-row sm:w-full sm:items-start sm:text-start sm:gap-8">
-      <div className="w-full h-[180px] rounded-sm overflow-clip sm:size-[150px]">
+    <div className="bg-white flex flex-row items-start gap-6 p-4 rounded-sm w-fit sm:w-full sm:gap-8 sm:p-5">
+      <div className="size-[100px] min-w-[100px] rounded-sm overflow-clip sm:size-[150px]">
         <img src={photo} alt={`Foto de ${name}`} className="w-full h-full object-cover" />
       </div>
 
@@ -33,19 +33,19 @@ function MyPet({ name, id, photo }: MyPetProps) {
           Ver perfil do pet
         </Link>
 
-        <div className="flex justify-center items-center gap-4 flex-wrap sm:justify-start sm:gap-3">
+        <div className="flex items-center gap-3 flex-wrap sm:justify-start sm:gap-4">
           {/* Botão de editar */}
           <button 
           onClick={() => navigate(`/editar-pet/${id}`)}
           aria-label={`Editar informações de ${name}`}
-          className="flex justify-center items-center text-2xl size-10 rounded-full bg-blue hover:bg-darkblue text-white cursor-pointer transition-colors duration-300"
+          className="flex justify-center items-center text-2xl size-10 rounded-full bg-blue hover:bg-darkblue focus:bg-darkblue text-white cursor-pointer transition-colors duration-300"
           >
             <MdEdit aria-hidden="true" />
           </button>
           {/* Botão de excluir */}
           <button 
           aria-label={`Excluir perfil de ${name}`}
-          className="flex justify-center items-center text-2xl size-10 rounded-full bg-red-400 hover:bg-darkred text-white cursor-pointer transition-colors duration-300"
+          className="flex justify-center items-center text-2xl size-10 rounded-full bg-red-400 hover:bg-darkred focus:bg-darkred text-white cursor-pointer transition-colors duration-300"
           >
             <MdDeleteForever aria-hidden="true" />
           </button>

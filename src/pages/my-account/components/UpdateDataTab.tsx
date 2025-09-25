@@ -74,6 +74,7 @@ function UpdateDataTab({ onSaveSuccess }: UpdateDataTabProps) {
           variant="outline" 
           type="button"
           onClick={handleEditPhotoClick}
+          className="cursor-pointer"
         >
           Alterar Foto
         </Button>

@@ -13,12 +13,12 @@ export default function ShareEstories() {
 
     return (
             <section className="flex-1 py-12 px-4 font-raleway font-medium">
-                <div className="flex flex-col gap-8 items-center mb-6 text-center">
+                <div className="flex flex-col gap-8 items-center mb-6">
                     <HeadingWithLine text="Compartilhar minha história" />
 
                     <form
                         onSubmit={handleSubmit}
-                        className="bg-white shadow-md rounded-[5px] p-8 space-y-6 text-left w-[500px]"
+                        className="bg-white shadow-md rounded-[5px] p-8 space-y-6 w-[500px]"
                     >
                         {/* Nome */}
                         <div>
@@ -43,7 +43,6 @@ export default function ShareEstories() {
                             <Input
                                 type="text"
                                 id="nome-pet"
-                                className="w-full rounded-md border border-stone-300 px-3 py-2 focus:outline-none focus:ring-2"
                                 required
                             />
                         </div>

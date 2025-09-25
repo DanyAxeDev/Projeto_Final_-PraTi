@@ -11,7 +11,7 @@ function SocialIcon({ icon, url, color = "brown" }: SocialIconProps) {
   return (
     <Link 
     to={url} 
-    className={`${color === "brown" ? "text-brown hover:text-darkbrown" : "text-white hover:text-brown"} text-2xl  transition-all duration-300 p-1`}
+    className={`${color === "brown" ? "text-brown hover:text-darkbrown focus:text-darkbrown" : "text-white hover:text-brown focus:text-brown"} text-2xl transition-all duration-300 p-1`}
     >
       {icon}
     </Link>

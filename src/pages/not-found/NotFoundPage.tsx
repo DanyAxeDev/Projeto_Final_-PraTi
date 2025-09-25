@@ -3,21 +3,22 @@ import Cat from "@/assets/imgs/not-found-cat.png";
 
 export default function NotFoundPage() {
   return (
-    <section className="bg-sand min-h-screen flex items-center justify-center p-4 sm:p-8 font-raleway">   
-       <main className="container mx-auto flex items-center justify-center">
-        <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-12 max-w-5xl">
+    <main className="bg-sand min-h-screen flex items-center justify-center p-4 sm:p-8 font-raleway">   
+       <section className="container mx-auto flex items-center justify-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 items-center gap-12 max-w-5xl">
           
           {/* Coluna da Imagem */}
-          <div className="flex justify-center">
+          <div className="flex justify-center mx-auto max-w-3/4 md:max-w-[400px]">
             <img
               src={Cat}
-              alt="Gato confuso indicando que a página não foi encontrada"              
+              alt="Gato confuso indicando que a página não foi encontrada"
+              className="w-full"              
             />
           </div>
 
           {/* Coluna do Texto */}
-          <div className="text-center lg:text-left">
-            <h1 className="text-7xl md:text-9xl font-['Tilt_Warp'] font-bold text-blue">
+          <div className="text-center sm:text-left">
+            <h1 className="text-7xl md:text-9xl font-tilt font-bold text-blue">
               Ops!
             </h1>
             <p className="mt-4 text-lg font-bold">
@@ -32,7 +33,7 @@ export default function NotFoundPage() {
           </div>
 
         </div>
-      </main>
-    </section>
+      </section>
+    </main>
   );
 }

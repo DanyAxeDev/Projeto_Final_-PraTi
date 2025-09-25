@@ -60,7 +60,7 @@ function PreferencesTab({ preferencesData, onPreferencesChange, onSave, onCancel
     ];
 
     return (
-        <div className="font-raleway text-gray-800 space-y-8">
+        <div className="font-raleway space-y-8">
             <h2 className="text-xl font-bold">Preferências</h2>
             
             <section data-section="adoption">

@@ -1,13 +1,17 @@
 import { useState, useCallback } from 'react';
 import type { FormEvent, ChangeEvent } from 'react';
 
+export type FormSetter<T> = React.Dispatch<React.SetStateAction<T>>;
+
+export type FormErrors<T> = Partial<Record<keyof T, string>>;
+
 export const useForm = <T>(
     initialState: T, 
-    validate: (values: T) => Partial<Record<keyof T, string>>,
-    onSubmitSuccess: (values: T) => void | Promise<void>
+    validate: (values: T) => FormErrors<T>,   
+    onSubmitSuccess: (values: T, setFormData: FormSetter<T>) => void | Promise<void> 
 ) => {
     const [formData, setFormData] = useState<T>(initialState);
-    const [errors, setErrors] = useState<Partial<Record<keyof T, string>>>({});
+    const [errors, setErrors] = useState<FormErrors<T>>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const clearErrorOnChange = (fieldName: keyof T) => {
@@ -37,7 +41,7 @@ export const useForm = <T>(
         const fieldName = (id || name) as keyof T;
         
         const file = files && files.length > 0 ? files[0] : null;
-        setFormData(prev => ({ ...prev, [fieldName]: file as any }));
+        setFormData(prev => ({ ...prev, [fieldName]: file as any })); 
         clearErrorOnChange(fieldName); 
     }, [errors]);
 
@@ -51,7 +55,7 @@ export const useForm = <T>(
         const isValid = Object.keys(validationErrors).length === 0;
 
         if (isValid) {
-            await Promise.resolve(onSubmitSuccess(formData));
+            await Promise.resolve(onSubmitSuccess(formData, setFormData)); 
         }
         
         setIsSubmitting(false);

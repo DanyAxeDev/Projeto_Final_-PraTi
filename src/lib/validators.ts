@@ -1,60 +1,12 @@
+import type { FormErrors } from "@/hooks/useForm";
+
 // Simula usuários cadastrados para o login
 const users: Record<string, string> = {
     "usuario1@email.com": "senha123",
     "teste@email.com": "12345678",
 };
-export interface PasswordChangeData {
-    currentPassword: string;
-    newPassword: string;
-}
 
-export const validatePasswordChange = (data: PasswordChangeData) => {
-    const errors: Partial<PasswordChangeData> = {};
-
-    // Lógica de validação da senha atual (simulada)
-    const FAKE_CORRECT_PASSWORD = "senha123";
-    if (!data.currentPassword) {
-        errors.currentPassword = "A senha atual é obrigatória.";
-    } else if (data.currentPassword !== FAKE_CORRECT_PASSWORD) {
-        errors.currentPassword = "A senha atual está incorreta.";
-    }
-
-    // Reutiliza a validação de força da nova senha
-    const passwordStrengthError = validatePassword(data.newPassword);
-    if (passwordStrengthError) {
-        errors.newPassword = passwordStrengthError;
-    }
-
-    return errors;
-};
-
-export interface LoginData {
-    email: string;
-    password: string;
-}
-
-export interface LoginErrors {
-    email?: string;
-    password?: string;
-}
-// Valida os dados de login
-export function validateLogin(data: LoginData): LoginErrors {
-    const errors: LoginErrors = {};
-    if (!data.email) {
-        errors.email = "E-mail é obrigatório.";
-    } else if (!/\S+@\S+\.\S+/.test(data.email)) {
-        errors.email = "Formato de e-mail inválido.";
-    } else if (!users[data.email]) {
-        errors.email = "E-mail não cadastrado";
-    }
-
-    if (!data.password) {
-        errors.password = "Senha é obrigatória.";
-    } else if (data.email && users[data.email] && users[data.email] !== data.password) {
-        errors.password = "Senha incorreta";
-    }
-    return errors;
-}
+const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/;
 
 export type Species = 'cão' | 'gato' | 'no-preference';
 export type Gender = 'male' | 'female' | 'no-preference';
@@ -113,7 +65,31 @@ export type PetRegistrationData = {
     photo3: File | null;
     contactOption: string;
 };
- // validações específicas para o formulário de registro do pet
+
+export interface PasswordChangeData {
+    currentPassword: string;
+    newPassword: string;
+}
+
+export interface LoginData {
+    email: string;
+    password: string;
+}
+
+export interface LoginErrors {
+    email?: string;
+    password?: string;
+}
+
+// Simulação de tipos de dados para o formulário de história
+export interface IStoryData {
+    nome: string;
+    nomePet: string;
+    historia: string;
+    foto: File | null;
+}
+
+// validações específicas para o formulário de registro do pet
 export function validatePetBirthDate(dateStr: string) {
     if (!dateStr) return "Data de nascimento é obrigatória.";
     const birthDate = new Date(dateStr + 'T00:00:00');
@@ -129,8 +105,6 @@ export function validateFile(file: File | null, fieldName: string) {
     if (!file) return `${fieldName} é obrigatório.`;
     return undefined;
 }
-
-const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/;
 
 export function validateName(name: string, fieldName: string = "Nome") {
     if (!name) return `${fieldName} é obrigatório.`;
@@ -189,6 +163,65 @@ export function validateConfirmPassword(password: string, confirmPassword: strin
 export function validateRequiredField(fieldValue: string, fieldName: string) {
     if (!fieldValue || fieldValue.trim() === '') return `${fieldName} é obrigatório.`;
     return undefined;
+}
+
+// Valida os dados do formulário de compartilhar história
+export const validateShareStory = (formData: IStoryData): FormErrors<IStoryData> => {
+    const errors: FormErrors<IStoryData> = {};
+
+    const nameError = validateName(formData.nome, "Este campo");
+    if (nameError) { errors.nome = nameError; }
+
+    const petNameError = validateName(formData.nomePet, "Este campo");
+    if (petNameError) { errors.nomePet = petNameError; }
+
+    const storyError = validateRequiredField(formData.historia, "O campo história");
+    if (storyError) { errors.historia = storyError; }
+
+    const fileError = validateFile(formData.foto, "O campo foto");
+    if (fileError) { errors.foto = fileError; }
+
+    return errors;
+};
+
+
+export const validatePasswordChange = (data: PasswordChangeData) => {
+    const errors: Partial<PasswordChangeData> = {};
+
+    // Lógica de validação da senha atual (simulada)
+    const FAKE_CORRECT_PASSWORD = "senha123";
+    if (!data.currentPassword) {
+        errors.currentPassword = "A senha atual é obrigatória.";
+    } else if (data.currentPassword !== FAKE_CORRECT_PASSWORD) {
+        errors.currentPassword = "A senha atual está incorreta.";
+    }
+
+    // Reutiliza a validação de força da nova senha
+    const passwordStrengthError = validatePassword(data.newPassword);
+    if (passwordStrengthError) {
+        errors.newPassword = passwordStrengthError;
+    }
+
+    return errors;
+};
+
+// Valida os dados de login
+export function validateLogin(data: LoginData): LoginErrors {
+    const errors: LoginErrors = {};
+    if (!data.email) {
+        errors.email = "E-mail é obrigatório.";
+    } else if (!/\S+@\S+\.\S+/.test(data.email)) {
+        errors.email = "Formato de e-mail inválido.";
+    } else if (!users[data.email]) {
+        errors.email = "E-mail não cadastrado";
+    }
+
+    if (!data.password) {
+        errors.password = "Senha é obrigatória.";
+    } else if (data.email && users[data.email] && users[data.email] !== data.password) {
+        errors.password = "Senha incorreta";
+    }
+    return errors;
 }
 
 // Valida os dados das preferências de adoção
@@ -262,7 +295,7 @@ export const validatePetRegistration = (formData: PetRegistrationData): Partial<
     const nameError = validateName(formData.name, "O nome do pet");
     if (nameError) errors.name = nameError;
 
-    if (!formData.species) errors.species = "Por favor, selecione uma espécie.";    
+    if (!formData.species) errors.species = "Por favor, selecione uma espécie.";
     if (!formData.gender) errors.gender = "Por favor, selecione um gênero.";
     if (!formData.size) errors.size = "Por favor, selecione um porte.";
 
@@ -271,10 +304,10 @@ export const validatePetRegistration = (formData: PetRegistrationData): Partial<
 
     const addressError = validateRequiredField(formData.petAddress, "Endereço");
     if (addressError) errors.petAddress = addressError;
-    
+
     const numberError = validateRequiredField(formData.petNumber, "Número");
     if (numberError) errors.petNumber = numberError;
-    
+
     const neighborhoodError = validateRequiredField(formData.petNeighborhood, "Bairro");
     if (neighborhoodError) errors.petNeighborhood = neighborhoodError;
 

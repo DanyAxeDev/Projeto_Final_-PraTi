@@ -23,8 +23,8 @@ function LandingPage() {
               <h1 className="font-tilt text-brown text-5xl max-w-[790px] sm:text-6xl">
                 Conectando o fio <span className="text-blue">azul</span> entre pets e seus humanos
               </h1>
-              <p className="text-xl font-semibold mt-2 max-w-[900px] sm:text-2xl">
-                Textinho explicando sobre a plataforma e tudo mais de pelo menos duas linhas pra ficar mais bonitinho.
+              <p className="text-xl font-semibold mt-2 max-w-[900px] sm:text-[22px]">
+                Doe e adote no PetConect, onde facilitamos a conexão entre pessoas e pets que foram feitos um para o outro.
               </p>
 
               <div className="flex gap-6 mt-8 sm:gap-9">

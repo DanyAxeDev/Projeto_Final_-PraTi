@@ -164,26 +164,26 @@ export default function RegisterPage() {
                                 <div>
                                     <Label className="mb-1 font-semibold">Eu desejo ver...</Label>
                                     <RadioGroup
-                                        name="animalType"
-                                        value={formData.animalType}
-                                        onValueChange={(value) => handleChange({ target: { name: 'animalType', value } })}
+                                        name="species"
+                                        value={formData.species}
+                                        onValueChange={(value) => handleChange({ target: { name: 'species', value } })}
                                     >
                                         <div className="flex flex-wrap gap-4 mt-2 text-sm">
                                             <div className="flex items-center gap-2">
-                                                <RadioGroupItem value="cão" id="animalType-cão" />
-                                                <Label htmlFor="animalType-cão">Cães</Label>
+                                                <RadioGroupItem value="cão" id="species-cão" />
+                                                <Label htmlFor="species-cão">Cães</Label>
                                             </div>
                                             <div className="flex items-center gap-2">
-                                                <RadioGroupItem value="gato" id="animalType-gato" />
-                                                <Label htmlFor="animalType-gato">Gatos</Label>
+                                                <RadioGroupItem value="gato" id="species-gato" />
+                                                <Label htmlFor="species-gato">Gatos</Label>
                                             </div>
                                             <div className="flex items-center gap-2">
-                                                <RadioGroupItem value="no-preference" id="animalType-no-preference" />
-                                                <Label htmlFor="animalType-no-preference">Não tenho preferência</Label>
+                                                <RadioGroupItem value="no-preference" id="species-no-preference" />
+                                                <Label htmlFor="species-no-preference">Não tenho preferência</Label>
                                             </div>
                                         </div>
                                     </RadioGroup>
-                                    {errors.animalType && <p className="text-xs text-red-600">{errors.animalType}</p>}
+                                    {errors.species && <p className="text-xs text-red-600">{errors.species}</p>}
                                 </div>
                                 <div>
                                     <Label className="mb-1 font-semibold">Eu prefiro um pet...</Label>

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { validateAdoptionPreferences } from '@/lib/validators';
 import type { 
     AdoptionPreferencesData, 
-    AnimalType, 
+    Species, 
     Gender, 
     Size, 
     Age 
@@ -16,7 +16,7 @@ export type PreferencesData = {
 
 type PreferencesErrorState = {
     adoption?: {
-        animalType?: string;
+        species?: string;
         gender?: string;
         size?: string;
         age?: string;
@@ -27,7 +27,7 @@ type PreferencesErrorState = {
 
 const initialPreferences: PreferencesData = {
     adoption: {
-        animalType: "" as AnimalType,
+        species: "" as Species,
         gender: "" as Gender,
         size: "" as Size,
         age: "" as Age,

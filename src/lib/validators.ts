@@ -1,11 +1,11 @@
 // --- Tipos para valores que se repetem
-export type AnimalType = 'cão' | 'gato' | 'no-preference';
+export type Species = 'cão' | 'gato' | 'no-preference';
 export type Gender = 'male' | 'female' | 'no-preference';
 export type Size = 'small' | 'medium' | 'large' | 'no-preference';
 export type Age = 'filhote' | 'jovem' | 'adulto' | 'idoso' | 'no-preference';
 
 export type AdoptionPreferencesData = {
-    animalType: AnimalType;
+    species: Species;
     gender: Gender;
     size: Size;
     age: Age;
@@ -28,7 +28,7 @@ export type RegistrationStep1Data = {
 };
 
 export type RegistrationStep2Data = {
-    animalType: AnimalType;
+    species: Species;
     gender: Gender;
     size: Size;
     age: Age;
@@ -142,7 +142,7 @@ export function validateRequiredField(fieldValue: string, fieldName: string) {
 export const validateAdoptionPreferences = (adoptionData: AdoptionPreferencesData) => {
     const errors: { [key: string]: string } = {};
     const validationMap = {
-        animalType: "tipo de animal",
+        species: "espécie",
         gender: "sexo",
         size: "porte",
         age: "idade",
@@ -194,7 +194,7 @@ export const validateRegistrationStep1 = (formData: RegistrationStep1Data) => {
 // --- Validação da Etapa 2
 export const validateRegistrationStep2 = (formData: AdoptionPreferencesData) => {
     const errors: { [key: string]: string } = {};
-    if (!formData.animalType) errors.animalType = "Por favor, selecione um tipo de animal.";
+    if (!formData.species) errors.species = "Por favor, selecione uma espécie.";
     if (!formData.gender) errors.gender = "Por favor, selecione um gênero.";
     if (!formData.age) errors.age = "Por favor, selecione uma faixa de idade.";
     if (!formData.size) errors.size = "Por favor, selecione um porte.";

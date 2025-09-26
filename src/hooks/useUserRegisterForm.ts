@@ -15,11 +15,11 @@ import type {
   Gender,
   Age,
   Size,
-  AnimalType,
+  Species,
 } from '@/lib/validators';
 
 type UserFormData = RegistrationStep1Data & {
-  animalType: AnimalType | '';
+  species: Species | '';
   gender: Gender | '';
   age: Age | '';
   size: Size | '';
@@ -49,7 +49,7 @@ const initialFormData: UserFormData = {
   password: "",
   confirmPassword: "",
   // Preferências
-  animalType: "",
+  species: "",
   gender: "",
   age: "",
   size: "",
@@ -147,8 +147,8 @@ export const useUserRegisterForm = () => {
             break;
 
           // -------- Preferências --------
-          case 'animalType':
-            if (!value) error = "Selecione um tipo de animal.";
+          case 'species':
+            if (!value) error = "Selecione uma espécie.";
             break;
           case 'gender':
             if (!value) error = "Selecione uma preferência de gênero.";
@@ -194,8 +194,8 @@ export const useUserRegisterForm = () => {
 
   const validatePreferenceForm = () => {
     const newErrors: { [key: string]: string } = {};
-    if (!formData.animalType) {
-      newErrors.animalType = "Selecione um tipo de animal.";
+    if (!formData.species) {
+      newErrors.species = "Selecione uma espécie.";
     }
     if (!formData.gender) {
       newErrors.gender = "Selecione uma preferência de gênero.";

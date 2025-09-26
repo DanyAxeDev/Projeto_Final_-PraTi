@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Link, useNavigate } from "react-router"; 
+import { Link, useNavigate, Navigate } from "react-router"; 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,6 +11,7 @@ import FormStepHeading from "@/components/FormStepHeading";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
+import { useUser } from "@/hooks/useUser";
 import { toast } from "sonner";
 
 import googleIcon from "@/assets/icons/icon-google.png";
@@ -29,6 +30,8 @@ export default function RegisterPage() {
 
     const formStep1Ref = useRef<HTMLFormElement>(null);
     const formStep2Ref = useRef<HTMLFormElement>(null);
+
+    const { user } = useUser()
 
     const navigate = useNavigate(); 
 
@@ -65,6 +68,9 @@ export default function RegisterPage() {
         extrovert: "Extrovertido",
         introvert: "Introvertido",
     };
+
+    // Não mostra a tela de cadastro se o usuário já estiver logado
+    if (user) return <Navigate to="/home" />
 
     return (
         <section className="flex items-center justify-center w-full px-4 py-12 bg-sand sm:p-8 min-h-screen">

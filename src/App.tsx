@@ -17,6 +17,7 @@ import TeamPage from "./pages/teams/TeamPage"
 import EditPetPage from "./pages/edit-pet/EditPetPage"
 import NotFoundPage from "./pages/not-found/NotFoundPage"
 import ShareEstories from "./pages/share-stories/ShareEstories"
+import PrivateRoute from "./layouts/PrivateRoute"
 import { Toaster } from "sonner"
 
 export default function App() {
@@ -42,14 +43,16 @@ export default function App() {
         <Route path="/cadastro" element={<RegisterPage />} />
 
         {/* Rotas privadas (usuário logado) */}
-        <Route element={<LoggedInLayout />}>
-          <Route path="/home" element={<Home />} />
-          <Route path="/pet/:id" element={<PetProfilePage />} />
-          <Route path="/favoritos" element={<FavoritesPage />} />
-          <Route path="/meus-pets" element={<MyPetsPage />} />
-          <Route path="/cadastro-de-pet" element={<PetRegisterPage />} />
-          <Route path="/editar-pet/:id" element={<EditPetPage />} />
-          <Route path="/minha-conta" element={<MyAccountPage />} />
+        <Route element={<PrivateRoute />}>
+          <Route element={<LoggedInLayout />}>
+            <Route path="/home" element={<Home />} />
+            <Route path="/pet/:id" element={<PetProfilePage />} />
+            <Route path="/favoritos" element={<FavoritesPage />} />
+            <Route path="/meus-pets" element={<MyPetsPage />} />
+            <Route path="/cadastro-de-pet" element={<PetRegisterPage />} />
+            <Route path="/editar-pet/:id" element={<EditPetPage />} />
+            <Route path="/minha-conta" element={<MyAccountPage />} />
+          </Route>
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />

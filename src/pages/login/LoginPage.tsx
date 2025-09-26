@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { Link } from "react-router";
+import { Link, Navigate } from "react-router";
 import { Button } from "@/components/ui/button";
 import RoundButton from "@/components/RoundButton";
 import { Input } from "@/components/ui/input";
@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import SocialLoginButton from "@/components/SocialLoginButton";
 import { IoIosArrowBack } from "react-icons/io";
 import { useLoginForm } from "@/hooks/useLoginForm";
+import { useUser } from "@/hooks/useUser";
 
 import googleIcon from "@/assets/icons/icon-google.png";
 import faceIcon from "@/assets/icons/icon-facebook.png";
@@ -15,6 +16,8 @@ import linkedinIcon from "@/assets/icons/icon-linkedin.png";
 export default function LoginPage() {
     const formRef = useRef<HTMLFormElement>(null);
     const { formData, errors, handleChange, handleSubmit } = useLoginForm();
+    const { user } = useUser()
+
     // Funções de exemplo para a lógica de login
     const handleGoogleLogin = () => {
         console.log("Iniciando login com Google...");
@@ -27,6 +30,9 @@ export default function LoginPage() {
     const handleLinkedinLogin = () => {
         console.log("Iniciando login com LinkedIn...");
     };
+
+    // Não mostra a tela de login se o usuário já estiver logado
+    if (user) return <Navigate to="/home" />
 
     return (
         <section className="flex items-center justify-center bg-sand w-full h-full p-4 sm:p-8 min-h-screen font-raleway font-medium">

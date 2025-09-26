@@ -51,8 +51,8 @@ function HistoryPage() {
         <section className="max-w-[1100px] mx-auto flex flex-col justify-between items-center gap-8 h-full py-12 px-4 font-raleway sm:px-8">
             <div className="flex flex-col gap-8 items-center mb-6 text-center">
                 <HeadingWithLine text="Histórias de adoção" />
-                <p className="text-xl font-semibold">
-                    Textinho sobre as adoções e o compartilhamento de histórias
+                <p className="text-xl font-semibold max-w-[900px]">
+                    Veja depoimentos de pessoas que já praticaram a adoção e como isso afetou positivamente as suas vidas.
                 </p>
                 <RoundButton 
                 text="Compartilhar minha história" 

@@ -13,11 +13,11 @@ type GeneralTabProps = {
 function GeneralTab({ onOpenDeleteModal, onSaveSuccess }: GeneralTabProps) { 
   const {
     currentPassword,
-    setCurrentPassword,
     newPassword,
-    setNewPassword,
     errors: passwordErrors,
     handleChangePassword,
+    handleCurrentPasswordChange,
+    handleNewPasswordChange,
   } = usePasswordChange({ onSaveSuccess });
   
   const [deletePassword, setDeletePassword] = useState("");
@@ -51,7 +51,7 @@ function GeneralTab({ onOpenDeleteModal, onSaveSuccess }: GeneralTabProps) {
                 id="current-password"
                 type="password"
                 value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
+                onChange={handleCurrentPasswordChange}
               />
               {passwordErrors.currentPassword && <p className="text-xs text-destructive">{passwordErrors.currentPassword}</p>}
             </div>
@@ -61,7 +61,7 @@ function GeneralTab({ onOpenDeleteModal, onSaveSuccess }: GeneralTabProps) {
                 id="new-password"
                 type="password"
                 value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
+                onChange={handleNewPasswordChange}
               />
               {passwordErrors.newPassword && <p className="text-xs text-destructive">{passwordErrors.newPassword}</p>}
             </div>

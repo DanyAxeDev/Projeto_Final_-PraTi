@@ -7,7 +7,7 @@ import RoundButton from "@/components/RoundButton";
 
 type UpdateDataTabProps = {
   onSaveSuccess: () => void;
-}
+};
 
 function UpdateDataTab({ onSaveSuccess }: UpdateDataTabProps) {
   const { formData, errors, handleChange, validateAll, handleCancel } = useUpdateDataForm();
@@ -53,7 +53,7 @@ function UpdateDataTab({ onSaveSuccess }: UpdateDataTabProps) {
   };
 
   return (
-    <form className="flex flex-col gap-6 font-raleway">
+    <form className="flex flex-col gap-6 font-raleway" onSubmit={(e) => e.preventDefault()}>
       <h2 className="text-xl font-bold">Atualizar Dados</h2>
       <input 
         type="file"
@@ -82,27 +82,27 @@ function UpdateDataTab({ onSaveSuccess }: UpdateDataTabProps) {
       
        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="grid gap-2">
-          <Label htmlFor="nome">Nome</Label>
-          <Input id="nome" value={formData.nome} onChange={handleChange} />
-          {errors.nome && <p className="text-xs text-destructive">{errors.nome}</p>}
+          <Label htmlFor="firstName">Nome</Label>
+          <Input id="firstName" value={formData.firstName} onChange={handleChange} />
+          {errors.firstName && <p className="text-xs text-destructive">{errors.firstName}</p>}
         </div>
         <div className="grid gap-2">
-          <Label htmlFor="sobrenome">Sobrenome</Label>
-          <Input id="sobrenome" value={formData.sobrenome} onChange={handleChange} />
-          {errors.sobrenome && <p className="text-xs text-destructive">{errors.sobrenome}</p>}
+          <Label htmlFor="lastName">Sobrenome</Label>
+          <Input id="lastName" value={formData.lastName} onChange={handleChange} />
+          {errors.lastName && <p className="text-xs text-destructive">{errors.lastName}</p>}
         </div>
       </div>
       
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
          <div className="grid gap-2">
-          <Label htmlFor="dataNascimento">Data de nascimento</Label>
-          <Input id="dataNascimento" type="date" value={formData.dataNascimento} onChange={handleChange} />
-           {errors.dataNascimento && <p className="text-xs text-destructive">{errors.dataNascimento}</p>}
+          <Label htmlFor="birthDate">Data de nascimento</Label>
+          <Input id="birthDate" type="date" value={formData.birthDate} onChange={handleChange} />
+           {errors.birthDate && <p className="text-xs text-destructive">{errors.birthDate}</p>}
         </div>
         <div className="grid gap-2">
-          <Label htmlFor="telefone">Telefone</Label>
-          <Input id="telefone" type="tel" value={formData.telefone} onChange={handleChange} />
-          {errors.telefone && <p className="text-xs text-destructive">{errors.telefone}</p>}
+          <Label htmlFor="phone">Telefone</Label>
+          <Input id="phone" type="tel" value={formData.phone} onChange={handleChange} />
+          {errors.phone && <p className="text-xs text-destructive">{errors.phone}</p>}
         </div>
       </div>
 
@@ -114,35 +114,35 @@ function UpdateDataTab({ onSaveSuccess }: UpdateDataTabProps) {
       
       <div className="grid grid-cols-1 sm:grid-cols-[2fr_1fr] gap-4">
         <div className="grid gap-2">
-            <Label htmlFor="endereco">Endereço</Label>
-            <Input id="endereco" value={formData.endereco} onChange={handleChange} />
-             {errors.endereco && <p className="text-xs text-destructive">{errors.endereco}</p>}
+            <Label htmlFor="address">Endereço</Label>
+            <Input id="address" value={formData.address} onChange={handleChange} />
+             {errors.address && <p className="text-xs text-destructive">{errors.address}</p>}
         </div>
         <div className="grid gap-2">
-            <Label htmlFor="numero">Número</Label>
-            <Input id="numero" value={formData.numero} onChange={handleChange} />
-             {errors.numero && <p className="text-xs text-destructive">{errors.numero}</p>}
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="grid gap-2">
-          <Label htmlFor="bairro">Bairro</Label>
-          <Input id="bairro" value={formData.bairro} onChange={handleChange} />
-          {errors.bairro && <p className="text-xs text-destructive">{errors.bairro}</p>}
-        </div>
-        <div className="grid gap-2">
-          <Label htmlFor="cidade">Cidade</Label>
-          <Input id="cidade" value={formData.cidade} onChange={handleChange} />
-          {errors.cidade && <p className="text-xs text-destructive">{errors.cidade}</p>}
+            <Label htmlFor="number">Número</Label>
+            <Input id="number" value={formData.number} onChange={handleChange} />
+             {errors.number && <p className="text-xs text-destructive">{errors.number}</p>}
         </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="grid gap-2">
-          <Label htmlFor="estado">Estado</Label>
-          <Input id="estado" value={formData.estado} onChange={handleChange} />
-           {errors.estado && <p className="text-xs text-destructive">{errors.estado}</p>}
+          <Label htmlFor="neighborhood">Bairro</Label>
+          <Input id="neighborhood" value={formData.neighborhood} onChange={handleChange} />
+          {errors.neighborhood && <p className="text-xs text-destructive">{errors.neighborhood}</p>}
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor="city">Cidade</Label>
+          <Input id="city" value={formData.city} onChange={handleChange} />
+          {errors.city && <p className="text-xs text-destructive">{errors.city}</p>}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid gap-2">
+          <Label htmlFor="state">Estado</Label>
+          <Input id="state" value={formData.state} onChange={handleChange} />
+           {errors.state && <p className="text-xs text-destructive">{errors.state}</p>}
         </div>
       </div>
       

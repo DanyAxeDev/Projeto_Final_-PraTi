@@ -9,7 +9,7 @@ import PageWithHeaderLayout from "@/layouts/PageWithHeaderLayout";
 import { usePreferencesForm } from "@/hooks/usePreferencesForm";
 import Modal from "@/components/Modal";
 import RoundButtonDanger from "@/components/RoundButtonDanger";
-import { IoIosAlert } from "react-icons/io"
+import { IoIosAlert } from "react-icons/io";
 import { toast } from "sonner";
 
 type Tab = 'geral' | 'atualizar-dados' | 'preferencias';
@@ -29,7 +29,7 @@ function MyAccountPage() {
   const handleSavePreferences = () => {
     if (preferencesForm.validate()) {
         console.log("Salvando preferências:", preferencesForm.draftData);
-        toast.success("Suas preferências foram salvas com sucesso.")
+        toast.success("Suas preferências foram salvas com sucesso.");
     } else {
         console.log("Formulário de preferências inválido.");
     }
@@ -53,7 +53,7 @@ function MyAccountPage() {
 
   const renderContent = () => {
     switch (activeTab) {
-      case 'geral':       
+      case 'geral':      
         return <GeneralTab 
                   onOpenDeleteModal={openDeleteModal} 
                   onSaveSuccess={() => toast.success("Senha alterada com sucesso!")} 
@@ -91,8 +91,8 @@ function MyAccountPage() {
                   {item.icon} {item.text}
                 </Button>
               ))}
-            </nav>            
-       
+            </nav>          
+        
             <div className="p-6">
               {renderContent()}
             </div>

@@ -1,18 +1,12 @@
 import { useState } from 'react';
-import {
-    validatePetRegistration,
-    validateName,
-    validatePetBirthDate,
-    validateRequiredField,
-    validateFile
-} from '@/lib/validators';
-import type { PetRegistrationData, Gender, Size } from '@/lib/validators';
+import { validatePetRegistration } from '@/lib/validators';
+import type { PetRegistrationData } from '@/lib/validators';
 
 const initialPetFormData: PetRegistrationData = {
     name: "",
     species: "",
-    gender: "" as Gender,
-    size: "" as Size,
+    gender: "" as any,
+    size: "" as any,
     dob: "",
     petAddress: "",
     petNumber: "",
@@ -35,11 +29,11 @@ const initialPetFormData: PetRegistrationData = {
 
 export const usePetRegisterForm = () => {
     const [formData, setFormData] = useState<PetRegistrationData>(initialPetFormData);
-    const [errors, setErrors] = useState<{ [key: string]: any }>({});
+    const [errors, setErrors] = useState<Partial<Record<keyof PetRegistrationData, string>>>({});
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, type } = event.target;
-        let value: any;
+        let value: string | boolean | File | null;
 
         if (type === 'checkbox') {
             value = (event.target as HTMLInputElement).checked;
@@ -50,92 +44,57 @@ export const usePetRegisterForm = () => {
             value = event.target.value;
         }
 
-        const newFormData = { ...formData };
+        const newFormData = { ...formData, [name]: value };
+        
         if (name.startsWith('personality-')) {
-            const personalityKey = name.replace('personality-', '') as keyof typeof newFormData.personality;
-            newFormData.personality[personalityKey] = value;
-        } else {
-            (newFormData as any)[name] = value;
+            const personalityKey = name.replace('personality-', '');
+            newFormData.personality = {
+                ...formData.personality,
+                [personalityKey]: value as boolean,
+            };
         }
+        
         setFormData(newFormData);
 
         setErrors(prevErrors => {
             const newErrors = { ...prevErrors };
-            let error: string | undefined;
+            delete newErrors[name as keyof PetRegistrationData];
 
-            switch (name) {
-                case 'name':
-                    error = validateName(value, "Nome do pet");
-                    break;
-                case 'dob':
-                    error = validatePetBirthDate(value);
-                    break;
-                case 'petAddress':
-                    error = validateRequiredField(value, "Endereço");
-                    break;
-                case 'petNumber':
-                    error = validateRequiredField(value, "Número");
-                    break;
-                case 'petNeighborhood':
-                    error = validateRequiredField(value, "Bairro");
-                    break;
-                case 'petCity':
-                    error = validateRequiredField(value, "Cidade");
-                    break;
-                case 'petState':
-                    error = validateRequiredField(value, "Estado");
-                    break;
-                case 'health':
-                    error = validateRequiredField(value, "Descrição de saúde");
-                    break;
-                case 'about':
-                    error = validateRequiredField(value, "História do pet");
-                    break;
-                case 'castrationReceipt':
-                    error = validateFile(value, "Comprovante de castração");
-                    break;
-                case 'vaccinationReceipt':
-                    error = validateFile(value, "Comprovante de vacinação");
-                    break;
-                case 'species':
-                    if (!value) error = "Por favor, selecione uma espécie.";
-                    break;
-                case 'gender':
-                    if (!value) error = "Por favor, selecione um gênero.";
-                    break;
-                case 'size':
-                    if (!value) error = "Por favor, selecione um porte.";
-                    break;
-                case 'contactOption':
-                    if (!value) error = "Por favor, escolha uma forma de contato.";
-                    break;
+            if (type === 'file' && value instanceof File && !value.type.startsWith('image/')) {
+                newErrors[name as keyof PetRegistrationData] = "Formato inválido. Apenas imagens.";
             }
 
-            if (error) {
-                (newErrors as any)[name] = error;
-            } else {
-                delete (newErrors as any)[name];
-            }
-
-            if (name.startsWith('photo') && (newFormData.photo1 || newFormData.photo2 || newFormData.photo3)) {
-                delete newErrors.photos;
-            }
-            if (name.startsWith('personality-')) {
-                const isAnyChecked = Object.values(newFormData.personality).some(v => v === true);
-                if (isAnyChecked) {
-                    delete newErrors.personality;
+            if (name.startsWith('photo')) {
+                const photos = [newFormData.photo1, newFormData.photo2, newFormData.photo3];
+                const hasAtLeastOnePhoto = photos.some(p => p !== null);
+                if (hasAtLeastOnePhoto) {
+                    delete newErrors.photo1;
+                    delete newErrors.photo2;
+                    delete newErrors.photo3;
                 }
+            }
+            
+            if (name.startsWith('personality-')) {
+                 const isAnyPersonalityChecked = Object.values(newFormData.personality).some(v => v);
+                 if (isAnyPersonalityChecked) {
+                    delete newErrors.personality;
+                 }
             }
 
             return newErrors;
         });
     };
-
+    
     const validatePetForm = () => {
         const validationErrors = validatePetRegistration(formData);
         setErrors(validationErrors);
         return Object.keys(validationErrors).length === 0;
     };
 
-    return { formData, errors, handleChange, validatePetForm };
+    return { 
+        formData, 
+        errors, 
+        handleChange, 
+        validatePetForm 
+    };
 };

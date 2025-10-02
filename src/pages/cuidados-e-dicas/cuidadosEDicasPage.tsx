@@ -1,15 +1,41 @@
-import { Link } from "react-router";
+import { Link, useParams, Navigate } from "react-router";
 import HeadingWithLine from "@/components/HeadingWithLine";
 import { FaShare } from "react-icons/fa";
 import { IoDownload } from "react-icons/io5";
-import { artigos } from "./data/artigo";
-
-// seleciona o destaque e monta a lista do sidebar
-const destaque =
-  artigos.find(a => a.slug === "habitos-saudaveis-cachorro") ?? artigos[0];
-const outrasDicas = artigos.filter(a => a.slug !== destaque.slug);
+import { FaArrowLeft } from "react-icons/fa"
+import articles from "@/data/articles";
 
 export default function CuidadosEDicasPage() {
+  const { slug } = useParams();
+
+  // Navega para o primeiro artigo se acessarmos a página sem um slug
+  if (!slug) return <Navigate to={`/cuidados-e-dicas/${articles[0].slug}`} />
+
+  const destaque = articles.find(a => a.slug === slug);
+  const outrasDicas = articles.filter(a => a.slug !== slug);
+
+  // Fallback se não encontrar
+  if (!destaque) {
+    return (
+      <section className="max-w-[1100px] mx-auto flex flex-col gap-6 h-full py-12 px-4 font-raleway sm:px-8">
+        <HeadingWithLine text="Cuidados e dicas" />
+        <div className="rounded-md border border-border bg-white p-6">
+          <h1 className="text-2xl font-bold">Artigo não encontrado</h1>
+          <p className="mt-2 font-medium">
+            O conteúdo que você tentou acessar não existe ou foi movido.
+          </p>
+          <Link
+            to="/cuidados-e-dicas"
+            className="flex items-center gap-2 mt-6 font-semibold text-brown hover:underline underline-offset-4"
+          >
+            <FaArrowLeft aria-hidden="true" /> Voltar para Cuidados e dicas
+          </Link>
+        </div>
+      </section>
+    );
+  }
+
+  if (destaque)
   return (
     <section className="max-w-[1100px] mx-auto flex flex-col justify-between items-center gap-8 h-full py-12 px-4 font-raleway sm:px-8">
       {/* TÍTULO CENTRAL */}
@@ -29,7 +55,7 @@ export default function CuidadosEDicasPage() {
 
             <div className="mt-4 space-y-1 text-sm">
               <p className="font-semibold">Por Redação</p>
-              <p>01/10/2025</p>
+              <p>{destaque.date}</p>
             </div>
             <div className="mt-4 flex items-center gap-4">
               <button className="text-xl text-blue cursor-pointer p-1 hover:text-darkblue transition-colors duration-300" title="Compartilhar">
@@ -57,20 +83,12 @@ export default function CuidadosEDicasPage() {
       {/* GRID principal */}
       <section className="mx-auto mt-2 pb-14 grid grid-cols-1 gap-6 lg:grid-cols-12">
         {/* Esquerda */}
-        <article className="lg:col-span-8 rounded-md border border-border bg-white px-6 py-5 font-medium text-foreground/80">
-          <p>{destaque.paragraphs[0]}</p>
-          {destaque.paragraphs[1] && (
-            <p className="mt-4">{destaque.paragraphs[1]}</p>
-          )}
-
-          {/* (Opcional) Link para ler completo */}
-          <Link
-            to={`/cuidados-e-dicas/${destaque.slug}`}
-            className="mt-4 inline-block text-blue underline underline-offset-4"
-            aria-label={`Abrir matéria completa: ${destaque.title}`}
-          >
-            Ler matéria completa →
-          </Link>
+        <article className="lg:col-span-8 rounded-md border border-border bg-white px-6 py-8 font-medium text-foreground/80">
+          {destaque.paragraphs.map((paragraph, i) => {
+            return (
+              <p key={i} className="mb-4">{paragraph}</p>
+            )
+          })}
         </article>
 
         {/* Sidebar: itens clicáveis */}

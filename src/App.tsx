@@ -19,8 +19,6 @@ import NotFoundPage from "./pages/not-found/NotFoundPage"
 import ShareEstories from "./pages/share-stories/ShareEstories"
 import PrivateRoute from "./layouts/PrivateRoute"
 import { Toaster } from "sonner"
-import ShareEStories from "./pages/share-stories/components/ShareEstories"
-import ArtigoPage from "@/pages/cuidados-e-dicas/components/ArtigoPage";
 
 export default function App() {
   return (
@@ -32,12 +30,10 @@ export default function App() {
         {/* Rotas públicas com Header e Footer */}
         <Route element={<PublicLayout />}>
           <Route path="/historias-de-adocao" element={<HistoryPage />} />
-          <Route path="/cuidados-e-dicas" element={<CuidadosEDicasPage />} />
-          <Route path="/cuidados-e-dicas/:slug" element={<ArtigoPage />} />
-          <Route path="/sobre" element={< SobrePage />} />
-          <Route path="/sobre" /* Elemento */ />
+          <Route path="/cuidados-e-dicas/:slug" element={<CuidadosEDicasPage />} />
+          <Route path="/cuidados-e-dicas" element={<CuidadosEDicasPage />} /> {/* Rota para ser possível acessar a página de cuidados sem um slug default */}
+          <Route path="/sobre" element={<SobrePage />} />
           <Route path="/nosso-time" element={<TeamPage/>} />
-          <Route path="/share-stories" element={<ShareEStories />} />
           <Route path="/compartilhar-historia" element={<ShareEstories />} />
         </Route>
 

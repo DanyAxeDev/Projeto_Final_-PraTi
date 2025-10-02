@@ -16,6 +16,8 @@ import MyAccountPage from "./pages/my-account/MyAccountPage"
 import TeamPage from "./pages/teams/TeamPage"
 import EditPetPage from "./pages/edit-pet/EditPetPage"
 import { Toaster } from "sonner"
+import ShareEStories from "./pages/share-stories/components/ShareEstories"
+import ArtigoPage from "@/pages/cuidados-e-dicas/components/ArtigoPage";
 
 export default function App() {
   return (
@@ -28,9 +30,11 @@ export default function App() {
         <Route element={<PublicLayout />}>
           <Route path="/historias-de-adocao" element={<HistoryPage />} />
           <Route path="/cuidados-e-dicas" element={<CuidadosEDicasPage />} />
+          <Route path="/cuidados-e-dicas/:slug" element={<ArtigoPage />} />
           <Route path="/sobre" element={< SobrePage />} />
           <Route path="/sobre" /* Elemento */ />
           <Route path="/nosso-time" element={<TeamPage/>} />
+          <Route path="/share-stories" element={<ShareEStories />} />
         </Route>
 
         {/* Rotas públicas */}

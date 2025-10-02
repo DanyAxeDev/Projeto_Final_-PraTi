@@ -39,7 +39,7 @@ function HeaderMenu({ isOpen, setIsOpen }: HeaderMenuProps) {
             url="/minha-conta" 
             />
             <li className="p-3">
-                <RoundButtonDanger text="Sair" />
+                <RoundButtonDanger text="Sair" onClick={() => ""} />
             </li>
         </ul>
     </nav>

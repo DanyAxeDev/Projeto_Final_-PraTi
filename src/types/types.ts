@@ -27,3 +27,19 @@ export type MyPetProps = Pick<Pet, "id" | "name"> & {
 }
 
 export type Order =  "normal" | "ascending" | "descending"
+
+export type Story = {
+  image: string
+  human: string
+  pet: string
+  description: string
+}
+
+export type Member = {
+  name: string;
+  githubUrl: string;
+  linkedinUrl: string;
+  image: string;
+  description: string;
+  stage: string;
+}

@@ -6,7 +6,7 @@ import RoundButton from "@/components/RoundButton";
 
 export type PreferencesData = {
     adoption: {
-        animalType: string; 
+        species: string; 
         gender: string;
         size: string;
         age: string;
@@ -22,7 +22,7 @@ type TabProps = {
     onCancel: () => void;
     errors?: { 
       adoption?: { 
-        animalType?: string; 
+        species?: string; 
         gender?: string;
         size?: string;
         age?: string;
@@ -60,7 +60,7 @@ function PreferencesTab({ preferencesData, onPreferencesChange, onSave, onCancel
     ];
 
     return (
-        <div className="font-raleway text-gray-800 space-y-8">
+        <div className="font-raleway space-y-8">
             <h2 className="text-xl font-bold">Preferências</h2>
             
             <section data-section="adoption">
@@ -69,8 +69,8 @@ function PreferencesTab({ preferencesData, onPreferencesChange, onSave, onCancel
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 mt-4"> 
                     <div>
                         <Label className="font-medium">Eu desejo ver...</Label>                     
-                        <RadioButtons name="animalType" options={["Cão", "Gato", "Não tenho preferência"]} selectedValue={adoption.animalType} onChange={onPreferencesChange} />
-                        {errors?.adoption?.animalType && <p className="text-xs text-destructive mt-1">{errors.adoption.animalType}</p>}
+                        <RadioButtons name="species" options={["Cão", "Gato", "Não tenho preferência"]} selectedValue={adoption.species} onChange={onPreferencesChange} />
+                        {errors?.adoption?.species && <p className="text-xs text-destructive mt-1">{errors.adoption.species}</p>}
                     </div>
 
                     <div>

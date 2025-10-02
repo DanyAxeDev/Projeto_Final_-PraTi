@@ -3,7 +3,8 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import RoundButton from "@/components/RoundButton";
 import RoundButtonDanger from "@/components/RoundButtonDanger";
-import { usePasswordChange } from "@/hooks/usePasswordChange"; 
+import { usePasswordChange } from "@/hooks/usePasswordChange";
+
 type GeneralTabProps = {
   onOpenDeleteModal: () => void;
   onSaveSuccess: (message: string) => void;
@@ -12,11 +13,11 @@ type GeneralTabProps = {
 function GeneralTab({ onOpenDeleteModal, onSaveSuccess }: GeneralTabProps) { 
   const {
     currentPassword,
-    setCurrentPassword,
     newPassword,
-    setNewPassword,
     errors: passwordErrors,
     handleChangePassword,
+    handleCurrentPasswordChange,
+    handleNewPasswordChange,
   } = usePasswordChange({ onSaveSuccess });
   
   const [deletePassword, setDeletePassword] = useState("");
@@ -50,7 +51,7 @@ function GeneralTab({ onOpenDeleteModal, onSaveSuccess }: GeneralTabProps) {
                 id="current-password"
                 type="password"
                 value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
+                onChange={handleCurrentPasswordChange}
               />
               {passwordErrors.currentPassword && <p className="text-xs text-destructive">{passwordErrors.currentPassword}</p>}
             </div>
@@ -60,7 +61,7 @@ function GeneralTab({ onOpenDeleteModal, onSaveSuccess }: GeneralTabProps) {
                 id="new-password"
                 type="password"
                 value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
+                onChange={handleNewPasswordChange}
               />
               {passwordErrors.newPassword && <p className="text-xs text-destructive">{passwordErrors.newPassword}</p>}
             </div>
@@ -85,7 +86,7 @@ function GeneralTab({ onOpenDeleteModal, onSaveSuccess }: GeneralTabProps) {
               {deletePasswordError && <p className="text-xs text-destructive">{deletePasswordError}</p>}
             </div>
             <div className="w-55 cursor-pointer" onClick={handleDeleteAccount}>
-              <RoundButtonDanger text="Excluir minha conta" />
+              <RoundButtonDanger text="Excluir minha conta" onClick={() => ""} />
             </div>
           </div>
         </div>

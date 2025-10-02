@@ -108,7 +108,7 @@ function PetRegisterPage() {
                 <Label className="mb-1 font-semibold">Comprovante da última vacinação</Label>
                 <Input type="file" id="vaccination-receipt" name="vaccinationReceipt" onChange={handleChange} className="rounded-full max-w-[300px] font-semibold text-brown bg-gray-100" required />
                 {errors.vaccinationReceipt && <p className="text-red-500 text-xs mt-1">{errors.vaccinationReceipt}</p>}
-              </div>              
+              </div>
 
               <div className="col-span-2">
                 <Label htmlFor="petAddress" className="mb-1 font-semibold">Endereço</Label>
@@ -201,11 +201,11 @@ function PetRegisterPage() {
           <section>
             <FormStepHeading step={3} title="Fotos" />
             <p className="mb-2">Selecione até 3 fotos.</p>
-            {errors.photos && <p className="text-red-500 text-xs mb-2">{errors.photos}</p>}
+            {errors.photo1 && <p className="text-red-500 text-xs mb-2">{errors.photo1}</p>}
             <div className="flex flex-col gap-3 max-w-[300px]">
-              <Input type="file" id="photo1" name="photo1" onChange={handleChange} className="rounded-full font-semibold text-brown bg-gray-100" required />
-              <Input type="file" id="photo2" name="photo2" onChange={handleChange} className="rounded-full font-semibold text-brown bg-gray-100" />
-              <Input type="file" id="photo3" name="photo3" onChange={handleChange} className="rounded-full font-semibold text-brown bg-gray-100" />
+              <Input type="file" id="photo1" name="photo1" onChange={handleChange} accept="image/*" className="rounded-full font-semibold text-brown bg-gray-100" />
+              <Input type="file" id="photo2" name="photo2" onChange={handleChange} accept="image/*" className="rounded-full font-semibold text-brown bg-gray-100" />
+              <Input type="file" id="photo3" name="photo3" onChange={handleChange} accept="image/*" className="rounded-full font-semibold text-brown bg-gray-100" />
             </div>
           </section>
 

@@ -1,32 +1,18 @@
-import { useState } from "react";
-import { validateLogin } from "@/lib/loginValidators";
-
-interface LoginData {
-  email: string;
-  password: string;
-}
+import { useForm } from './useForm';
+import { validateLogin } from '@/lib/validators';
+import type { LoginData } from '@/lib/validators';
+import { toast } from "sonner";
+import { useNavigate } from 'react-router';
 
 export const useLoginForm = () => {
-  const [formData, setFormData] = useState<LoginData>({ email: "", password: "" });
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+    const navigate = useNavigate();
+    const initialState: LoginData = { email: "", password: "" };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-    setFormData(prev => ({ ...prev, [id]: value }));
+    const handleLoginSuccess = (formData: LoginData) => {
+        console.log("Login bem-sucedido!", formData);
+        toast.success("Login efetuado com sucesso!");
+        navigate("/home");
+    };
 
-    // Validação em tempo real
-    const validationErrors = validateLogin({ ...formData, [id]: value });
-    setErrors(validationErrors);
-  };
-
-  const handleSubmit = (onSuccess: () => void) => {
-    const validationErrors = validateLogin(formData);
-    setErrors(validationErrors);
-
-    if (Object.keys(validationErrors).length === 0) {
-      onSuccess();
-    }
-  };
-
-  return { formData, errors, handleChange, handleSubmit };
+    return useForm(initialState, validateLogin, handleLoginSuccess);
 };

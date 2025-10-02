@@ -24,6 +24,7 @@ function GalleryCard({ photos, petName }: GalleryCardProps) {
         {photos.map((photo, i) => {
           return (
           <div 
+          key={`photo${i}`}
           onClick={() => setCurrentPhoto(i)} 
           className={`size-[60px] rounded-sm overflow-clip ${currentPhoto === i ? "" : "cursor-pointer"} md:size-[90px]`}
           >

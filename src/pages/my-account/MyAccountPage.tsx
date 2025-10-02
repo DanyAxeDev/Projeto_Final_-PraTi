@@ -9,7 +9,7 @@ import PageWithHeaderLayout from "@/layouts/PageWithHeaderLayout";
 import { usePreferencesForm } from "@/hooks/usePreferencesForm";
 import Modal from "@/components/Modal";
 import RoundButtonDanger from "@/components/RoundButtonDanger";
-import { IoIosAlert } from "react-icons/io"
+import { IoIosAlert } from "react-icons/io";
 import { toast } from "sonner";
 
 type Tab = 'geral' | 'atualizar-dados' | 'preferencias';
@@ -29,7 +29,7 @@ function MyAccountPage() {
   const handleSavePreferences = () => {
     if (preferencesForm.validate()) {
         console.log("Salvando preferências:", preferencesForm.draftData);
-        toast.success("Suas preferências foram salvas com sucesso.")
+        toast.success("Suas preferências foram salvas com sucesso.");
     } else {
         console.log("Formulário de preferências inválido.");
     }
@@ -53,7 +53,7 @@ function MyAccountPage() {
 
   const renderContent = () => {
     switch (activeTab) {
-      case 'geral':       
+      case 'geral':      
         return <GeneralTab 
                   onOpenDeleteModal={openDeleteModal} 
                   onSaveSuccess={() => toast.success("Senha alterada com sucesso!")} 
@@ -76,23 +76,23 @@ function MyAccountPage() {
   return (
     <>
       <PageWithHeaderLayout title="Minha Conta">
-         <section className="max-w-5xl mx-auto py-12 px-4 sm:px-8 font-raleway">
+         <section className="max-w-5xl mx-auto py-12 px-4 sm:px-8 font-raleway font-medium">
   
           <div className="grid grid-cols-1 md:grid-cols-[220px_1fr] items-start bg-white rounded-lg shadow overflow-hidden">
                       
-            <nav className="flex flex-col ">
+            <nav className="flex flex-col py-6">
               {navItems.map(item => (
                 <Button
                   key={item.id}
                   variant={activeTab === item.id ? 'secondary' : 'ghost'}
-                  className="justify-start h-12 gap-3 w-full rounded-none px-4"
+                  className="justify-start h-12 gap-3 w-full rounded-none px-4 cursor-pointer"
                   onClick={() => setActiveTab(item.id)}
                 >
                   {item.icon} {item.text}
                 </Button>
               ))}
-            </nav>            
-       
+            </nav>          
+        
             <div className="p-6">
               {renderContent()}
             </div>

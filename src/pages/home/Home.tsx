@@ -32,7 +32,7 @@ function Home() {
           onClick={changeOrder}
           aria-label={order === "ascending" ? "Ordenar por maior idade" : "Ordenar por menor idade"}
           title={order === "ascending" ? "Ordenar por maior idade" : "Ordenar por menor idade"}
-          className="text-2xl text-brown cursor-pointer hover:text-darkblue transition-colors duration-300 p-1" 
+          className="text-2xl text-brown cursor-pointer hover:text-darkblue focus:text-darkblue transition-colors duration-300 p-1" 
           >
             {order === "ascending" ? <FaSortAmountDown aria-hidden="true" /> : <FaSortAmountUp aria-hidden="true" />}
           </button>

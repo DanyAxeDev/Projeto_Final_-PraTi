@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Link, useNavigate } from "react-router"; 
+import { Link, useNavigate, Navigate } from "react-router"; 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,16 +11,27 @@ import FormStepHeading from "@/components/FormStepHeading";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
+import { useUser } from "@/hooks/useUser";
 import { toast } from "sonner";
 
 import googleIcon from "@/assets/icons/icon-google.png";
 
 export default function RegisterPage() {
     const [currentStep, setCurrentStep] = useState(1);
-    const { formData, errors, handleChange, validateRegistrationForm , validatePreferenceForm } = useUserRegisterForm();
+    const { 
+        formData, 
+        errors, 
+        handleChange, 
+        handleValueChange,
+        handlePersonalityChange,
+        validateRegistrationForm, 
+        validatePreferenceForm 
+    } = useUserRegisterForm();
 
     const formStep1Ref = useRef<HTMLFormElement>(null);
     const formStep2Ref = useRef<HTMLFormElement>(null);
+
+    const { user } = useUser()
 
     const navigate = useNavigate(); 
 
@@ -48,6 +59,18 @@ export default function RegisterPage() {
             console.log("Validação da Etapa 2 falhou.");
         }
     };
+
+    const personalityOptions = {
+        active: "Ativo",
+        goodWithPets: "Se dá bem com outros pets",
+        calm: "Calmo",
+        goodWithKids: "Se dá bem com crianças",
+        extrovert: "Extrovertido",
+        introvert: "Introvertido",
+    };
+
+    // Não mostra a tela de cadastro se o usuário já estiver logado
+    if (user) return <Navigate to="/home" />
 
     return (
         <section className="flex items-center justify-center w-full px-4 py-12 bg-sand sm:p-8 min-h-screen">
@@ -164,41 +187,41 @@ export default function RegisterPage() {
                                 <div>
                                     <Label className="mb-1 font-semibold">Eu desejo ver...</Label>
                                     <RadioGroup
-                                        name="animalType"
-                                        value={formData.animalType}
-                                        onValueChange={(value) => handleChange({ target: { name: 'animalType', value } })}
+                                        name="species"
+                                        value={formData.species}
+                                        onValueChange={(value) => handleValueChange('species', value)}
                                     >
                                         <div className="flex flex-wrap gap-4 mt-2 text-sm">
                                             <div className="flex items-center gap-2">
-                                                <RadioGroupItem value="cão" id="animalType-cão" />
-                                                <Label htmlFor="animalType-cão">Cães</Label>
+                                                <RadioGroupItem value="cão" id="species-cão" />
+                                                <Label htmlFor="species-cão">Cães</Label>
                                             </div>
                                             <div className="flex items-center gap-2">
-                                                <RadioGroupItem value="gato" id="animalType-gato" />
-                                                <Label htmlFor="animalType-gato">Gatos</Label>
+                                                <RadioGroupItem value="gato" id="species-gato" />
+                                                <Label htmlFor="species-gato">Gatos</Label>
                                             </div>
                                             <div className="flex items-center gap-2">
-                                                <RadioGroupItem value="no-preference" id="animalType-no-preference" />
-                                                <Label htmlFor="animalType-no-preference">Não tenho preferência</Label>
+                                                <RadioGroupItem value="no-preference" id="species-no-preference" />
+                                                <Label htmlFor="species-no-preference">Não tenho preferência</Label>
                                             </div>
                                         </div>
                                     </RadioGroup>
-                                    {errors.animalType && <p className="text-xs text-red-600">{errors.animalType}</p>}
+                                    {errors.species && <p className="text-xs text-red-600">{errors.species}</p>}
                                 </div>
                                 <div>
                                     <Label className="mb-1 font-semibold">Eu prefiro um pet...</Label>
                                     <RadioGroup
                                         name="gender"
                                         value={formData.gender}
-                                        onValueChange={(value) => handleChange({ target: { name: 'gender', value } })}
+                                        onValueChange={(value) => handleValueChange('gender', value)}
                                     >
                                         <div className="flex flex-wrap gap-4 mt-2 text-sm">
                                             <div className="flex items-center gap-2">
-                                                <RadioGroupItem value="macho" id="gender-macho" />
+                                                <RadioGroupItem value="male" id="gender-macho" />
                                                 <Label htmlFor="gender-macho">Macho</Label>
                                             </div>
                                             <div className="flex items-center gap-2">
-                                                <RadioGroupItem value="fêmea" id="gender-fêmea" />
+                                                <RadioGroupItem value="female" id="gender-fêmea" />
                                                 <Label htmlFor="gender-fêmea">Fêmea</Label>
                                             </div>
                                             <div className="flex items-center gap-2">
@@ -214,7 +237,7 @@ export default function RegisterPage() {
                                     <RadioGroup
                                         name="age"
                                         value={formData.age}
-                                        onValueChange={(value) => handleChange({ target: { name: 'age', value } })}
+                                        onValueChange={(value) => handleValueChange('age', value)}
                                     >
                                         <div className="flex flex-wrap gap-4 mt-2 text-sm">
                                             <div className="flex items-center gap-2">
@@ -246,19 +269,19 @@ export default function RegisterPage() {
                                     <RadioGroup
                                         name="size"
                                         value={formData.size}
-                                        onValueChange={(value) => handleChange({ target: { name: 'size', value } })}
+                                        onValueChange={(value) => handleValueChange('size', value)}
                                     >
                                         <div className="flex flex-wrap gap-4 mt-2 text-sm">
                                             <div className="flex items-center gap-2">
-                                                <RadioGroupItem value="pequeno" id="size-pequeno" />
+                                                <RadioGroupItem value="small" id="size-pequeno" />
                                                 <Label htmlFor="size-pequeno">Pequeno</Label>
                                             </div>
                                             <div className="flex items-center gap-2">
-                                                <RadioGroupItem value="medio" id="size-medio" />
+                                                <RadioGroupItem value="medium" id="size-medio" />
                                                 <Label htmlFor="size-medio">Médio</Label>
                                             </div>
                                             <div className="flex items-center gap-2">
-                                                <RadioGroupItem value="grande" id="size-grande" />
+                                                <RadioGroupItem value="large" id="size-grande" />
                                                 <Label htmlFor="size-grande">Grande</Label>
                                             </div>
                                             <div className="flex items-center gap-2">
@@ -272,60 +295,16 @@ export default function RegisterPage() {
                                 <div>
                                     <Label className="mb-1 font-semibold">Personalidade que procuro em um pet</Label>
                                     <div className="grid grid-cols-2 gap-2 mt-2 text-sm">
-                                        <div className="flex items-center gap-2">
-                                            <Checkbox
-                                                id="personality-active"
-                                                name="personality-active"
-                                                checked={formData.personality.active}
-                                                onCheckedChange={(checked) => handleChange({ target: { name: 'personality-active', value: checked } })}
-                                            />
-                                            <Label htmlFor="personality-active">Ativo</Label>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <Checkbox
-                                                id="personality-goodWithPets"
-                                                name="personality-goodWithPets"
-                                                checked={formData.personality.goodWithPets}
-                                                onCheckedChange={(checked) => handleChange({ target: { name: 'personality-goodWithPets', value: checked } })}
-                                            />
-                                            <Label htmlFor="personality-goodWithPets">Se dá bem com outros pets</Label>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <Checkbox
-                                                id="personality-calm"
-                                                name="personality-calm"
-                                                checked={formData.personality.calm}
-                                                onCheckedChange={(checked) => handleChange({ target: { name: 'personality-calm', value: checked } })}
-                                            />
-                                            <Label htmlFor="personality-calm">Calmo</Label>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <Checkbox
-                                                id="personality-goodWithKids"
-                                                name="personality-goodWithKids"
-                                                checked={formData.personality.goodWithKids}
-                                                onCheckedChange={(checked) => handleChange({ target: { name: 'personality-goodWithKids', value: checked } })}
-                                            />
-                                            <Label htmlFor="personality-goodWithKids">Se dá bem com crianças</Label>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <Checkbox
-                                                id="personality-extrovert"
-                                                name="personality-extrovert"
-                                                checked={formData.personality.extrovert}
-                                                onCheckedChange={(checked) => handleChange({ target: { name: 'personality-extrovert', value: checked } })}
-                                            />
-                                            <Label htmlFor="personality-extrovert">Extrovertido</Label>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <Checkbox
-                                                id="personality-introvert"
-                                                name="personality-introvert"
-                                                checked={formData.personality.introvert}
-                                                onCheckedChange={(checked) => handleChange({ target: { name: 'personality-introvert', value: checked } })}
-                                            />
-                                            <Label htmlFor="personality-introvert">Introvertido</Label>
-                                        </div>
+                                        {Object.entries(personalityOptions).map(([key, label]) => (
+                                            <div className="flex items-center gap-2" key={key}>
+                                                <Checkbox
+                                                    id={`personality-${key}`}
+                                                    checked={formData.personality[key as keyof typeof formData.personality]}
+                                                    onCheckedChange={(checked) => handlePersonalityChange(key, checked as boolean)}
+                                                />
+                                                <Label htmlFor={`personality-${key}`}>{label}</Label>
+                                            </div>
+                                        ))}
                                     </div>
                                     {errors.personality && <p className="text-xs text-red-600">{errors.personality}</p>}
                                 </div>
@@ -339,7 +318,7 @@ export default function RegisterPage() {
                                             max={100}
                                             step={1}
                                             value={[formData.maxDistance]}
-                                            onValueChange={(value) => handleChange({ target: { name: 'maxDistance', value: value[0] } })}
+                                            onValueChange={(value) => handleValueChange('maxDistance', value[0])}
                                         />
                                         <span className="w-12 text-center">{formData.maxDistance} km</span>
                                     </div>

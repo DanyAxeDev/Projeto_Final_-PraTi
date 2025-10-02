@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { validatePassword } from "@/lib/validators";
+import { toast } from "sonner";
 
 type UsePasswordChangeProps = {
   onSaveSuccess: (message: string) => void;
@@ -13,11 +14,24 @@ export const usePasswordChange = ({ onSaveSuccess }: UsePasswordChangeProps) => 
     newPassword: "",
   });
 
+  const handleCurrentPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCurrentPassword(e.target.value);
+    if (errors.currentPassword) {
+      setErrors(prev => ({ ...prev, currentPassword: "" }));
+    }
+  };
+
+  const handleNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewPassword(e.target.value);
+    if (errors.newPassword) {
+      setErrors(prev => ({ ...prev, newPassword: "" }));
+    }
+  };
+
   const handleChangePassword = () => {
     const newErrors = { currentPassword: "", newPassword: "" };
     let hasError = false;
 
-    // Lógica de validação da senha atual (simulada)
     const FAKE_CORRECT_PASSWORD = "senha123";
     if (!currentPassword) {
       newErrors.currentPassword = "A senha atual é obrigatória.";
@@ -27,7 +41,6 @@ export const usePasswordChange = ({ onSaveSuccess }: UsePasswordChangeProps) => 
       hasError = true;
     }
     
-    // Valida a força da nova senha
     const passwordStrengthError = validatePassword(newPassword);
     if (passwordStrengthError) {
       newErrors.newPassword = passwordStrengthError;
@@ -36,20 +49,23 @@ export const usePasswordChange = ({ onSaveSuccess }: UsePasswordChangeProps) => 
 
     setErrors(newErrors);
 
-    if (hasError) return;
+    if (hasError) {
+      return;
+    }
 
-    console.log("Senha alterada com sucesso!");
-    onSaveSuccess("Sua senha foi alterada com sucesso!");
+    const successMessage = "Sua senha foi alterada com sucesso!";
+    toast.success(successMessage);
+    onSaveSuccess(successMessage);
     setCurrentPassword("");
     setNewPassword("");
   };
 
   return {
     currentPassword,
-    setCurrentPassword,
     newPassword,
-    setNewPassword,
     errors,
     handleChangePassword,
+    handleCurrentPasswordChange,
+    handleNewPasswordChange,
   };
 };

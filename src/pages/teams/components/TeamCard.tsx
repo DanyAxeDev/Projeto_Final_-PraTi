@@ -12,10 +12,10 @@ type MemberCard = {
 
 export default function Card({ image, linkedinUrl, githubUrl, name, description, stage }: MemberCard) {
   return (
-    <article className="bg-white rounded-lg shadow-md p-4 w-64">
+    <article className="bg-white rounded-[5px] shadow-md p-5 w-[300px] flex flex-col font-raleway font-medium">
       <div className="relative flex items-center">
        
-        <img className="w-16 h-16 rounded-full" src={image} alt={`Imagem de ${name}`} />
+        <img className="size-[110px] rounded-full" src={image} alt={`Imagem de ${name}`} />
       
         
         <div className="flex gap-2 ml-auto">
@@ -27,10 +27,10 @@ export default function Card({ image, linkedinUrl, githubUrl, name, description,
         </div>
       </div>
 
-      <div className="mt-4">
-        <h2 className="font-semibold text-lg">{name}</h2>
-        <p className="text-sm text-gray-600">{description}</p>
-        <p className="text-xs text-gray-400">{stage}</p>
+      <div className="mt-4 space-y-1">
+        <h2 className="font-bold text-xl">{name}</h2>
+        <p>{description}</p>
+        <p>{stage}</p>
       </div>
     </article>
   );

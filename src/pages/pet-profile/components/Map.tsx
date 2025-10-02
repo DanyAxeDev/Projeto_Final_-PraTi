@@ -5,6 +5,7 @@ type MapProps = {
 }
 
 function Map({ neighbourhood, city, state }: MapProps) {
+  // Se tiver bairro, cidade e estado: location recebe a string formatada
   const location = (neighbourhood && city && state) && `${neighbourhood.split(" ").join("+")},${city.split(" ").join("+")}+${state.toUpperCase()}`
 
   if (location)

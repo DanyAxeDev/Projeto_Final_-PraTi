@@ -14,7 +14,7 @@ function SobrePage() {
       <section className="bg-brown text-sand">
         <article className="flex flex-col-reverse gap-10 mx-auto max-w-[1100px] py-20 px-4 sm:px-8 md:flex-row lg:gap-16">
           {/* coluna esquerda: imagem com max 300x400 */}
-          <div className="w-full max-w-full h-[420px] rounded-[5px] overflow-clip md:max-w-[300px] md:h-[400px]">
+          <div className="w-full max-w-full h-[420px] rounded-[5px] overflow-clip md:max-w-[300px] md:min-w-[300px] md:h-[400px]">
             <img
               src={handAndPaw}
               alt="Mão e pata de cachorro em contato"
@@ -29,13 +29,10 @@ function SobrePage() {
               Sobre o PetConect
             </h1>
             <p>
-              O PetConect aproxima animais que precisam de um lar de pessoas
-              dispostas a adotar com responsabilidade. Unimos ONGs, protetores e
-              adotantes em um processo simples, humano e seguro.
+              O PetConect aproxima animais que precisam de um lar de pessoas dispostas a adotar com responsabilidade. Nós utilizamos filtros baseados nas características desejadas em um novo amigo pelo adotante para realizar um "match perfeito" entre a pessoa e o pet. Também proporcionamos a possibilidade de o tutor atual do pet escolher o candidato mais apropriado para adotá-lo. Unimos ONGs, protetores e adotantes em um processo simples, humano, seguro e gratuito.
             </p>
             <p>
-              Aqui você encontra histórias, orientações e um fluxo de adoção
-              transparente do início ao pós-adoção.
+              Pensamos sempre no bem-estar e segurança do pet em primeiro lugar, sendo essa a motivação principal do projeto. Aqui você encontra histórias, orientações e um fluxo de adoção transparente do início ao pós-adoção.
             </p>
           </div>
         </article>
@@ -64,7 +61,7 @@ function SobrePage() {
             <ValueCard 
             img={honestidade} 
             title="Honestidade" 
-            text="Parcerias com ONGs e protetores verificados para um processo justo." 
+            text="Requisitamos informações verdadeiras para um processo transparente e justo." 
             />
           </div>
         </div>
@@ -78,14 +75,16 @@ function SobrePage() {
             <h2 className="font-bold text-3xl mb-2">
               O processo de adoção
             </h2>
-            <p className="md:max-w-[600px]">
-            Adotar é um gesto de amor. Você escolhe o pet que mais tocar seu coração,
-            preenche um cadastro simples e entra em contato com a ONG.
-            Se tudo combinar, marcamos um encontro (on-line ou presencial) para confirmar que o lar está
-            pronto para recebê-lo. Depois, assinamos um termo de responsabilidade com os cuidados básicos
-            e combinamos a chegada. Pronto: seu novo amigo vai para casa com segurança e muito carinho.
-            Observação: a adoção é gratuita, mas podem existir custos de vacina, castração ou transporte, conforme o caso.
-            </p>
+            <div className="flex flex-col gap-4 md:max-w-[600px]">
+              <p>
+              Adotar é um gesto de amor. Você escolhe o pet que mais tocar seu coração e preenche um formulário simples que será enviado para a pessoa ou ONG responsável por ele. Se você for escolhido, marcamos um encontro (on-line ou presencial) para confirmar que o lar está pronto para recebê-lo. Depois, assinamos um termo de responsabilidade com os cuidados básicos e combinamos a chegada. Pronto: seu novo amigo vai para casa com segurança e muito carinho.
+              </p>
+              <p>
+                <strong>
+                  Observação: a adoção é gratuita, mas podem existir custos de transporte, conforme o caso.
+                </strong>
+              </p>
+            </div>
           </div>
 
           {/* imagem à direita com max 300x400 */}

@@ -31,7 +31,7 @@ function MyPetsPage() {
           onClick={changeOrder}
           aria-label={order === "ascending" ? "Ordenar por ordem alfabética inversa" : "Ordenar por ordem alfabética"}
           title={order === "ascending" ? "Ordenar por ordem alfabética inversa" : "Ordenar por ordem alfabética"}
-          className="text-2xl text-brown cursor-pointer hover:text-darkblue transition-colors duration-300 p-1"
+          className="text-2xl text-brown cursor-pointer hover:text-darkblue focus:text-darkblue transition-colors duration-300 p-1"
           >
             {order === "ascending" ? <FaSortAlphaUp aria-hidden="true" /> : <FaSortAlphaDown aria-hidden="true" />}
           </button>

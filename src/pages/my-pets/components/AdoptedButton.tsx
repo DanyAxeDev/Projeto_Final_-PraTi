@@ -45,7 +45,8 @@ function AdoptedButton({ openModal }: AdoptedProps) {
   return (
     <button 
     onClick={handleClick}
-    className="font-bold text-brown rounded-full border-3 border-brown py-1 px-5 cursor-pointer transition-colors duration-300 hover:text-darkbrown hover:border-transparent">
+    className="font-bold text-brown rounded-full border-3 border-brown py-1 px-3 cursor-pointer transition-colors duration-300 hover:text-darkbrown hover:border-transparent focus:text-darkbrown focus:border-darkbrown sm:px-5"
+    >
       Marcar como adotado
     </button>
   )

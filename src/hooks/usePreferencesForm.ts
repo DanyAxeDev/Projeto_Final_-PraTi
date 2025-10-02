@@ -1,12 +1,6 @@
 import { useState } from 'react';
 import { validateAdoptionPreferences } from '@/lib/validators';
-import type { 
-    AdoptionPreferencesData, 
-    AnimalType, 
-    Gender, 
-    Size, 
-    Age 
-} from '@/lib/validators';
+import type { AdoptionPreferencesData } from '@/lib/validators';
 
 export type PreferencesData = {
     adoption: AdoptionPreferencesData & {
@@ -15,76 +9,56 @@ export type PreferencesData = {
 };
 
 type PreferencesErrorState = {
-    adoption?: {
-        animalType?: string;
-        gender?: string;
-        size?: string;
-        age?: string;
-        personality?: string;
-        distance?: string;
-    };
+    adoption?: Partial<Record<keyof AdoptionPreferencesData, string>>;
 };
 
 const initialPreferences: PreferencesData = {
     adoption: {
-        animalType: "" as AnimalType,
-        gender: "" as Gender,
-        size: "" as Size,
-        age: "" as Age,
+        species: '',
+        gender: '',
+        size: '',
+        age: '',
         personality: { 
-            'Ativo': false, 
-            'Calmo': false, 
-            'Se dá bem com outros pets': false, 
-            'Se dá bem com crianças': false, 
-            'Extrovertido': false, 
-            'Introvertido': false 
+            'Ativo': false, 'Calmo': false, 'Extrovertido': false, 'Introvertido': false,
+            'Se dá bem com outros pets': false, 'Se dá bem com crianças': false 
         },
         distance: 5
     }
 };
 
 export const usePreferencesForm = (initialData: PreferencesData = initialPreferences) => {
-    const [originalData] = useState(initialData);
     const [draftData, setDraftData] = useState(initialData);
     const [errors, setErrors] = useState<PreferencesErrorState>({});
 
-    const handleChange = (change: { target: { name: string, value: any } }) => {
+    const handleChange = (change: { target: { name: string; value: any } }) => {
         const { name, value } = change.target;
-        const key = name;
-     
-        const newDraftData = { ...draftData };
-        const newAdoptionState = { ...newDraftData.adoption };
+        
+        setDraftData(prev => ({
+            ...prev,
+            adoption: {
+                ...prev.adoption,
+                [name]: value
+            }
+        }));
 
-        if (key === 'personality') {
-            newAdoptionState.personality = value;
-        } else if (key === 'distance') {
-            newAdoptionState.distance = Number(value);
-        } else {
-            (newAdoptionState as any)[key] = value;
+        const fieldName = name as keyof AdoptionPreferencesData;
+        if (errors.adoption && errors.adoption[fieldName]) {
+            setErrors(prev => {
+                const newAdoptionErrors = { ...prev.adoption };
+                delete newAdoptionErrors[fieldName];
+                return { adoption: newAdoptionErrors };
+            });
         }
-
-        newDraftData.adoption = newAdoptionState;
-        setDraftData(newDraftData);        
-       
-        const validationResult = validateAdoptionPreferences(newAdoptionState as AdoptionPreferencesData);
-        setErrors({ adoption: validationResult });
     };
 
     const validate = () => {
-        const validationResult = validateAdoptionPreferences(draftData.adoption as AdoptionPreferencesData);
-        const hasErrors = Object.keys(validationResult).length > 0;
-        
-        if (hasErrors) {
-            setErrors({ adoption: validationResult });
-            return false;
-        }
-    
-        setErrors({});
-        return true;
+        const validationResult = validateAdoptionPreferences(draftData.adoption);    
+        setErrors({ adoption: validationResult });
+        return Object.keys(validationResult).length === 0;
     };
 
     const handleCancel = () => {
-        setDraftData(originalData);
+        setDraftData(initialPreferences);
         setErrors({});
     };
 

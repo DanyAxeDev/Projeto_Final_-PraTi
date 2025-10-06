@@ -41,7 +41,7 @@ export const useUpdateDataForm = (initialData: RegistrationStep1Data = initialUs
     const [formData, setFormData] = useState<RegistrationStep1Data>(initialData);
     const [errors, setErrors] = useState<Partial<Record<keyof RegistrationStep1Data, string>>>({});
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { id, value } = e.target;
         const fieldName = id as keyof RegistrationStep1Data;
         

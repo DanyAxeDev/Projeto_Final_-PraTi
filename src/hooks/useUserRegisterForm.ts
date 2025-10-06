@@ -42,7 +42,7 @@ export const useUserRegisterForm = () => {
     const [formData, setFormData] = useState<UserFormData>(initialFormData);
     const [errors, setErrors] = useState<Partial<Record<keyof UserFormData, string>>>({});
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { id, name, value } = e.target;
         const fieldName = (id || name) as keyof UserFormData;
 

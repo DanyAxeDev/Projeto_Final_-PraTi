@@ -14,6 +14,8 @@ function PetRegisterPage() {
   const navigate = useNavigate();
   const { formData, errors, handleChange, validatePetForm } = usePetRegisterForm();
 
+  const ufs = ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"];
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const isPetFormValid = validatePetForm();
@@ -132,7 +134,12 @@ function PetRegisterPage() {
               </div>
               <div className="col-span-2 sm:col-span-1">
                 <Label htmlFor="petState" className="mb-1 font-semibold">Estado</Label>
-                <Input id="petState" name="petState" placeholder="Seu estado" required value={formData.petState} onChange={handleChange} />
+                <select id="petState" name="petState" value={formData.petState} onChange={handleChange} required className="w-full h-9 rounded-md border bg-transparent px-3 py-1 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-[color,box-shadow] md:text-sm">
+                    <option value="">Selecione</option>
+                    {ufs.map(uf => (
+                        <option key={uf} value={uf}>{uf}</option>
+                    ))}
+                </select>
                 {errors.petState && <p className="text-xs text-red-600">{errors.petState}</p>}
               </div>
 

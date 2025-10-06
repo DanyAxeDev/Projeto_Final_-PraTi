@@ -52,13 +52,15 @@ export default function RegisterPage() {
 
     const handleRegister = (e: React.FormEvent) => {
         e.preventDefault();
-        if (validatePreferenceForm()) {                   
+        if (validatePreferenceForm()) {              
             toast.success("Sua conta foi criada e suas preferências foram salvas. Agora você já pode encontrar seu novo melhor amigo!");
             navigate("/home");
         } else {
             console.log("Validação da Etapa 2 falhou.");
         }
     };
+
+    const ufs = ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"];
 
     const personalityOptions = {
         active: "Ativo",
@@ -151,7 +153,19 @@ export default function RegisterPage() {
                                 </div>
                                 <div className="col-span-2 sm:col-span-1">
                                     <Label htmlFor="state" className="mb-1 font-semibold">Estado</Label>
-                                    <Input id="state" placeholder="Seu estado" required value={formData.state} onChange={handleChange} />
+                                    <select
+                                        id="state"
+                                        name="state"
+                                        required
+                                        value={formData.state}
+                                        onChange={(e) => handleValueChange('state', e.target.value)}
+                                        className="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                                    >
+                                        <option value="" disabled>Selecione</option>
+                                        {ufs.map(uf => (
+                                            <option key={uf} value={uf}>{uf}</option>
+                                        ))}
+                                    </select>
                                     {errors.state && <p className="text-xs text-red-600">{errors.state}</p>}
                                 </div>
                                 <div className="col-span-2">

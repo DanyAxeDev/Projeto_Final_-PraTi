@@ -102,13 +102,13 @@ function EditPetPage() {
 
               <div className="col-span-2 sm:col-span-1">
                 <Label className="mb-1 font-semibold">Comprovante de castração</Label>
-                <Input type="file" id="castration-receipt" name="castrationReceipt" onChange={handleChange} className="rounded-full max-w-[300px] font-semibold text-brown bg-gray-100" required />
+                <Input type="file" id="castration-receipt" name="castrationReceipt" onChange={handleChange} accept="image/*" className="rounded-full max-w-[300px] font-semibold text-brown bg-gray-100" required />
                 {errors.castrationReceipt && <p className="text-red-500 text-xs mt-1">{errors.castrationReceipt}</p>}
               </div>
 
               <div className="col-span-2 sm:col-span-1">
                 <Label className="mb-1 font-semibold">Comprovante da última vacinação</Label>
-                <Input type="file" id="vaccination-receipt" name="vaccinationReceipt" onChange={handleChange} className="rounded-full max-w-[300px] font-semibold text-brown bg-gray-100" required />
+                <Input type="file" id="vaccination-receipt" name="vaccinationReceipt" onChange={handleChange} accept="image/*" className="rounded-full max-w-[300px] font-semibold text-brown bg-gray-100" required />
                 {errors.vaccinationReceipt && <p className="text-red-500 text-xs mt-1">{errors.vaccinationReceipt}</p>}
               </div>              
 

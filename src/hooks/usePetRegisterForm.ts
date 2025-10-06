@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { validatePetRegistration } from '@/lib/validators';
 import type { PetRegistrationData } from '@/lib/validators';
+import { toast } from 'sonner';
 
 const initialPetFormData: PetRegistrationData = {
     name: "",
@@ -27,6 +28,9 @@ const initialPetFormData: PetRegistrationData = {
     },
 };
 
+// Define o limite de tamanho em bytes (10MB)
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
+
 export const usePetRegisterForm = () => {
     const [formData, setFormData] = useState<PetRegistrationData>(initialPetFormData);
     const [errors, setErrors] = useState<Partial<Record<keyof PetRegistrationData, string>>>({});
@@ -39,7 +43,17 @@ export const usePetRegisterForm = () => {
             value = (event.target as HTMLInputElement).checked;
         } else if (type === 'file') {
             const files = (event.target as HTMLInputElement).files;
-            value = files && files.length > 0 ? files[0] : null;
+            const file = files && files.length > 0 ? files[0] : null;
+
+            // Verifica o tamanho do arquivo
+            if (file && file.size > MAX_FILE_SIZE) {
+                toast.error("O arquivo excede o limite de 10MB.");
+                setErrors(prev => ({ ...prev, [name]: "O arquivo excede o limite de 10MB." }));
+                event.target.value = ''; 
+                return; 
+            }
+            value = file;       
+
         } else {
             value = event.target.value;
         }

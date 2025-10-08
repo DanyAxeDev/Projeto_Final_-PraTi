@@ -19,7 +19,7 @@ export default function Card({ image, human, pet, description }: CardProps) {
       <h2 className="text-2xl font-semibold">
         {human} <span className="text-blue font-bold">&</span> {pet}
       </h2>
-      <p className="font-medium">
+      <p className="font-medium text-justify">
         {description}
       </p>
     </article>

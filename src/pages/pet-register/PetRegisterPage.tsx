@@ -1,12 +1,12 @@
 import { useRef } from "react";
-import { useNavigate } from "react-router"
-import PageWithHeaderLayout from "@/layouts/PageWithHeaderLayout"
-import FormStepHeading from "@/components/FormStepHeading"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import RoundButton from "@/components/RoundButton"
-import Tooltip from "@/components/Tooltip"
-import { usePetRegisterForm } from "@/hooks/usePetRegisterForm"
+import { useNavigate } from "react-router";
+import PageWithHeaderLayout from "@/layouts/PageWithHeaderLayout";
+import FormStepHeading from "@/components/FormStepHeading";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import RoundButton from "@/components/RoundButton";
+import Tooltip from "@/components/Tooltip";
+import { usePetRegisterForm } from "@/hooks/usePetRegisterForm";
 import { toast } from "sonner";
 
 function PetRegisterPage() {
@@ -15,6 +15,10 @@ function PetRegisterPage() {
   const { formData, errors, handleChange, validatePetForm } = usePetRegisterForm();
 
   const ufs = ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"];
+
+  const healthCharCount = formData.health?.length || 0;
+  const aboutCharCount = formData.about?.length || 0;
+  const minChars = 200;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -135,10 +139,10 @@ function PetRegisterPage() {
               <div className="col-span-2 sm:col-span-1">
                 <Label htmlFor="petState" className="mb-1 font-semibold">Estado</Label>
                 <select id="petState" name="petState" value={formData.petState} onChange={handleChange} required className="w-full h-9 rounded-md border bg-transparent px-3 py-1 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-[color,box-shadow] md:text-sm">
-                    <option value="">Selecione</option>
-                    {ufs.map(uf => (
-                        <option key={uf} value={uf}>{uf}</option>
-                    ))}
+                  <option value="">Selecione</option>
+                  {ufs.map(uf => (
+                    <option key={uf} value={uf}>{uf}</option>
+                  ))}
                 </select>
                 {errors.petState && <p className="text-xs text-red-600">{errors.petState}</p>}
               </div>
@@ -153,7 +157,14 @@ function PetRegisterPage() {
                   rows={8}
                   placeholder="Detalhes sobre o histórico de saúde do pet, se precisa de cuidados, etc..."
                   className="resize-none w-full rounded-md border bg-transparent px-3 py-1 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-[color,box-shadow] md:text-sm"></textarea>
-                {errors.health && <p className="text-red-500 text-xs mt-1">{errors.health}</p>}
+                <div className="flex justify-between items-start w-full mt-1">
+                  {errors.health ? (
+                    <p className="text-red-500 text-xs">{errors.health}</p>
+                  ) : <span></span>}
+                  <span className={`text-xs ml-auto ${healthCharCount >= minChars ? "text-green-600 font-semibold" : "text-gray-500"}`}>
+                    {healthCharCount}/{minChars}
+                  </span>
+                </div>
               </div>
 
               <div className="col-span-2">
@@ -166,7 +177,14 @@ function PetRegisterPage() {
                   rows={8}
                   placeholder="Detalhes sobre a história do pet, características dele, etc..."
                   className="resize-none w-full rounded-md border bg-transparent px-3 py-1 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-[color,box-shadow] md:text-sm"></textarea>
-                {errors.about && <p className="text-red-500 text-xs mt-1">{errors.about}</p>}
+                <div className="flex justify-between items-start w-full mt-1">
+                  {errors.about ? (
+                    <p className="text-red-500 text-xs">{errors.about}</p>
+                  ) : <span></span>}
+                  <span className={`text-xs ml-auto ${aboutCharCount >= minChars ? "text-green-600 font-semibold" : "text-gray-500"}`}>
+                    {aboutCharCount}/{minChars}
+                  </span>
+                </div>
               </div>
             </div>
           </section>

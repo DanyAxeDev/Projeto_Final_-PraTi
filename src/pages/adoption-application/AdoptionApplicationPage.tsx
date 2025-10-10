@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router";
 import PageWithHeaderLayout from "@/layouts/PageWithHeaderLayout";
 import RoundButton from "@/components/RoundButton";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { IoIosArrowBack } from "react-icons/io";
 import IconBox from "@/assets/icons/pets-box.png";
 import { toast } from "sonner";
@@ -77,7 +77,7 @@ export default function AdoptionApplicationPage() {
             <section className="flex-1 bg-orange-50 py-12 px-4 font-raleway font-medium">
                 <div className="max-w-[1100px] mx-auto">
                     <button
-                        onClick={() => navigate('/home')}
+                        onClick={() => navigate(-1)}
                         aria-label="Voltar"
                         className="flex items-center gap-2 p-1 font-semibold mb-6 cursor-pointer hover:underline text-brown"
                     >
@@ -110,22 +110,20 @@ export default function AdoptionApplicationPage() {
                                 onChange={handleChange}
                             />
 
-                            {/* contador dinâmico */}
-                            <div
-                                className={`text-xs mt-1 ${charCount < minChars ? "text-gray-500" : "text-green-600 font-semibold"
-                                    }`}
-                            >
-                                {charCount}/{minChars} caracteres
+                            <div className="flex justify-between items-start w-full mt-1 text-xs">
+                                {errors.message && <p className="text-red-500">{errors.message}</p>}
+                                <span
+                                    className={`ml-auto ${charCount < minChars ? "text-gray-500" : "text-green-600 font-semibold"}`}
+                                >
+                                    {charCount}/{minChars}
+                                </span>
                             </div>
-
-                            {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message}</p>}
                         </div>
 
                         <fieldset>
                             <Label className="font-semibold mb-3 text-gray-800">
                                 Receber contato do responsável via
                             </Label>
-
                             <RadioGroup
                                 value={formData.contactMethod}
                                 onValueChange={(value) =>
@@ -149,10 +147,9 @@ export default function AdoptionApplicationPage() {
                                     <span>E-mail</span>
                                 </Label>
                             </RadioGroup>
-                        </fieldset>
+                        </fieldset>                        
 
-
-                        <div className="flex justify-center pt-2">
+                        <div className="flex justify-center pt-2">                           
                             <RoundButton text="Enviar" color="blue" onClick={() => formRef.current?.requestSubmit()} />
                         </div>
                     </form>

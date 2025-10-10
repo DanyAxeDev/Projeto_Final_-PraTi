@@ -318,10 +318,18 @@ export const validatePetRegistration = (formData: PetRegistrationData): Partial<
     if (stateError) errors.petState = stateError;
 
     const healthError = validateRequiredField(formData.health, "Descrição de saúde");
-    if (healthError) errors.health = healthError;
+    if (healthError) {
+        errors.health = healthError;
+    } else if (formData.health.trim().length < 200) {
+        errors.health = "A descrição precisa ter pelo menos 200 caracteres.";
+    }
 
     const aboutError = validateRequiredField(formData.about, "História do pet");
-    if (aboutError) errors.about = aboutError;
+    if (aboutError) {
+        errors.about = aboutError;
+    } else if (formData.about.trim().length < 200) {
+        errors.about = "A história precisa ter pelo menos 200 caracteres.";
+    }
 
     const castrationError = validateFile(formData.castrationReceipt, "Comprovante de castração");
     if (castrationError) errors.castrationReceipt = castrationError;
@@ -390,7 +398,6 @@ export interface AdoptionApplicationData {
 
 export const validateAdoptionApplication = (formData: AdoptionApplicationData): FormErrors<AdoptionApplicationData> => {
   const errors: FormErrors<AdoptionApplicationData> = {};
- 
   const messageError = validateRequiredField(formData.message, "O campo mensagem");
   if (messageError) {
     errors.message = messageError;

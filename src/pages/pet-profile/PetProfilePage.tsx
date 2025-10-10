@@ -86,7 +86,7 @@ export default function PetProfilePage() {
               <p>{pet.about}</p>
             </div>
             <div className="flex items-between gap-4 mx-auto md:mx-0">
-              <RoundButton text="Enviar mensagem" color="blue" onClick={() => ""} />
+              <RoundButton text="Enviar mensagem" color="blue" onClick={() => navigate(`/pet/${pet.id}/adotar`)} />
               <FavoriteButton isFavorite={pet.isFavorite} />
             </div>
           </section>

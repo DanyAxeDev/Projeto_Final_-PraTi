@@ -17,6 +17,7 @@ import TeamPage from "./pages/teams/TeamPage"
 import EditPetPage from "./pages/edit-pet/EditPetPage"
 import NotFoundPage from "./pages/not-found/NotFoundPage"
 import ShareEstories from "./pages/share-stories/ShareEstories"
+import AdoptionApplicationPage from "./pages/adoption-application/AdoptionApplicationPage"; 
 import PrivateRoute from "./layouts/PrivateRoute"
 import { Toaster } from "sonner"
 
@@ -47,6 +48,7 @@ export default function App() {
           <Route element={<LoggedInLayout />}>
             <Route path="/home" element={<Home />} />
             <Route path="/pet/:id" element={<PetProfilePage />} />
+            <Route path="/pet/:id/adotar" element={<AdoptionApplicationPage />} />
             <Route path="/favoritos" element={<FavoritesPage />} />
             <Route path="/meus-pets" element={<MyPetsPage />} />
             <Route path="/cadastro-de-pet" element={<PetRegisterPage />} />

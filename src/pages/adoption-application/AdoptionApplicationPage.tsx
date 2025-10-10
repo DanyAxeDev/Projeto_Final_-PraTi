@@ -3,9 +3,13 @@ import { useParams, useNavigate } from "react-router";
 import PageWithHeaderLayout from "@/layouts/PageWithHeaderLayout";
 import RoundButton from "@/components/RoundButton";
 import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { IoIosArrowBack } from "react-icons/io";
 import IconBox from "@/assets/icons/pets-box.png";
 import { toast } from "sonner";
+
+import { useForm } from "@/hooks/useForm";
+import { type AdoptionApplicationData, validateAdoptionApplication } from "@/lib/validators";
 
 import type { Pet } from "@/types/types";
 import pets from "@/data/pets";
@@ -18,8 +22,6 @@ export default function AdoptionApplicationPage() {
     // Estados para guardar os dados do pet e controlar o loading
     const [pet, setPet] = useState<Pet | undefined>(undefined);
     const [loading, setLoading] = useState(true);
-    const [message, setMessage] = useState("");
-    const [contactMethod, setContactMethod] = useState("whatsapp");
 
     useEffect(() => {
         if (petId) {
@@ -30,17 +32,28 @@ export default function AdoptionApplicationPage() {
         setLoading(false);
     }, [petId]);
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        const applicationData = { petId, message, contactMethod };
-        console.log("Enviando candidatura:", applicationData);
+    const {
+        formData,
+        errors,
+        handleChange,
+        handleSubmit,
+        setFormData
+    } = useForm<AdoptionApplicationData>(
+        { message: '', contactMethod: 'whatsapp' },
+        validateAdoptionApplication,
+        (values) => {
+            console.log("Enviando candidatura:", { petId, ...values });
+            toast.success("Candidatura enviada com sucesso!");
 
-        toast.success("Candidatura enviada com sucesso!");
+            setTimeout(() => {
+                navigate(`/pet/${petId}`);
+            }, 2000);
+        }
+    );
 
-        setTimeout(() => {
-            navigate(`/pet/${petId}`);
-        }, 2000);
-    };
+    // Contador de caracteres
+    const charCount = formData.message.trim().length;
+    const minChars = 300;
 
     if (loading) {
         return (
@@ -93,35 +106,51 @@ export default function AdoptionApplicationPage() {
                                 rows={8}
                                 className="resize-none w-full rounded-md border bg-transparent px-3 py-2 outline-none"
                                 placeholder="Escreva sua mensagem..."
-                                value={message}
-                                onChange={(e) => setMessage(e.target.value)}
-                                required
+                                value={formData.message}
+                                onChange={handleChange}
                             />
+
+                            {/* contador dinâmico */}
+                            <div
+                                className={`text-xs mt-1 ${charCount < minChars ? "text-gray-500" : "text-green-600 font-semibold"
+                                    }`}
+                            >
+                                {charCount}/{minChars} caracteres
+                            </div>
+
+                            {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message}</p>}
                         </div>
 
                         <fieldset>
                             <Label className="font-semibold mb-3 text-gray-800">
                                 Receber contato do responsável via
                             </Label>
-                            <div className="flex flex-col items-start gap-2 mt-2">
-                                <Label htmlFor="whatsapp" className="flex items-center gap-2 cursor-pointer">
-                                    <input
-                                        type="radio" id="whatsapp" name="contactMethod" value="whatsapp"
-                                        checked={contactMethod === "whatsapp"} onChange={() => setContactMethod("whatsapp")}
-                                        className="h-4 w-4"
-                                    />
+
+                            <RadioGroup
+                                value={formData.contactMethod}
+                                onValueChange={(value) =>
+                                    setFormData((prev) => ({ ...prev, contactMethod: value as "whatsapp" | "email" }))
+                                }
+                                className="flex flex-col items-start gap-3 mt-2"
+                            >
+                                <Label
+                                    htmlFor="whatsapp"
+                                    className="flex items-center gap-2 cursor-pointer"
+                                >
+                                    <RadioGroupItem id="whatsapp" value="whatsapp" />
                                     <span>WhatsApp</span>
                                 </Label>
-                                <Label htmlFor="email" className="flex items-center gap-2 cursor-pointer">
-                                    <input
-                                        type="radio" id="email" name="contactMethod" value="email"
-                                        checked={contactMethod === "email"} onChange={() => setContactMethod("email")}
-                                        className="h-4 w-4"
-                                    />
+
+                                <Label
+                                    htmlFor="email"
+                                    className="flex items-center gap-2 cursor-pointer"
+                                >
+                                    <RadioGroupItem id="email" value="email" />
                                     <span>E-mail</span>
                                 </Label>
-                            </div>
+                            </RadioGroup>
                         </fieldset>
+
 
                         <div className="flex justify-center pt-2">
                             <RoundButton text="Enviar" color="blue" onClick={() => formRef.current?.requestSubmit()} />
@@ -132,4 +161,3 @@ export default function AdoptionApplicationPage() {
         </PageWithHeaderLayout>
     );
 }
-

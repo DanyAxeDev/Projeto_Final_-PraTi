@@ -381,3 +381,21 @@ export const validateUpdateData = (formData: Omit<RegistrationStep1Data, 'passwo
     }
     return errors;
 };
+
+// Valida os dados do formulário de candidatura para adoção
+export interface AdoptionApplicationData {
+  message: string;
+  contactMethod: string;
+}
+
+export const validateAdoptionApplication = (formData: AdoptionApplicationData): FormErrors<AdoptionApplicationData> => {
+  const errors: FormErrors<AdoptionApplicationData> = {};
+ 
+  const messageError = validateRequiredField(formData.message, "O campo mensagem");
+  if (messageError) {
+    errors.message = messageError;
+  } else if (formData.message.trim().length < 300) {
+    errors.message = "A mensagem precisa ter pelo menos 300 caracteres.";
+  }
+  return errors;
+};

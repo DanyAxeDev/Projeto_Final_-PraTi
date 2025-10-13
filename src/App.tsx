@@ -35,7 +35,9 @@ export default function App() {
           <Route path="/cuidados-e-dicas" element={<CuidadosEDicasPage />} /> {/* Rota para ser possível acessar a página de cuidados sem um slug default */}
           <Route path="/sobre" element={<SobrePage />} />
           <Route path="/nosso-time" element={<TeamPage/>} />
-          <Route path="/compartilhar-historia" element={<ShareEstories />} />
+          <Route element={<PrivateRoute />}>
+            <Route path="/compartilhar-historia" element={<ShareEstories />} />
+          </Route>
         </Route>
 
         {/* Rotas públicas */}

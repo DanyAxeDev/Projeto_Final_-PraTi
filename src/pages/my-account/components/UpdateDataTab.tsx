@@ -8,22 +8,24 @@ type UpdateDataTabProps = {
 };
 
 function UpdateDataTab({ onSaveSuccess }: UpdateDataTabProps) {
-  const { formData, errors, handleChange, validateAll, handleCancel } = useUpdateDataForm();
+  const { formData, errors, isLoading, handleChange, validateAll, handleCancel, saveUserData } = useUpdateDataForm();
 
   const ufs = ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"];
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const isFormValid = validateAll();
     if (isFormValid) {
-      console.log("Salvando dados do usuário:", formData);
-      onSaveSuccess();
+      const success = await saveUserData();
+      if (success) {
+        onSaveSuccess();
+      }
     }
   };
 
   return (
     <form className="flex flex-col gap-6 font-raleway" onSubmit={(e) => e.preventDefault()}>
       <h2 className="text-xl font-bold">Atualizar Dados</h2>
-      
+
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="grid gap-2">
           <Label htmlFor="firstName">Nome</Label>
@@ -36,7 +38,7 @@ function UpdateDataTab({ onSaveSuccess }: UpdateDataTabProps) {
           {errors.lastName && <p className="text-xs text-destructive">{errors.lastName}</p>}
         </div>
       </div>
-      
+
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="grid gap-2">
           <Label htmlFor="birthDate">Data de nascimento</Label>
@@ -55,7 +57,7 @@ function UpdateDataTab({ onSaveSuccess }: UpdateDataTabProps) {
         <Input id="email" name="email" type="email" value={formData.email} onChange={handleChange} />
         {errors.email && <p className="text-xs text-destructive">{errors.email}</p>}
       </div>
-      
+
       <div className="grid grid-cols-1 sm:grid-cols-[2fr_1fr] gap-4">
         <div className="grid gap-2">
           <Label htmlFor="address">Endereço</Label>
@@ -94,16 +96,16 @@ function UpdateDataTab({ onSaveSuccess }: UpdateDataTabProps) {
           >
             <option value="" disabled>Selecione</option>
             {ufs.map(uf => (
-                <option key={uf} value={uf}>{uf}</option>
+              <option key={uf} value={uf}>{uf}</option>
             ))}
           </select>
           {errors.state && <p className="text-xs text-destructive">{errors.state}</p>}
         </div>
       </div>
-      
+
       <div className="flex justify-end gap-3 pt-6 border-t mt-4">
-        <RoundButton text="Cancelar" color="gray" onClick={handleCancel} />
-        <RoundButton text="Salvar" color="blue" onClick={handleSave} />
+        <RoundButton text="Cancelar" color="gray" onClick={handleCancel} disabled={isLoading} />
+        <RoundButton text={isLoading ? "Salvando..." : "Salvar"} color="blue" onClick={handleSave} disabled={isLoading} />
       </div>
     </form>
   )

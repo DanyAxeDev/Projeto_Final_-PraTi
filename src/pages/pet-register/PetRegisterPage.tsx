@@ -12,7 +12,7 @@ import { toast } from "sonner";
 function PetRegisterPage() {
   const formRef = useRef<HTMLFormElement>(null);
   const navigate = useNavigate();
-  const { formData, errors, handleChange, validatePetForm } = usePetRegisterForm();
+  const { formData, errors, handleChange, validatePetForm, registerPet } = usePetRegisterForm();
 
   const ufs = ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"];
 
@@ -20,13 +20,22 @@ function PetRegisterPage() {
   const aboutCharCount = formData.about?.length || 0;
   const minChars = 200;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const isPetFormValid = validatePetForm();
     if (isPetFormValid) {
-      console.log("Formulário válido!", formData);
-      toast.success("Pet cadastrado com sucesso!");
-      navigate("/meus-pets");
+      try {
+        const result = await registerPet();
+        if (result.success) {
+          toast.success("Pet cadastrado com sucesso!");
+          navigate("/meus-pets");
+        } else {
+          toast.error(result.error || "Erro ao cadastrar pet");
+        }
+      } catch (error) {
+        console.error("Erro ao cadastrar pet:", error);
+        toast.error("Erro inesperado ao cadastrar pet");
+      }
     } else {
       console.log("Erros de validação:", errors);
     }

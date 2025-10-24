@@ -6,6 +6,7 @@ import { FaSortAlphaDown, FaSortAlphaUp } from "react-icons/fa"
 import { useMyPets } from "@/hooks/useMyPets"
 import type { Order } from "@/types/types"
 import Loader from "@/components/Loader"
+import RoundButton from "@/components/RoundButton"
 
 function MyPetsPage() {
   const [order, setOrder] = useState<Order>("normal")
@@ -48,12 +49,11 @@ function MyPetsPage() {
       <PageWithHeaderLayout title="Meus pets">
         <div className="flex flex-col items-center justify-center h-64 gap-4">
           <p className="text-red-500 text-center">{error}</p>
-          <button
+          <RoundButton
             onClick={refetch}
-            className="px-4 py-2 bg-blue text-white rounded hover:bg-darkblue transition-colors"
-          >
-            Tentar novamente
-          </button>
+            color="blue"
+            text="Tentar novamente"
+          />
         </div>
       </PageWithHeaderLayout>
     )
@@ -64,13 +64,12 @@ function MyPetsPage() {
     return (
       <PageWithHeaderLayout title="Meus pets">
         <div className="flex flex-col items-center justify-center h-64 gap-4">
-          <p className="text-gray-600 text-center">Você ainda não cadastrou nenhum pet.</p>
-          <button
+          <p className="text-gray-600 text-center font-raleway font-medium">Você ainda não cadastrou nenhum pet.</p>
+          <RoundButton
             onClick={() => navigate('/cadastro-de-pet')}
-            className="px-4 py-2 bg-blue text-white rounded hover:bg-darkblue transition-colors"
-          >
-            Cadastrar primeiro pet
-          </button>
+            color="blue"
+            text="Cadastrar primeiro pet"
+          />
         </div>
       </PageWithHeaderLayout>
     )

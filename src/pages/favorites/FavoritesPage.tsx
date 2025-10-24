@@ -59,7 +59,7 @@ function FavoritesPage() {
     return (
       <PageWithHeaderLayout title="Favoritos">
         <div className="flex flex-col items-center justify-center h-64 gap-4">
-          <p className="text-red-500 text-center">{error}</p>
+          <p className="text-red-500 text-center font-raleway font-medium">{error}</p>
         </div>
       </PageWithHeaderLayout>
     )
@@ -69,7 +69,7 @@ function FavoritesPage() {
     return (
       <PageWithHeaderLayout title="Favoritos">
         <div className="flex flex-col items-center justify-center h-64 gap-4">
-          <p className="text-gray-600 text-center">Você ainda não tem pets favoritos.</p>
+          <p className="text-gray-600 text-center font-raleway font-medium">Você ainda não tem pets favoritos.</p>
         </div>
       </PageWithHeaderLayout>
     )

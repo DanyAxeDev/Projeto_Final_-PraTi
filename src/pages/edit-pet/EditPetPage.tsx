@@ -6,27 +6,65 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import RoundButton from "@/components/RoundButton"
 import Tooltip from "@/components/Tooltip"
-import { usePetRegisterForm } from "@/hooks/usePetRegisterForm"
+import { usePetEditForm } from "@/hooks/usePetEditForm"
+import Loader from "@/components/Loader"
 import { toast } from "sonner";
 
 function EditPetPage() {
   const formRef = useRef<HTMLFormElement>(null);
   const navigate = useNavigate();
-  const { formData, errors, handleChange, validatePetForm } = usePetRegisterForm();
+  const { formData, errors, loading, error, handleChange, validatePetForm, updatePet } = usePetEditForm();
 
   const ufs = ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const isPetFormValid = validatePetForm();
     if (isPetFormValid) {
-      console.log("Formulário válido!", formData);
-      toast.success("Pet atualizado com sucesso!");
-      navigate("/meus-pets");
+      try {
+        const result = await updatePet();
+        if (result.success) {
+          toast.success("Pet atualizado com sucesso!");
+          navigate("/meus-pets");
+        } else {
+          toast.error(result.error || "Erro ao atualizar pet");
+        }
+      } catch (error) {
+        console.error("Erro ao atualizar pet:", error);
+        toast.error("Erro inesperado ao atualizar pet");
+      }
     } else {
       console.log("Erros de validação:", errors);
     }
   };
+
+  // Se estiver carregando, mostra o loader
+  if (loading) {
+    return (
+      <PageWithHeaderLayout title="Editar Pet">
+        <div className="flex justify-center items-center h-64">
+          <Loader />
+        </div>
+      </PageWithHeaderLayout>
+    )
+  }
+
+  // Se houver erro, mostra mensagem de erro
+  if (error) {
+    return (
+      <PageWithHeaderLayout title="Editar Pet">
+        <div className="flex flex-col items-center justify-center h-64 gap-4">
+          <p className="text-red-500 text-center">{error}</p>
+          <button
+            onClick={() => navigate('/meus-pets')}
+            className="px-4 py-2 bg-blue text-white rounded hover:bg-darkblue transition-colors"
+          >
+            Voltar para Meus Pets
+          </button>
+        </div>
+      </PageWithHeaderLayout>
+    )
+  }
 
   return (
     <PageWithHeaderLayout title="Editar Pet">
@@ -102,15 +140,17 @@ function EditPetPage() {
 
               <div className="col-span-2 sm:col-span-1">
                 <Label className="mb-1 font-semibold">Comprovante de castração</Label>
-                <Input type="file" id="castration-receipt" name="castrationReceipt" onChange={handleChange} accept="image/*" className="rounded-full max-w-[300px] font-semibold text-brown bg-gray-100" required />
+                <Input type="file" id="castration-receipt" name="castrationReceipt" onChange={handleChange} accept="image/*" className="rounded-full max-w-[300px] font-semibold text-brown bg-gray-100" />
+                <p className="text-xs text-gray-500 mt-1">Deixe em branco para manter o arquivo atual</p>
                 {errors.castrationReceipt && <p className="text-red-500 text-xs mt-1">{errors.castrationReceipt}</p>}
               </div>
 
               <div className="col-span-2 sm:col-span-1">
                 <Label className="mb-1 font-semibold">Comprovante da última vacinação</Label>
-                <Input type="file" id="vaccination-receipt" name="vaccinationReceipt" onChange={handleChange} accept="image/*" className="rounded-full max-w-[300px] font-semibold text-brown bg-gray-100" required />
+                <Input type="file" id="vaccination-receipt" name="vaccinationReceipt" onChange={handleChange} accept="image/*" className="rounded-full max-w-[300px] font-semibold text-brown bg-gray-100" />
+                <p className="text-xs text-gray-500 mt-1">Deixe em branco para manter o arquivo atual</p>
                 {errors.vaccinationReceipt && <p className="text-red-500 text-xs mt-1">{errors.vaccinationReceipt}</p>}
-              </div>              
+              </div>
 
               <div className="col-span-2">
                 <Label htmlFor="petAddress" className="mb-1 font-semibold">Endereço</Label>
@@ -135,10 +175,10 @@ function EditPetPage() {
               <div className="col-span-2 sm:col-span-1">
                 <Label htmlFor="petState" className="mb-1 font-semibold">Estado</Label>
                 <select id="petState" name="petState" value={formData.petState} onChange={handleChange} required className="w-full h-9 rounded-md border bg-transparent px-3 py-1 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-[color,box-shadow] md:text-sm">
-                    <option value="">Selecione</option>
-                    {ufs.map(uf => (
-                        <option key={uf} value={uf}>{uf}</option>
-                    ))}
+                  <option value="">Selecione</option>
+                  {ufs.map(uf => (
+                    <option key={uf} value={uf}>{uf}</option>
+                  ))}
                 </select>
                 {errors.petState && <p className="text-xs text-red-600">{errors.petState}</p>}
               </div>
@@ -205,14 +245,15 @@ function EditPetPage() {
           </section>
 
           {/* Seção 3 */}
-           <section>
+          <section>
             <FormStepHeading step={3} title="Fotos" />
-            <p className="mb-2">Selecione até 3 fotos.</p>
+            <p className="mb-2">Selecione até 3 fotos. Deixe em branco para manter as fotos atuais.</p>
             {errors.photo1 && <p className="text-red-500 text-xs mb-2">{errors.photo1}</p>}
             <div className="flex flex-col gap-3 max-w-[300px]">
               <Input type="file" id="photo1" name="photo1" onChange={handleChange} accept="image/*" className="rounded-full font-semibold text-brown bg-gray-100" />
               <Input type="file" id="photo2" name="photo2" onChange={handleChange} accept="image/*" className="rounded-full font-semibold text-brown bg-gray-100" />
               <Input type="file" id="photo3" name="photo3" onChange={handleChange} accept="image/*" className="rounded-full font-semibold text-brown bg-gray-100" />
+              <p className="text-xs text-gray-500">Deixe em branco para manter as fotos atuais</p>
             </div>
           </section>
 

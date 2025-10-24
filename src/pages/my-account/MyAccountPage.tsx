@@ -11,6 +11,8 @@ import Modal from "@/components/Modal";
 import RoundButtonDanger from "@/components/RoundButtonDanger";
 import { IoIosAlert } from "react-icons/io";
 import { toast } from "sonner";
+import { userService } from "@/services/userService";
+import { useUser } from "@/hooks/useUser";
 
 type Tab = 'geral' | 'atualizar-dados' | 'preferencias';
 
@@ -25,50 +27,63 @@ function MyAccountPage() {
   const navigate = useNavigate();
 
   const preferencesForm = usePreferencesForm();
+  const { user } = useUser();
 
-  const handleSavePreferences = () => {
-    if (preferencesForm.validate()) {
-        console.log("Salvando preferências:", preferencesForm.draftData);
-        toast.success("Suas preferências foram salvas com sucesso.");
-    } else {
-        console.log("Formulário de preferências inválido.");
+  const handleSavePreferences = async () => {
+    const success = await preferencesForm.savePreferences();
+    if (success) {
+      toast.success("Suas preferências foram salvas com sucesso.");
     }
   };
 
   const openDeleteModal = () => setModalState({ type: 'deleteConfirm' });
   const closeModal = () => setModalState({ type: 'none' });
-  
-  const handleDeleteConfirm = () => {
-    console.log("Conta excluída!");
-    closeModal();
-    toast.success("Conta excluída!");
-    navigate('/');
+
+  const handleDeleteConfirm = async () => {
+    if (!user?.id) {
+      toast.error("Usuário não encontrado");
+      return;
+    }
+
+    try {
+      const result = await userService.deleteUser(user.id);
+      if (result.success) {
+        closeModal();
+        toast.success("Conta excluída com sucesso!");
+        navigate('/');
+      } else {
+        toast.error(result.error || "Erro ao excluir conta");
+      }
+    } catch (error) {
+      toast.error("Erro ao excluir conta");
+    }
   };
-  
+
   const navItems = [
-    { id: 'geral' as Tab, icon: <FaCog className="text-blue size-5"/>, text: 'Geral' },
-    { id: 'atualizar-dados' as Tab, icon: <FaUserCheck  className="text-blue size-5"/>, text: 'Atualizar Dados' },
-    { id: 'preferencias' as Tab, icon: <FaSlidersH className="text-blue size-5"/>, text: 'Preferências' },
+    { id: 'geral' as Tab, icon: <FaCog className="text-blue size-5" />, text: 'Geral' },
+    { id: 'atualizar-dados' as Tab, icon: <FaUserCheck className="text-blue size-5" />, text: 'Atualizar Dados' },
+    { id: 'preferencias' as Tab, icon: <FaSlidersH className="text-blue size-5" />, text: 'Preferências' },
   ];
 
   const renderContent = () => {
     switch (activeTab) {
-      case 'geral':      
-        return <GeneralTab 
-                  onOpenDeleteModal={openDeleteModal} 
-                  onSaveSuccess={() => toast.success("Senha alterada com sucesso!")} 
-               />
-      case 'atualizar-dados': 
+      case 'geral':
+        return <GeneralTab
+          onOpenDeleteModal={openDeleteModal}
+          onSaveSuccess={() => toast.success("Senha alterada com sucesso!")}
+        />
+      case 'atualizar-dados':
         return <UpdateDataTab onSaveSuccess={() => toast.success("Seus dados foram atualizados com sucesso.")} />
-      case 'preferencias': 
-        return <PreferencesTab 
-                  preferencesData={preferencesForm.draftData}
-                  onPreferencesChange={preferencesForm.handleChange}
-                  onSave={handleSavePreferences}
-                  errors={preferencesForm.errors}
-                  onCancel={preferencesForm.handleCancel}
-                />
-      default: 
+      case 'preferencias':
+        return <PreferencesTab
+          preferencesData={preferencesForm.draftData}
+          onPreferencesChange={preferencesForm.handleChange}
+          onSave={handleSavePreferences}
+          errors={preferencesForm.errors}
+          onCancel={preferencesForm.handleCancel}
+          isLoading={preferencesForm.isLoading}
+        />
+      default:
         return null;
     }
   }
@@ -76,10 +91,10 @@ function MyAccountPage() {
   return (
     <>
       <PageWithHeaderLayout title="Minha Conta">
-         <section className="max-w-5xl mx-auto py-12 px-4 sm:px-8 font-raleway font-medium">
-  
+        <section className="max-w-5xl mx-auto py-12 px-4 sm:px-8 font-raleway font-medium">
+
           <div className="grid grid-cols-1 md:grid-cols-[220px_1fr] items-start bg-white rounded-lg shadow overflow-hidden">
-                      
+
             <nav className="flex flex-col py-6">
               {navItems.map(item => (
                 <Button
@@ -91,8 +106,8 @@ function MyAccountPage() {
                   {item.icon} {item.text}
                 </Button>
               ))}
-            </nav>          
-        
+            </nav>
+
             <div className="p-6">
               {renderContent()}
             </div>
@@ -100,7 +115,7 @@ function MyAccountPage() {
           </div>
         </section>
       </PageWithHeaderLayout>
-      
+
       {/* Modal de excluir conta */}
       <Modal isModalOpen={modalState.type === 'deleteConfirm'} closeModal={closeModal} title="Excluir conta">
         <IoIosAlert aria-hidden="true" className="text-5xl text-red-400" />

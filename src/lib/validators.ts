@@ -1,11 +1,5 @@
 import type { FormErrors } from "@/hooks/useForm";
 
-// Simula usuários cadastrados para o login
-const users: Record<string, string> = {
-    "usuario1@email.com": "senha123",
-    "teste@email.com": "12345678",
-};
-
 const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/;
 
 export type Species = 'cão' | 'gato' | 'no-preference';
@@ -205,22 +199,21 @@ export const validatePasswordChange = (data: PasswordChangeData) => {
     return errors;
 };
 
-// Valida os dados de login
+// Valida os dados de login - apenas validação de formato, autenticação via backend
 export function validateLogin(data: LoginData): LoginErrors {
     const errors: LoginErrors = {};
+
+    // Validação apenas de formato - autenticação será feita pelo backend
     if (!data.email) {
         errors.email = "E-mail é obrigatório.";
     } else if (!/\S+@\S+\.\S+/.test(data.email)) {
         errors.email = "Formato de e-mail inválido.";
-    } else if (!users[data.email]) {
-        errors.email = "E-mail não cadastrado";
     }
 
     if (!data.password) {
         errors.password = "Senha é obrigatória.";
-    } else if (data.email && users[data.email] && users[data.email] !== data.password) {
-        errors.password = "Senha incorreta";
     }
+
     return errors;
 }
 
@@ -392,17 +385,17 @@ export const validateUpdateData = (formData: Omit<RegistrationStep1Data, 'passwo
 
 // Valida os dados do formulário de candidatura para adoção
 export interface AdoptionApplicationData {
-  message: string;
-  contactMethod: string;
+    message: string;
+    contactMethod: string;
 }
 
 export const validateAdoptionApplication = (formData: AdoptionApplicationData): FormErrors<AdoptionApplicationData> => {
-  const errors: FormErrors<AdoptionApplicationData> = {};
-  const messageError = validateRequiredField(formData.message, "O campo mensagem");
-  if (messageError) {
-    errors.message = messageError;
-  } else if (formData.message.trim().length < 300) {
-    errors.message = "A mensagem precisa ter pelo menos 300 caracteres.";
-  }
-  return errors;
+    const errors: FormErrors<AdoptionApplicationData> = {};
+    const messageError = validateRequiredField(formData.message, "O campo mensagem");
+    if (messageError) {
+        errors.message = messageError;
+    } else if (formData.message.trim().length < 300) {
+        errors.message = "A mensagem precisa ter pelo menos 300 caracteres.";
+    }
+    return errors;
 };

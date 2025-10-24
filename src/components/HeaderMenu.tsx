@@ -5,6 +5,7 @@ import { TbCirclePlus } from "react-icons/tb"
 import { FaCat } from "react-icons/fa"
 import { MdFavorite } from "react-icons/md"
 import { IoIosSettings } from "react-icons/io"
+import { useUser } from "@/hooks/useUser"
 
 type HeaderMenuProps = {
     isOpen: boolean,
@@ -12,6 +13,13 @@ type HeaderMenuProps = {
 }
 
 function HeaderMenu({ isOpen, setIsOpen }: HeaderMenuProps) {
+  const { logout } = useUser()
+
+  const handleLogout = () => {
+    logout()
+    setIsOpen(false) // Fechar o menu após logout
+  }
+
   return (
     <nav 
     onClick={() => setIsOpen(false)} 
@@ -39,7 +47,7 @@ function HeaderMenu({ isOpen, setIsOpen }: HeaderMenuProps) {
             url="/minha-conta" 
             />
             <li className="p-3">
-                <RoundButtonDanger text="Sair" onClick={() => ""} />
+                <RoundButtonDanger text="Sair" onClick={handleLogout} />
             </li>
         </ul>
     </nav>

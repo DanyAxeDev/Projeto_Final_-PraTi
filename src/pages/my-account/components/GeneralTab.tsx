@@ -10,16 +10,17 @@ type GeneralTabProps = {
   onSaveSuccess: (message: string) => void;
 };
 
-function GeneralTab({ onOpenDeleteModal, onSaveSuccess }: GeneralTabProps) { 
+function GeneralTab({ onOpenDeleteModal, onSaveSuccess }: GeneralTabProps) {
   const {
     currentPassword,
     newPassword,
     errors: passwordErrors,
+    isLoading: passwordLoading,
     handleChangePassword,
     handleCurrentPasswordChange,
     handleNewPasswordChange,
   } = usePasswordChange({ onSaveSuccess });
-  
+
   const [deletePassword, setDeletePassword] = useState("");
   const [deletePasswordError, setDeletePasswordError] = useState("");
 
@@ -66,7 +67,12 @@ function GeneralTab({ onOpenDeleteModal, onSaveSuccess }: GeneralTabProps) {
               {passwordErrors.newPassword && <p className="text-xs text-destructive">{passwordErrors.newPassword}</p>}
             </div>
             <div className="w-45">
-              <RoundButton text="Alterar Senha" color="blue" onClick={handleChangePassword} />
+              <RoundButton
+                text={passwordLoading ? "Alterando..." : "Alterar Senha"}
+                color="blue"
+                onClick={handleChangePassword}
+                disabled={passwordLoading}
+              />
             </div>
           </div>
         </div>

@@ -9,5 +9,5 @@ createRoot(document.getElementById('root')!).render(
     <UserContextProvider>
       <App />
     </UserContextProvider>
-  </StrictMode>,
+  </StrictMode>
 )

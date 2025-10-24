@@ -25,7 +25,8 @@ export default function RegisterPage() {
         handleValueChange,
         handlePersonalityChange,
         validateRegistrationForm, 
-        validatePreferenceForm 
+        validatePreferenceForm,
+        registerUser
     } = useUserRegisterForm();
 
     const formStep1Ref = useRef<HTMLFormElement>(null);
@@ -50,13 +51,24 @@ export default function RegisterPage() {
         setCurrentStep(1);
     };
 
-    const handleRegister = (e: React.FormEvent) => {
+    const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (validatePreferenceForm()) {              
-            toast.success("Sua conta foi criada e suas preferências foram salvas. Agora você já pode encontrar seu novo melhor amigo!");
-            navigate("/home");
+        if (validatePreferenceForm()) {
+            try {
+                const result = await registerUser();
+                
+                if (result.success) {
+                    toast.success("Sua conta foi criada e suas preferências foram salvas. Agora você já pode encontrar seu novo melhor amigo!");
+                    navigate("/login"); // Redirecionar para login após registro
+                } else {
+                    toast.error(result.error || "Erro ao criar conta");
+                }
+            } catch (error) {
+                toast.error("Erro inesperado ao criar conta");
+                console.error("Registration error:", error);
+            }
         } else {
-            console.log("Validação da Etapa 2 falhou.");
+            toast.error("Por favor, corrija os erros no formulário");
         }
     };
 

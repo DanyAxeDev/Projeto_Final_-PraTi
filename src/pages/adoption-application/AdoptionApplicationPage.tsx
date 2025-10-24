@@ -11,8 +11,8 @@ import { toast } from "sonner";
 import { useForm } from "@/hooks/useForm";
 import { type AdoptionApplicationData, validateAdoptionApplication } from "@/lib/validators";
 
-import type { Pet } from "@/types/types";
-import pets from "@/data/pets";
+import type { Pet } from "@/types/api";
+import { petService } from "@/services/petService";
 
 export default function AdoptionApplicationPage() {
     const { id: petId } = useParams<{ id: string }>();
@@ -24,12 +24,29 @@ export default function AdoptionApplicationPage() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (petId) {
-            // Simulação de fetch, como na PetProfilePage
-            const foundPet = pets.find(p => p.id == Number(petId));
-            setPet(foundPet);
-        }
-        setLoading(false);
+        const fetchPet = async () => {
+            if (!petId) {
+                setLoading(false);
+                return;
+            }
+
+            try {
+                setLoading(true);
+                const result = await petService.getPetById(Number(petId));
+
+                if (result.success && result.data) {
+                    setPet(result.data);
+                } else {
+                    console.error('Erro ao buscar pet:', result.error);
+                }
+            } catch (error) {
+                console.error('Erro ao buscar pet:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchPet();
     }, [petId]);
 
     const {
@@ -147,9 +164,9 @@ export default function AdoptionApplicationPage() {
                                     <span>E-mail</span>
                                 </Label>
                             </RadioGroup>
-                        </fieldset>                        
+                        </fieldset>
 
-                        <div className="flex justify-center pt-2">                           
+                        <div className="flex justify-center pt-2">
                             <RoundButton text="Enviar" color="blue" onClick={() => formRef.current?.requestSubmit()} />
                         </div>
                     </form>

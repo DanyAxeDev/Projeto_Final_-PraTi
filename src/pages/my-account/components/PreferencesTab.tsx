@@ -6,7 +6,7 @@ import RoundButton from "@/components/RoundButton";
 
 export type PreferencesData = {
     adoption: {
-        species: string; 
+        species: string;
         gender: string;
         size: string;
         age: string;
@@ -20,21 +20,22 @@ type TabProps = {
     onPreferencesChange: (change: { target: { name: string; value: any } }) => void;
     onSave: () => void;
     onCancel: () => void;
-    errors?: { 
-      adoption?: { 
-        species?: string; 
-        gender?: string;
-        size?: string;
-        age?: string;
-        personality?: string; 
-      };
+    isLoading?: boolean;
+    errors?: {
+        adoption?: {
+            species?: string;
+            gender?: string;
+            size?: string;
+            age?: string;
+            personality?: string;
+        };
     }
 }
 
 const RadioButtons = ({ name, options, selectedValue, onChange }: { name: string, options: string[], selectedValue: string, onChange: any }) => (
     <RadioGroup value={selectedValue} onValueChange={(value) => onChange({ target: { name, value } })} className="flex flex-col items-start gap-y-2 mt-2">
         {options.map(option => (
-             <div key={option} className="flex items-center space-x-2">
+            <div key={option} className="flex items-center space-x-2">
                 <RadioGroupItem value={option} id={`${name}-${option}`} />
                 <Label htmlFor={`${name}-${option}`} className="font-normal">{option}</Label>
             </div>
@@ -42,7 +43,7 @@ const RadioButtons = ({ name, options, selectedValue, onChange }: { name: string
     </RadioGroup>
 );
 
-function PreferencesTab({ preferencesData, onPreferencesChange, onSave, onCancel, errors }: TabProps) {
+function PreferencesTab({ preferencesData, onPreferencesChange, onSave, onCancel, isLoading = false, errors }: TabProps) {
     const { adoption } = preferencesData;
 
     const handleCheckboxChange = (checked: boolean, value: string) => {
@@ -62,13 +63,13 @@ function PreferencesTab({ preferencesData, onPreferencesChange, onSave, onCancel
     return (
         <div className="font-raleway space-y-8">
             <h2 className="text-xl font-bold">Preferências</h2>
-            
+
             <section data-section="adoption">
                 <h3 className="text-lg font-semibold pb-2">Preferências de pets</h3>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 mt-4"> 
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 mt-4">
                     <div>
-                        <Label className="font-medium">Eu desejo ver...</Label>                     
+                        <Label className="font-medium">Eu desejo ver...</Label>
                         <RadioButtons name="species" options={["Cão", "Gato", "Não tenho preferência"]} selectedValue={adoption.species} onChange={onPreferencesChange} />
                         {errors?.adoption?.species && <p className="text-xs text-destructive mt-1">{errors.adoption.species}</p>}
                     </div>
@@ -98,10 +99,10 @@ function PreferencesTab({ preferencesData, onPreferencesChange, onSave, onCancel
                                 <div key={colIndex} className="flex flex-col gap-y-2">
                                     {column.map(p => (
                                         <div key={p} className="flex items-center space-x-2">
-                                            <Checkbox 
-                                                id={p} 
-                                                checked={!!adoption.personality[p]} 
-                                                onCheckedChange={(checked) => handleCheckboxChange(checked as boolean, p)} 
+                                            <Checkbox
+                                                id={p}
+                                                checked={!!adoption.personality[p]}
+                                                onCheckedChange={(checked) => handleCheckboxChange(checked as boolean, p)}
                                             />
                                             <Label htmlFor={p} className="font-normal ">{p}</Label>
                                         </div>
@@ -112,18 +113,18 @@ function PreferencesTab({ preferencesData, onPreferencesChange, onSave, onCancel
                         {errors?.adoption?.personality && <p className="text-xs text-destructive mt-1">{errors.adoption.personality}</p>}
                     </div>
                 </div>
-                
+
                 <div className="mt-6">
                     <Label className="font-medium">Distância máxima</Label>
                     <div className="flex items-center gap-4 mt-2">
-                        <Slider 
-                           id="distance" 
-                           name="distance"
-                           min={1} 
-                           max={100} 
-                           step={1} 
-                           value={[adoption.distance]} 
-                           onValueChange={(value) => onPreferencesChange({ target: { name: 'distance', value: value[0] } })}
+                        <Slider
+                            id="distance"
+                            name="distance"
+                            min={1}
+                            max={100}
+                            step={1}
+                            value={[adoption.distance]}
+                            onValueChange={(value) => onPreferencesChange({ target: { name: 'distance', value: value[0] } })}
                         />
                         <span className="font-semibold text-gray-700 w-12 text-center">{adoption.distance} km</span>
                     </div>
@@ -131,8 +132,8 @@ function PreferencesTab({ preferencesData, onPreferencesChange, onSave, onCancel
             </section>
 
             <div className="flex justify-end gap-3 border-t pt-6 mt-4">
-                <RoundButton text="Cancelar" color="gray"  onClick={onCancel} />
-                <RoundButton text="Salvar" color="blue" onClick={onSave} />
+                <RoundButton text="Cancelar" color="gray" onClick={onCancel} disabled={isLoading} />
+                <RoundButton text={isLoading ? "Salvando..." : "Salvar"} color="blue" onClick={onSave} disabled={isLoading} />
             </div>
         </div>
     );

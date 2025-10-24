@@ -5,6 +5,7 @@ import { TbCirclePlus } from "react-icons/tb"
 import { FaCat } from "react-icons/fa"
 import { MdFavorite } from "react-icons/md"
 import { IoIosSettings } from "react-icons/io"
+import { TbTextCaption } from "react-icons/tb"
 import { useUser } from "@/hooks/useUser"
 
 type HeaderMenuProps = {
@@ -27,22 +28,27 @@ function HeaderMenu({ isOpen, setIsOpen }: HeaderMenuProps) {
     >
         <ul className="flex flex-col gap-2">
             <MenuLink 
-            icon={<TbCirclePlus className="text-blue text-2xl" />} 
+            icon={<TbCirclePlus className="text-blue text-2xl" aria-hidden="true" />} 
             text="Adicionar um pet" 
             url="/cadastro-de-pet" 
             />
             <MenuLink 
-            icon={<FaCat className="text-blue text-2xl" />} 
+            icon={<FaCat className="text-blue text-2xl" aria-hidden="true" />} 
             text="Meus pets" 
             url="/meus-pets" 
             />
             <MenuLink 
-            icon={<MdFavorite className="text-blue text-2xl" />} 
+            icon={<MdFavorite className="text-blue text-2xl" aria-hidden="true" />} 
             text="Favoritos"
             url="/favoritos" 
             />
+            <MenuLink
+            icon={<TbTextCaption className="text-blue text-2xl" aria-hidden="true" />}
+            text="Compartilhar história"
+            url="/compartilhar-historia"
+            />
             <MenuLink 
-            icon={<IoIosSettings className="text-blue text-2xl" />} 
+            icon={<IoIosSettings className="text-blue text-2xl" aria-hidden="true" />} 
             text="Minha conta" 
             url="/minha-conta" 
             />

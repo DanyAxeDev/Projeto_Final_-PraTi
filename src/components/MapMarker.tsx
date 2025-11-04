@@ -121,7 +121,7 @@ const PlacesAutocomplete = ({ setSelected }) => {
                         maxHeight: "200px",
                         overflowY: "auto",
                         
-                    }} hover>   
+                    }}>   
                     {/* mapeia sugestões e lista */}
                     {data.map(({ place_id, description }) => (
                         <li key={place_id} onClick={() => handleSelect(description)} style={{padding: "8px",cursor: "pointer",}}> 

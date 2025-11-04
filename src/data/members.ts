@@ -50,9 +50,9 @@ const members: Member[] = [
       stage: "Função 6",
     },
     {
-      name: "Pessoa 7",
-      githubUrl: "https://github.com/pessoa3",
-      linkedinUrl: "https://linkedin.com/in/pessoa3",
+      name: "João Victor",
+      githubUrl: "https://github.com/jvictor-vic",
+      linkedinUrl: "https://www.linkedin.com/in/joão-victor-oliveira-falcão",
       image: "https://via.placeholder.com/150",
       description: "Descrição da Pessoa 3",
       stage: "Função 7",

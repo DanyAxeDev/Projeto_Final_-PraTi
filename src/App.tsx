@@ -20,6 +20,7 @@ import ShareEstories from "./pages/share-stories/ShareEstories"
 import AdoptionApplicationPage from "./pages/adoption-application/AdoptionApplicationPage"; 
 import PrivateRoute from "./layouts/PrivateRoute"
 import { Toaster } from "sonner"
+import MapMarker from "./components/MapMarker"
 
 export default function App() {
   return (
@@ -44,6 +45,8 @@ export default function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/cadastro" element={<RegisterPage />} />
+        <Route path="/mapa" element={<MapMarker />} />
+
 
         {/* Rotas privadas (usuário logado) */}
         <Route element={<PrivateRoute />}>

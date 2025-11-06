@@ -20,6 +20,8 @@ import ShareEstories from "./pages/share-stories/ShareEstories"
 import AdoptionApplicationPage from "./pages/adoption-application/AdoptionApplicationPage"; 
 import PrivateRoute from "./layouts/PrivateRoute"
 import { Toaster } from "sonner"
+import MapMarker from "./components/MapMarker"
+import MapLatLngPin from "./components/PinMap"
 
 export default function App() {
   return (

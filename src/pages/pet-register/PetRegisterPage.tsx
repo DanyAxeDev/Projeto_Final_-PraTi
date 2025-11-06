@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import PageWithHeaderLayout from "@/layouts/PageWithHeaderLayout";
 import FormStepHeading from "@/components/FormStepHeading";
@@ -8,8 +8,12 @@ import RoundButton from "@/components/RoundButton";
 import Tooltip from "@/components/Tooltip";
 import { usePetRegisterForm } from "@/hooks/usePetRegisterForm";
 import { toast } from "sonner";
+import { findAddress } from "@/services/cepService";
+import type { ViaCepResponse } from "@/types/types";
+import InputLoader from "@/components/InputLoader";
 
 function PetRegisterPage() {
+  const [isSearching, setIsSearching] = useState(false)
   const formRef = useRef<HTMLFormElement>(null);
   const navigate = useNavigate();
   const { formData, errors, handleChange, validatePetForm, registerPet } = usePetRegisterForm();
@@ -19,6 +23,26 @@ function PetRegisterPage() {
   const healthCharCount = formData.health?.length || 0;
   const aboutCharCount = formData.about?.length || 0;
   const minChars = 200;
+
+  const searchCep = async (e: React.FocusEvent<HTMLInputElement, Element>) => {
+    const cep = e.target.value.trim().replace("-", "")
+    
+    if (cep.length == 8) {
+      try {
+        setIsSearching(true)
+        const data: ViaCepResponse = await findAddress(cep)
+        formData.petAddress = data.logradouro
+        formData.petNeighborhood = data.bairro
+        formData.petCity = data.localidade
+        formData.petState = data.uf
+          
+      } catch (e) {
+        console.log("Não foi possível procurar o endereço via CEP.", e)
+      } finally {
+        setIsSearching(false)
+      }
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -125,6 +149,11 @@ function PetRegisterPage() {
                 {errors.vaccinationReceipt && <p className="text-red-500 text-xs mt-1">{errors.vaccinationReceipt}</p>}
               </div>
 
+              <div className="col-span-2 relative">
+                <Label htmlFor="petCep" className="mb-1 font-semibold">CEP</Label>
+                <Input id="petCep" name="petCep" placeholder="00000-00" maxLength={9} onBlur={searchCep} />
+                {isSearching && <InputLoader />}
+              </div>
               <div className="col-span-2">
                 <Label htmlFor="petAddress" className="mb-1 font-semibold">Endereço</Label>
                 <Input id="petAddress" name="petAddress" placeholder="Rua, Avenida, etc." required value={formData.petAddress} onChange={handleChange} />

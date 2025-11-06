@@ -13,11 +13,15 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import { useUser } from "@/hooks/useUser";
 import { toast } from "sonner";
+import { findAddress } from "@/services/cepService";
+import type { ViaCepResponse } from "@/types/types";
+import InputLoader from "@/components/InputLoader";
 
 import googleIcon from "@/assets/icons/icon-google.png";
 
 export default function RegisterPage() {
     const [currentStep, setCurrentStep] = useState(1);
+    const [isSearching, setIsSearching] = useState(false)
     const { 
         formData, 
         errors, 
@@ -49,6 +53,26 @@ export default function RegisterPage() {
 
     const handlePreviousStep = () => {
         setCurrentStep(1);
+    };
+
+    const searchCep = async (e: React.FocusEvent<HTMLInputElement, Element>) => {
+        const cep = e.target.value.trim().replace("-", "")
+        
+        if (cep.length == 8) {
+            try {
+                setIsSearching(true)
+                const data: ViaCepResponse = await findAddress(cep)
+                formData.address = data.logradouro
+                formData.neighborhood = data.bairro
+                formData.city = data.localidade
+                formData.state = data.uf
+                
+            } catch (e) {
+                console.log("Não foi possível procurar o endereço via CEP.", e)
+            } finally {
+                setIsSearching(false)
+            }
+        }
     };
 
     const handleRegister = async (e: React.FormEvent) => {
@@ -142,6 +166,11 @@ export default function RegisterPage() {
                                     <Label htmlFor="phone" className="mb-1 font-semibold">Telefone</Label>
                                     <Input id="phone" type="tel" placeholder="(00) 90000-0000" required value={formData.phone} onChange={handleChange} />
                                     {errors.phone && <p className="text-xs text-red-600">{errors.phone}</p>}
+                                </div>
+                                <div className="col-span-2 relative">
+                                    <Label htmlFor="cep" className="mb-1 font-semibold">CEP</Label>
+                                    <Input id="cep" placeholder="00000-00" maxLength={9} onBlur={searchCep} />
+                                    {isSearching && <InputLoader />}
                                 </div>
                                 <div className="col-span-2">
                                     <Label htmlFor="address" className="mb-1 font-semibold">Endereço</Label>

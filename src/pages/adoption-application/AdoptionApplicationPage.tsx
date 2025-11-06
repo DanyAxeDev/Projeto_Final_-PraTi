@@ -70,7 +70,7 @@ export default function AdoptionApplicationPage() {
 
     // Contador de caracteres
     const charCount = formData.message.trim().length;
-    const minChars = 300;
+    const minChars = 200;
 
     if (loading) {
         return (

@@ -22,7 +22,7 @@ function PetRegisterPage() {
 
   const healthCharCount = formData.health?.length || 0;
   const aboutCharCount = formData.about?.length || 0;
-  const minChars = 200;
+  const minChars = 100;
 
   const searchCep = async (e: React.FocusEvent<HTMLInputElement, Element>) => {
     const cep = e.target.value.trim().replace("-", "")

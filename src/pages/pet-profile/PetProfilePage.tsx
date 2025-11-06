@@ -87,16 +87,13 @@ export default function PetProfilePage() {
             <section className="text-lg">
               <h1 className="font-tilt text-brown text-5xl mb-4">{pet.name}</h1>
               <p className="mb-1">
-                <span className="font-semibold mr-2">Espécie:</span> {pet.species}
-              </p>
-              <p className="mb-1">
-                <span className="font-semibold mr-8.5">Sexo:</span> {pet.gender}
+                <span className="font-semibold mr-8.5">Sexo:</span> {pet.gender === "male" ? "Macho" : "Fêmea"}
               </p>
               <p className="mb-1">
                 <span className="font-semibold mr-7">Idade:</span> {petAge >= 1 ? `${petAge} anos` : `${petAge * 10} meses`}
               </p>
               <p>
-                <span className="font-semibold mr-7.5">Porte:</span> {pet.size}
+                <span className="font-semibold mr-7.5">Porte:</span> {pet.size === "small" ? "Pequeno" : pet.size === "medium" ? "Médio" : "Grande"}
               </p>
             </section>
 

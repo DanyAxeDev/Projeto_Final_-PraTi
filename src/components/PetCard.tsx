@@ -24,7 +24,7 @@ function PetCard({ id, name, dob, gender, city, photo }:PetCardProps ) {
         
         <div className="flex flex-col gap-1">
           <span className="flex items-center gap-2">
-            <IoPaw className="text-lg text-brown" /> {gender}
+            <IoPaw className="text-lg text-brown" /> {gender === "male" ? "Macho" : "Fêmea"}
           </span>
           <span className="flex items-center gap-2">
             <FaLocationDot className="text-lg text-blue" /> {city}

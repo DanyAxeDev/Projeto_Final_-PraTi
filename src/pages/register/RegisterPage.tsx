@@ -21,10 +21,12 @@ import googleIcon from "@/assets/icons/icon-google.png";
 
 export default function RegisterPage() {
     const [currentStep, setCurrentStep] = useState(1);
-    const [isSearching, setIsSearching] = useState(false)
+    const [isSearching, setIsSearching] = useState(false);
+    const [cepValue, setCepValue] = useState("");
     const { 
         formData, 
         errors, 
+        setErrors,
         handleChange, 
         handleValueChange,
         handlePersonalityChange,
@@ -46,7 +48,20 @@ export default function RegisterPage() {
 
     const handleNextStep = (e: React.FormEvent) => {
         e.preventDefault();
-        if (validateRegistrationForm()) {
+
+        const isRestOfFormValid = validateRegistrationForm();
+
+        let isCepValid = true;
+        const cep = cepValue.replace(/\D/g, '');
+        if (cep.length === 0) {
+            setErrors((prev: typeof errors) => ({
+                ...prev,
+                cep: "CEP é obrigatório."
+            } as any));
+            isCepValid = false;
+        }
+
+        if (isRestOfFormValid && isCepValid) {
             setCurrentStep(2);
         }
     };
@@ -55,32 +70,77 @@ export default function RegisterPage() {
         setCurrentStep(1);
     };
 
-    const searchCep = async (e: React.FocusEvent<HTMLInputElement, Element>) => {
-        const cep = e.target.value.trim().replace("-", "")
-        
-        if (cep.length == 8) {
-            try {
-                setIsSearching(true)
-                const data: ViaCepResponse = await findAddress(cep)
-                formData.address = data.logradouro
-                formData.neighborhood = data.bairro
-                formData.city = data.localidade
-                formData.state = data.uf
-                
-            } catch (e) {
-                console.log("Não foi possível procurar o endereço via CEP.", e)
-            } finally {
-                setIsSearching(false)
-            }
+    const handleCepChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        let value = e.target.value.replace(/\D/g, '');
+
+        if (value.length > 8) {
+            value = value.slice(0, 8);
+        }
+
+        if (value.length > 5) {
+            value = value.slice(0, 5) + '-' + value.slice(5, 8);
+        }
+
+        setCepValue(value);
+
+        if ((errors as any).cep) {
+            setErrors((prev: typeof errors) => {
+                const newErrors = { ...prev };
+                delete (newErrors as any).cep;
+                return newErrors;
+            });
         }
     };
+
+    const searchCep = async () => {
+        const cep = cepValue.replace(/\D/g, '');
+
+        if (cep.length === 0) {
+            return;
+        }
+
+        if (cep.length === 8) {
+            try {
+                setIsSearching(true);
+                const data: ViaCepResponse = await findAddress(cep);
+
+                if ((data as any).erro) {
+                    toast.error("CEP não encontrado. Por favor, verifique o número.");
+                    setErrors((prev: typeof errors) => ({ ...prev, cep: "CEP não encontrado." } as any));
+                    formData.address = "";
+                    formData.neighborhood = "";
+                    formData.city = "";
+                    formData.state = "";
+                } else {
+                    setErrors((prev: typeof errors) => {
+                        const newErrors = { ...prev };
+                        delete (newErrors as any).cep;
+                        return newErrors;
+                    });
+                    formData.address = data.logradouro;
+                    formData.neighborhood = data.bairro;
+                    formData.city = data.localidade;
+                    formData.state = data.uf;
+                }
+            } catch (e) {
+                toast.error("Não foi possível consultar o CEP. Tente novamente.");
+                setErrors((prev: typeof errors) => ({ ...prev, cep: "Falha ao consultar o CEP." } as any));
+                console.log("Não foi possível procurar o endereço via CEP.", e);
+            } finally {
+                setIsSearching(false);
+            }
+        } else if (cep.length > 0 && cep.length < 8) {
+            setErrors((prev: typeof errors) => ({ ...prev, cep: "CEP incompleto. Deve ter 8 dígitos." } as any));
+        }
+    };
+
 
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
         if (validatePreferenceForm()) {
             try {
                 const result = await registerUser();
-                
+
                 if (result.success) {
                     toast.success("Sua conta foi criada e suas preferências foram salvas. Agora você já pode encontrar seu novo melhor amigo!");
                     navigate("/login"); // Redirecionar para login após registro
@@ -124,7 +184,7 @@ export default function RegisterPage() {
                 </div>
                 <div className="flex flex-col justify-center w-full p-8 space-y-6 lg:w-1/2 sm:p-12 overflow-y-auto">
                     <div className="text-center">
-                        <h2 className="text-4xl font-tilt text-brown">Cadastro</h2>
+                        <h2 className="text-4xl font-tilt text-brown mt-15">Cadastro</h2>
                     </div>
 
                     <div className="text-center">
@@ -169,7 +229,15 @@ export default function RegisterPage() {
                                 </div>
                                 <div className="col-span-2 relative">
                                     <Label htmlFor="cep" className="mb-1 font-semibold">CEP</Label>
-                                    <Input id="cep" placeholder="00000-00" maxLength={9} onBlur={searchCep} />
+                                    <Input
+                                        id="cep"
+                                        placeholder="00000-000"
+                                        maxLength={9}
+                                        value={cepValue}
+                                        onChange={handleCepChange}
+                                        onBlur={searchCep}
+                                    />
+                                    {(errors as any).cep && <p className="text-xs text-red-600">{(errors as any).cep}</p>}
                                     {isSearching && <InputLoader />}
                                 </div>
                                 <div className="col-span-2">

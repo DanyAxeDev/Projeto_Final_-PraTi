@@ -13,10 +13,19 @@ import type { ViaCepResponse } from "@/types/types";
 import InputLoader from "@/components/InputLoader";
 
 function PetRegisterPage() {
-  const [isSearching, setIsSearching] = useState(false)
+  const [isSearching, setIsSearching] = useState(false);
+  const [petCepValue, setPetCepValue] = useState("");
+
   const formRef = useRef<HTMLFormElement>(null);
   const navigate = useNavigate();
-  const { formData, errors, handleChange, validatePetForm, registerPet } = usePetRegisterForm();
+  const {
+    formData,
+    errors,
+    setErrors,
+    handleChange,
+    validatePetForm,
+    registerPet
+  } = usePetRegisterForm();
 
   const ufs = ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"];
 
@@ -24,30 +33,85 @@ function PetRegisterPage() {
   const aboutCharCount = formData.about?.length || 0;
   const minChars = 100;
 
-  const searchCep = async (e: React.FocusEvent<HTMLInputElement, Element>) => {
-    const cep = e.target.value.trim().replace("-", "")
-    
+  const handlePetCepChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value.replace(/\D/g, '');
+    if (value.length > 8) {
+      value = value.slice(0, 8);
+    }
+
+    if (value.length > 5) {
+      value = value.slice(0, 5) + '-' + value.slice(5, 8);
+    }
+    setPetCepValue(value);
+
+    if ((errors as any).petCep) {
+      setErrors((prev: typeof errors) => {
+        const newErrors = { ...prev };
+        delete (newErrors as any).petCep;
+        return newErrors;
+      });
+    }
+  };
+
+  const searchCep = async () => {
+    const cep = petCepValue.replace(/\D/g, '');
+
+    if (cep.length === 0) {
+      return;
+    }
+
     if (cep.length == 8) {
       try {
         setIsSearching(true)
         const data: ViaCepResponse = await findAddress(cep)
-        formData.petAddress = data.logradouro
-        formData.petNeighborhood = data.bairro
-        formData.petCity = data.localidade
-        formData.petState = data.uf
-          
+
+        if ((data as any).erro) {
+          toast.error("CEP não encontrado. Por favor, verifique o número.");
+          setErrors((prev: typeof errors) => ({ ...prev, petCep: "CEP não encontrado." } as any));
+          formData.petAddress = ""
+          formData.petNeighborhood = ""
+          formData.petCity = ""
+          formData.petState = ""
+        } else {
+          setErrors((prev: typeof errors) => {
+            const newErrors = { ...prev };
+            delete (newErrors as any).petCep;
+            return newErrors;
+          });
+          formData.petAddress = data.logradouro
+          formData.petNeighborhood = data.bairro
+          formData.petCity = data.localidade
+          formData.petState = data.uf
+        }
+
       } catch (e) {
+        toast.error("Não foi possível consultar o CEP. Tente novamente.");
+        setErrors((prev: typeof errors) => ({ ...prev, petCep: "Falha ao consultar o CEP." } as any));
         console.log("Não foi possível procurar o endereço via CEP.", e)
       } finally {
         setIsSearching(false)
       }
+    } else if (cep.length > 0 && cep.length < 8) {
+      setErrors((prev: typeof errors) => ({ ...prev, petCep: "CEP incompleto. Deve ter 8 dígitos." } as any));
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     const isPetFormValid = validatePetForm();
-    if (isPetFormValid) {
+
+    let isCepValid = true;
+    const cep = petCepValue.replace(/\D/g, '');
+    if (cep.length === 0) {
+      setErrors((prev: typeof errors) => ({
+        ...prev,
+        petCep: "CEP é obrigatório."
+      } as any));
+      isCepValid = false;
+    }
+
+    if (isPetFormValid && isCepValid) {
       try {
         const result = await registerPet();
         if (result.success) {
@@ -151,9 +215,19 @@ function PetRegisterPage() {
 
               <div className="col-span-2 relative">
                 <Label htmlFor="petCep" className="mb-1 font-semibold">CEP</Label>
-                <Input id="petCep" name="petCep" placeholder="00000-00" maxLength={9} onBlur={searchCep} />
+                <Input
+                  id="petCep"
+                  name="petCep"
+                  placeholder="00000-000"
+                  maxLength={9}
+                  value={petCepValue}
+                  onChange={handlePetCepChange}
+                  onBlur={searchCep}
+                />
+                {(errors as any).petCep && <p className="text-xs text-red-600">{(errors as any).petCep}</p>}
                 {isSearching && <InputLoader />}
               </div>
+
               <div className="col-span-2">
                 <Label htmlFor="petAddress" className="mb-1 font-semibold">Endereço</Label>
                 <Input id="petAddress" name="petAddress" placeholder="Rua, Avenida, etc." required value={formData.petAddress} onChange={handleChange} />

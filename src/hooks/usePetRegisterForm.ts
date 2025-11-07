@@ -229,6 +229,7 @@ export const usePetRegisterForm = () => {
     return {
         formData,
         errors,
+        setErrors, 
         handleChange,
         validatePetForm,
         registerPet

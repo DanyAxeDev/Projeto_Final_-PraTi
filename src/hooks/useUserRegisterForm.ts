@@ -182,6 +182,7 @@ export const useUserRegisterForm = () => {
     return {
         formData,
         errors,
+        setErrors, 
         handleChange,
         handleValueChange,
         handlePersonalityChange,

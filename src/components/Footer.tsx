@@ -3,14 +3,19 @@ import SocialIcon from "./SocialIcon"
 import { RiInstagramFill } from "react-icons/ri"
 import { FaFacebookSquare } from "react-icons/fa"
 import { FaSquareXTwitter } from "react-icons/fa6"
+import logoicon from "@/assets/icons/logo-icon-w.png"
 
 function Footer() {
   return (
     <footer className="bg-blue">
       <section className="max-w-[1100px] mx-auto flex flex-col gap-12 py-15 px-4 text-white font-raleway font-semibold sm:px-8">
         <section className="flex flex-col justify-between gap-8 sm:flex-row">
-          <div className="flex flex-col">
-            <span>Logo</span>
+          <div className="flex flex-col gap-3 w-fit">
+            <img 
+            src={logoicon} 
+            alt="Logo do PetConect" 
+            className="w-20 mx-auto"
+            />
             <div className="flex items-center gap-3">
               <SocialIcon icon={<RiInstagramFill />} url="" color="sand" />
               <SocialIcon icon={<FaFacebookSquare />} url="" color="sand" />

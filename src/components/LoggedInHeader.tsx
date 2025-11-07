@@ -3,15 +3,16 @@ import { Link } from "react-router"
 import { FaUser } from "react-icons/fa"
 import { IoIosArrowDown } from "react-icons/io"
 import HeaderMenu from "./HeaderMenu"
+import Logo from "./Logo"
 
 function LoggedInHeader() {
     const [isOpen, setIsOpen] = useState(false)
 
     return (
         <header className="bg-white">
-            <div className="flex justify-between items-center max-w-[1100px] mx-auto py-4 px-4 relative sm:px-8">
+            <div className="flex justify-between items-center max-w-[1100px] mx-auto py-5 px-4 relative sm:px-8">
                 <Link to="/home">
-                    <span>Logo</span>
+                    <Logo />
                 </Link>
 
                 <button 

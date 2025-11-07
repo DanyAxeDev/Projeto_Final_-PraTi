@@ -1,4 +1,5 @@
 import { NavLink, Link } from "react-router"
+import Logo from "./Logo"
 
 type PublicHeaderProps = {
   bg?: boolean
@@ -7,9 +8,9 @@ type PublicHeaderProps = {
 function PublicHeader({ bg = true }: PublicHeaderProps) {
   return (
     <header className={`${bg ? "bg-white" : "bg-transparent"} absolute w-full`}>
-      <nav className="max-w-[1100px] mx-auto flex justify-between items-center w-full gap-8 px-4 py-7 sm:px-8">
+      <nav className="max-w-[1100px] mx-auto flex justify-between items-center w-full gap-8 px-4 py-5 sm:px-8">
         <Link to="/">
-          <span>Logo</span>
+          <Logo />
         </Link>
 
         <div className="flex items-center gap-5 font-raleway font-semibold">

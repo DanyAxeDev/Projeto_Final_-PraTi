@@ -1,10 +1,13 @@
-<div align="center">// Logo</div>
+<div align="center">
+  <img src="https://raw.githubusercontent.com/DanyAxeDev/Projeto_Final_-PraTi/refs/heads/main/public/logo.png" alt="Logo do projeto" width=180 />
+</div>
+
 <h1 align="center">PetConect</h1>
 
 <p align="center">
-  <a href="#">Site do PetConect</a> •
-  <a href="#">Backend</a> •
-  <a href="#">Link 3</a>
+  <a href="#" target="_blank">Site do PetConect</a> •
+  <a href="https://github.com/DanyAxeDev/PetConnect_backend" target="_blank">Backend</a> •
+  <a href="https://github.com/DanyAxeDev/Projeto_Final_-PraTi/blob/main/style-guide.md" target="_blank">Identidade visual</a>
 </p>
 
 ## 📄 Descrição
@@ -25,7 +28,9 @@ O objetivo do PetConect é conectar pets que estão para adoção com pessoas qu
 
 </div>
 
-<div align="center">// Imagem</div>
+<div align="center">
+  <img src="https://raw.githubusercontent.com/DanyAxeDev/Projeto_Final_-PraTi/refs/heads/main/project-preview.png" alt="Preview do projeto" />
+</div>
 
 <br>
 

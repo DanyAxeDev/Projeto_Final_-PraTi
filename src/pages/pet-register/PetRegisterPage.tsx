@@ -63,7 +63,7 @@ function PetRegisterPage() {
 
   const healthCharCount = formData.health?.length || 0;
   const aboutCharCount = formData.about?.length || 0;
-  const minChars = 100;
+  const minChars = 200;
 
   const handlePetCepChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value.replace(/\D/g, '');

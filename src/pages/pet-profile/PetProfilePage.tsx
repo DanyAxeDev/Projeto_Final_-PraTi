@@ -5,13 +5,12 @@ import FavoriteButton from "@/components/FavoriteButton"
 import GalleryCard from "./components/GalleryCard"
 import { IoIosArrowBack } from "react-icons/io"
 import { IoPaw } from "react-icons/io5"
-import { FaMapLocationDot } from "react-icons/fa6"
 import type { Pet } from "@/types/api"
 import { petService } from "@/services/petService"
 import { getAge } from "@/utils/helpers"
-import Map from "./components/Map"
 import Loader from "@/components/Loader"
 import { useFavorites } from "@/hooks/useFavorites"
+import PinMap from "@/components/PinMap"
 
 export default function PetProfilePage() {
   const [pet, setPet] = useState<Pet | undefined>(undefined)
@@ -162,21 +161,8 @@ export default function PetProfilePage() {
 
           {/* Distância */}
           <section className="flex flex-col justify-between gap-5 mx-auto rounded-sm bg-white p-5 w-full max-w-full sm:flex-row md:mx-0 lg:max-w-[500px]">
-            <section className="flex flex-col gap-3">
-              <FaMapLocationDot className="text-blue text-4xl" aria-hidden="true" />
-              <h3 className="text-2xl font-semibold text-brown">
-                A <span className="text-blue">10km</span> de você
-              </h3>
-              <p>Em {pet.neighborhood}, {pet.city}</p>
-            </section>
             {/* Mapa */}
-            <section className="w-full size-fit rounded-sm bg-white">
-              <Map
-                neighbourhood={pet.neighborhood}
-                city={pet.city}
-                state={pet.state}
-              />
-            </section>
+            <PinMap latitude={pet.latitude} longitude={pet.longitude} />
           </section>
         </section>
       </article>

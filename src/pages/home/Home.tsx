@@ -13,21 +13,56 @@ function Home() {
   const [order, setOrder] = useState<Order>("normal")
   const [pets, setPets] = useState<Pet[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [hasShownLocationInfo, setHasShownLocationInfo] = useState(false)
   const userContext = useContext(UserContext)
 
   // Carregar pets disponíveis
   useEffect(() => {
     const loadPets = async () => {
+      const userId = userContext?.user?.id
+      const location = userContext?.location
+      const isRequestingLocation = userContext?.isRequestingLocation
+
+      if (userId && !location && isRequestingLocation) {
+        return
+      }
+
       try {
         setIsLoading(true)
-        // Passar o userId se o usuário estiver logado
-        const userId = userContext?.user?.id
-        const result = await petService.getAvailablePetsList(userId)
+        let petsToShow: Pet[] | undefined
 
-        if (result.success && result.data) {
-          setPets(result.data)
-        } else {
-          toast.error(result.error || "Erro ao carregar pets")
+        if (userId && location) {
+          const nearbyResult = await petService.getNearbyPets({
+            userId,
+            latitude: location.latitude,
+            longitude: location.longitude
+          })
+
+          if (nearbyResult.success && nearbyResult.data) {
+            petsToShow = nearbyResult.data
+
+            if (nearbyResult.data.length === 0 && !hasShownLocationInfo) {
+              toast.info("Nenhum pet encontrado dentro da distância máxima. Mostrando todos os pets disponíveis.")
+              setHasShownLocationInfo(true)
+            }
+          } else if (!nearbyResult.success) {
+            toast.error(nearbyResult.error || "Erro ao buscar pets próximos")
+          }
+        }
+
+        if (!petsToShow || petsToShow.length === 0) {
+          const result = await petService.getAvailablePetsList(userId)
+
+          if (result.success && result.data) {
+            petsToShow = result.data
+          } else {
+            toast.error(result.error || "Erro ao carregar pets")
+            petsToShow = []
+          }
+        }
+
+        if (petsToShow) {
+          setPets(petsToShow)
         }
       } catch (error) {
         toast.error("Erro inesperado ao carregar pets")
@@ -38,7 +73,14 @@ function Home() {
     }
 
     loadPets()
-  }, [userContext?.user?.id])
+  }, [userContext?.user?.id, userContext?.location, userContext?.isRequestingLocation, hasShownLocationInfo, userContext?.locationError])
+
+  useEffect(() => {
+    if (userContext?.locationError && !hasShownLocationInfo) {
+      toast.info("Não foi possível acessar sua localização. Mostrando todos os pets disponíveis.")
+      setHasShownLocationInfo(true)
+    }
+  }, [userContext?.locationError, hasShownLocationInfo])
 
   const ascendingPets = [...pets].sort((a: Pet, b: Pet) => getAge(a.birthDate) - getAge(b.birthDate))
   const descendingPets = [...pets].sort((a: Pet, b: Pet) => getAge(b.birthDate) - getAge(a.birthDate))
@@ -86,6 +128,7 @@ function Home() {
                 gender={pet.gender}
                 city={pet.city}
                 photo={pet.photo1 || ''}
+                distance={pet.distance}
               />
             })
           )}

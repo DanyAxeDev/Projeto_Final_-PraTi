@@ -6,10 +6,19 @@ import { userService } from "@/services/userService"
 import { oauth2Service } from "@/services/oauth2Service"
 import apiService from "@/services/api"
 
+type Coordinates = {
+  latitude: number
+  longitude: number
+}
+
 type UserContextValue = {
   user: User | null
   isLoading: boolean
   isLoggedIn: boolean
+  location: Coordinates | null
+  locationError: string | null
+  isRequestingLocation: boolean
+  requestLocation: () => Promise<void>
   login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>
   loginWithGitHub: () => void
   logout: () => void
@@ -22,6 +31,9 @@ function UserContextProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [location, setLocation] = useState<Coordinates | null>(null)
+  const [locationError, setLocationError] = useState<string | null>(null)
+  const [isRequestingLocation, setIsRequestingLocation] = useState(false)
 
   // Verificar se há token válido no localStorage ao inicializar
   useEffect(() => {
@@ -87,6 +99,58 @@ function UserContextProvider({ children }: { children: ReactNode }) {
     checkAuthStatus()
   }, [])
 
+  const requestLocation = async () => {
+    if (!('geolocation' in navigator)) {
+      setLocationError("Geolocalização não suportada neste navegador.")
+      setLocation(null)
+      return
+    }
+
+    setIsRequestingLocation(true)
+    setLocationError(null)
+
+    const getPosition = () =>
+      new Promise<GeolocationPosition>((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject, {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0
+        })
+      })
+
+    try {
+      const position = await getPosition()
+      setLocation({
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude
+      })
+    } catch (error) {
+      console.warn("Erro ao obter localização do usuário:", error)
+      if (error instanceof GeolocationPositionError) {
+        if (error.code === error.PERMISSION_DENIED) {
+          setLocationError("Permissão de localização negada.")
+        } else if (error.code === error.POSITION_UNAVAILABLE) {
+          setLocationError("Localização indisponível no momento.")
+        } else if (error.code === error.TIMEOUT) {
+          setLocationError("Tempo limite excedido ao tentar obter localização.")
+        } else {
+          setLocationError("Não foi possível obter a localização.")
+        }
+      } else {
+        setLocationError("Não foi possível obter a localização.")
+      }
+      setLocation(null)
+    } finally {
+      setIsRequestingLocation(false)
+    }
+  }
+
+  useEffect(() => {
+    requestLocation().catch(error => {
+      console.error("Erro inesperado ao solicitar localização:", error)
+    })
+  }, [])
+
   const login = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
     try {
       const result = await authService.login({ email, password })
@@ -142,6 +206,10 @@ function UserContextProvider({ children }: { children: ReactNode }) {
     user,
     isLoading,
     isLoggedIn,
+    location,
+    locationError,
+    isRequestingLocation,
+    requestLocation,
     login,
     loginWithGitHub,
     logout,

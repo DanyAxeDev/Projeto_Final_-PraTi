@@ -4,7 +4,7 @@ import { IoPaw } from "react-icons/io5"
 import { FaLocationDot } from "react-icons/fa6"
 import { getAge } from "@/utils/helpers"
 
-function PetCard({ id, name, dob, gender, city, photo }:PetCardProps ) {
+function PetCard({ id, name, dob, gender, city, photo, distance }:PetCardProps ) {
   const petAge = getAge(dob)
 
   return (
@@ -28,6 +28,11 @@ function PetCard({ id, name, dob, gender, city, photo }:PetCardProps ) {
           </span>
           <span className="flex items-center gap-2">
             <FaLocationDot className="text-lg text-blue" /> {city}
+            {typeof distance === "number" && (
+              <span className="text-sm text-gray-500">
+                • {distance.toFixed(1)} km
+              </span>
+            )}
           </span>
         </div>
       </div>

@@ -113,6 +113,18 @@ export const petService = {
         return { success: false, error: response.error || 'Erro ao buscar pets do usuário' };
     },
 
+    // Buscar pets próximos ao usuário
+    async getNearbyPets(params: { userId: number; latitude: number; longitude: number }): Promise<{ success: boolean; data?: Pet[]; error?: string }> {
+        const { userId, latitude, longitude } = params;
+        const response = await apiService.get<Pet[]>(`/pets/nearby?userId=${userId}&latitude=${latitude}&longitude=${longitude}`);
+
+        if (response.data) {
+            return { success: true, data: response.data };
+        }
+
+        return { success: false, error: response.error || 'Erro ao buscar pets próximos' };
+    },
+
     // Buscar pets favoritos do usuário
     async getUserFavorites(userId: number): Promise<{ success: boolean; data?: Pet[]; error?: string }> {
         const response = await apiService.get<Pet[]>(`/pets/favorites/${userId}`);

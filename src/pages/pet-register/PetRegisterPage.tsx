@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import PageWithHeaderLayout from "@/layouts/PageWithHeaderLayout";
 import FormStepHeading from "@/components/FormStepHeading";
@@ -11,6 +11,10 @@ import { toast } from "sonner";
 import { findAddress } from "@/services/cepService";
 import type { ViaCepResponse } from "@/types/types";
 import InputLoader from "@/components/InputLoader";
+import MapMarker from "@/components/MapMarker";
+import { getGeocode, getLatLng } from "use-places-autocomplete";
+
+type LatLngLiteral = google.maps.LatLngLiteral;
 
 function PetRegisterPage() {
   const [isSearching, setIsSearching] = useState(false);
@@ -23,9 +27,37 @@ function PetRegisterPage() {
     errors,
     setErrors,
     handleChange,
+    setPetLocation,
     validatePetForm,
     registerPet
   } = usePetRegisterForm();
+  const selectedLocation = useMemo<LatLngLiteral | null>(() => {
+    if (formData.latitude === null || formData.longitude === null) {
+      return null;
+    }
+
+    return {
+      lat: formData.latitude,
+      lng: formData.longitude,
+    };
+  }, [formData.latitude, formData.longitude]);
+
+  const handleLocationChange = useCallback(
+    (coords: LatLngLiteral | null) => {
+      setPetLocation(coords);
+
+      if (coords) {
+        setErrors(prevErrors => {
+          const newErrors = { ...prevErrors } as any;
+          delete newErrors.latitude;
+          delete newErrors.longitude;
+          return newErrors;
+        });
+      }
+    },
+    [setPetLocation, setErrors]
+  );
+
 
   const ufs = ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"];
 
@@ -72,6 +104,7 @@ function PetRegisterPage() {
           formData.petNeighborhood = ""
           formData.petCity = ""
           formData.petState = ""
+          setPetLocation(null);
         } else {
           setErrors((prev: typeof errors) => {
             const newErrors = { ...prev };
@@ -82,12 +115,39 @@ function PetRegisterPage() {
           formData.petNeighborhood = data.bairro
           formData.petCity = data.localidade
           formData.petState = data.uf
+
+          try {
+            const formattedAddress = [
+              data.logradouro,
+              data.bairro,
+              data.localidade,
+              data.uf,
+              "Brasil"
+            ].filter(Boolean).join(", ");
+
+            const hasGoogleMaps = typeof window !== "undefined" && (window as any).google?.maps;
+            if (hasGoogleMaps && formattedAddress) {
+              const results = await getGeocode({ address: formattedAddress });
+              if (results.length > 0) {
+                const { lat, lng } = await getLatLng(results[0]);
+                setPetLocation({ lat, lng });
+              } else {
+                setPetLocation(null);
+              }
+            } else {
+              setPetLocation(null);
+            }
+          } catch (geocodeError) {
+            console.error("Erro ao localizar endereço no mapa:", geocodeError);
+            setPetLocation(null);
+          }
         }
 
       } catch (e) {
         toast.error("Não foi possível consultar o CEP. Tente novamente.");
         setErrors((prev: typeof errors) => ({ ...prev, petCep: "Falha ao consultar o CEP." } as any));
         console.log("Não foi possível procurar o endereço via CEP.", e)
+        setPetLocation(null);
       } finally {
         setIsSearching(false)
       }
@@ -257,6 +317,15 @@ function PetRegisterPage() {
                   ))}
                 </select>
                 {errors.petState && <p className="text-xs text-red-600">{errors.petState}</p>}
+              </div>
+
+              <div className="col-span-2">
+                <MapMarker onLocationChange={handleLocationChange} initialLocation={selectedLocation} />
+                {selectedLocation && (
+                  <p className="text-xs text-gray-600 mt-2">
+                    Local selecionado: {selectedLocation.lat.toFixed(6)}, {selectedLocation.lng.toFixed(6)}
+                  </p>
+                )}
               </div>
 
               <div className="col-span-2">

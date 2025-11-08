@@ -58,6 +58,8 @@ export type PetRegistrationData = {
     photo2: File | null;
     photo3: File | null;
     contactOption: string;
+    latitude: number | null;
+    longitude: number | null;
 };
 
 export interface PasswordChangeData {

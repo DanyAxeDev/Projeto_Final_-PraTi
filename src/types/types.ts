@@ -20,6 +20,7 @@ export type Pet = {
 export type PetCardProps = Pick<Pet, "id" | "name" | "dob" | "gender"> & {
   city: string
   photo: string
+  distance?: number
 }
 
 export type MyPetProps = Pick<Pet, "id" | "name"> & {

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { validatePetRegistration } from '@/lib/validators';
 import type { PetRegistrationData } from '@/lib/validators';
 import { toast } from 'sonner';
@@ -31,6 +31,8 @@ const initialPetFormData: PetRegistrationData = {
         active: false, goodWithPets: false, calm: false, goodWithKids: false,
         extrovert: false, introvert: false,
     },
+    latitude: null,
+    longitude: null,
 };
 
 // Define o limite de tamanho em bytes (10MB)
@@ -104,6 +106,14 @@ export const usePetRegisterForm = () => {
             return newErrors;
         });
     };
+
+    const setPetLocation = useCallback((coords: { lat: number; lng: number } | null) => {
+        setFormData(prev => ({
+            ...prev,
+            latitude: coords?.lat ?? null,
+            longitude: coords?.lng ?? null,
+        }));
+    }, []);
 
     const validatePetForm = () => {
         const validationErrors = validatePetRegistration(formData);
@@ -191,6 +201,11 @@ export const usePetRegisterForm = () => {
                 available: true
             };
 
+            if (formData.latitude !== null && formData.longitude !== null) {
+                petForm.latitude = formData.latitude;
+                petForm.longitude = formData.longitude;
+            }
+
             const result = await petService.createPet(petForm);
 
             if (result.success && result.data) {
@@ -231,6 +246,7 @@ export const usePetRegisterForm = () => {
         errors,
         setErrors, 
         handleChange,
+        setPetLocation,
         validatePetForm,
         registerPet
     };

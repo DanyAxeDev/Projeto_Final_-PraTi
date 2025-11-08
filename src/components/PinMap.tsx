@@ -3,15 +3,30 @@
 import { useMemo, useRef } from "react";
 import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
 
-//adicionar fetch para setar as coordenadas do pin
-const pinLatLng = {lat: -22.538391118073292, lng: -44.789052588401674}
+type LatLngLiteral = google.maps.LatLngLiteral;
 
-export default function PinMap() {
+type PinMapProps = {
+    latitude?: number | null;
+    longitude?: number | null;
+};
+
+const DEFAULT_CENTER: LatLngLiteral = { lat: -15, lng: -50 };
+
+export default function PinMap({ latitude, longitude }: PinMapProps) {
     //carrega o script do GoogleMaps com a biblioteca places
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: 'AIzaSyBks8gFvkvIxcffgrTTyExTCMpkSojdiEM',
         libraries: ['places'],
     })
+
+    const markerPosition = useMemo<LatLngLiteral | null>(() => {
+        if (typeof latitude === "number" && typeof longitude === "number") {
+            return { lat: latitude, lng: longitude };
+        }
+        return null;
+    }, [latitude, longitude]);
+
+    const center = useMemo<LatLngLiteral>(() => markerPosition ?? DEFAULT_CENTER, [markerPosition]);
 
     //checa se a api foi carregada e exibe mensagem de carregando
     if (!isLoaded) return (
@@ -21,14 +36,24 @@ export default function PinMap() {
         </div >
     )
 
-    return <Map />
+    if (!markerPosition) {
+        return (
+            <div className="flex flex-col items-center justify-center text-center gap-2 p-6 h-[40vh] w-full bg-gray-100 rounded-md">
+                <img src="src/assets/icons/icon-heart-paw.png" alt="Localização" className="w-10 h-10 opacity-70" />
+                <p className="text-sm text-gray-600">
+                    Localização não informada para este pet.
+                </p>
+            </div>
+        );
+    }
+
+    return <Map center={center} markerPosition={markerPosition} />
 }
 
 //carrega o mapa
-function Map() {
-    const center = useMemo(() => (pinLatLng), [])
+function Map({ center, markerPosition }: { center: LatLngLiteral; markerPosition: LatLngLiteral }) {
     const mapRef = useRef<google.maps.Map | null>(null)
-    const onLoad = (map) => {
+    const onLoad = (map: google.maps.Map) => {
         mapRef.current = map
     }
 
@@ -40,12 +65,12 @@ function Map() {
                 center={center}
                 onLoad={onLoad}
                 mapContainerClassName="map-container"
-                mapContainerStyle={{ height: "90vh", width: "100%" }}
+                mapContainerStyle={{ height: "40vh", width: "100%" }}
                 options={{
                     mapId: '6c1220e1a6152c58d27c0920'
                 }}
             >
-                <Marker position={pinLatLng} icon={{url:'/icons/amor.png', scaledSize: new google.maps.Size(40, 40)}} />
+                <Marker position={markerPosition} icon={{url:'/icons/amor.png', scaledSize: new google.maps.Size(40, 40)}} />
             </GoogleMap>
         </>
     );

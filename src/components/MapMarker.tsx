@@ -5,7 +5,14 @@ import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
 import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete';
 import useOnclickOutside from "react-cool-onclickoutside";
 
-export default function MapMarker() {
+type LatLngLiteral = google.maps.LatLngLiteral;
+
+type MapMarkerProps = {
+    onLocationChange?: (coords: LatLngLiteral | null) => void;
+    initialLocation?: LatLngLiteral | null;
+};
+
+export default function MapMarker({ onLocationChange, initialLocation = null }: MapMarkerProps) {
     //carrega o script do GoogleMaps com a biblioteca places
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: 'AIzaSyBks8gFvkvIxcffgrTTyExTCMpkSojdiEM',
@@ -20,17 +27,27 @@ export default function MapMarker() {
         </div >
     )
 
-    return <Map />
+    return <Map onLocationChange={onLocationChange} initialLocation={initialLocation} />
 }
 
 //carrega o mapa
-function Map() {
+function Map({ onLocationChange, initialLocation }: { onLocationChange?: (coords: LatLngLiteral | null) => void; initialLocation: LatLngLiteral | null; }) {
     const center = useMemo(() => ({ lat: -15.0, lng: -50.0 }), [])
-    const [selected, setSelected] = useState<google.maps.LatLngLiteral | null>(null)
+    const [selected, setSelected] = useState<LatLngLiteral | null>(initialLocation)
     const mapRef = useRef<google.maps.Map | null>(null)
-    const onLoad = (map) => {
+    const onLoad = (map: google.maps.Map) => {
         mapRef.current = map
     }
+
+    useEffect(() => {
+        setSelected(initialLocation)
+    }, [initialLocation])
+
+    useEffect(() => {
+        if (onLocationChange) {
+            onLocationChange(selected)
+        }
+    }, [selected, onLocationChange])
 
     //zoom quando selecionado um local
     useEffect(() => {
@@ -90,8 +107,9 @@ function Map() {
                 center={center}
                 onLoad={onLoad}
                 mapContainerClassName="map-container"
-                mapContainerStyle={{ height: "90vh", width: "100%" }}
+                mapContainerStyle={{ height: "40vh", width: "100%" }}
                 options={{
+                    mapTypeControl: false,
                     mapId: '6c1220e1a6152c58d27c0920'
                 }}
             >
@@ -137,7 +155,7 @@ function Map() {
     );
 }
 
-const PlacesAutocomplete = ({ setSelected }) => {
+const PlacesAutocomplete = ({ setSelected }: { setSelected: (position: LatLngLiteral) => void }) => {
     const {
         ready,
         value,

@@ -42,6 +42,9 @@ export interface Pet {
     ownerName: string;
     contactOption?: string;
     available: boolean;
+    latitude?: number;
+    longitude?: number;
+    distance?: number;
     
     // Personalidade
     active?: boolean;
@@ -131,6 +134,8 @@ export interface PetForm {
     ownerId: number;
     contactOption?: string;
     available?: boolean;
+    latitude?: number;
+    longitude?: number;
 }
 
 export interface PreferencesForm {

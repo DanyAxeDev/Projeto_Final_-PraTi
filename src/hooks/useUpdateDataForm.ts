@@ -13,18 +13,18 @@ import { useUser } from './useUser';
 import { toast } from 'sonner';
 
 const initialUserData: RegistrationStep1Data = {
-    firstName: "Nome",
-    lastName: "Sobrenome",
-    birthDate: "1995-05-15",
-    phone: "(99) 99999-9999",
-    email: "usuario@email.com",
-    address: "Rua Exemplo",
-    number: "123",
-    neighborhood: "Bairro",
-    city: "Minha Cidade",
-    state: "Meu Estado",
-    password: "senhaValida123!",
-    confirmPassword: "senhaValida123!",
+    firstName: "",
+    lastName: "",
+    birthDate: "",
+    phone: "",
+    email: "",
+    address: "",
+    number: "",
+    neighborhood: "",
+    city: "",
+    state: "",
+    password: "",
+    confirmPassword: "", 
 };
 
 const fieldValidators: { [key in keyof Omit<RegistrationStep1Data, 'password' | 'confirmPassword'>]: (value: string) => string | undefined } = {
@@ -81,8 +81,8 @@ export const useUpdateDataForm = (initialData: RegistrationStep1Data = initialUs
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { id, value } = e.target;
-        const fieldName = id as keyof RegistrationStep1Data;
+        const { id, name, value } = e.target;
+        const fieldName = (id || name) as keyof RegistrationStep1Data;
 
         setFormData(prev => ({ ...prev, [fieldName]: value }));
 
@@ -126,7 +126,7 @@ export const useUpdateDataForm = (initialData: RegistrationStep1Data = initialUs
                 email: formData.email,
                 address: {
                     street: formData.address,
-                    number: parseInt(formData.number),
+                    number: parseInt(formData.number) || 0,
                     neighborhood: formData.neighborhood,
                     city: formData.city,
                     state: formData.state,
@@ -156,6 +156,8 @@ export const useUpdateDataForm = (initialData: RegistrationStep1Data = initialUs
         handleChange,
         validateAll,
         handleCancel,
-        saveUserData
+        saveUserData,
+        setFormData, 
+        setErrors    
     };
 };

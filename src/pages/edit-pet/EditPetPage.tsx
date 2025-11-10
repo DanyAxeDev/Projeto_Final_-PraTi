@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router"
 import PageWithHeaderLayout from "@/layouts/PageWithHeaderLayout"
 import FormStepHeading from "@/components/FormStepHeading"
@@ -9,18 +9,107 @@ import Tooltip from "@/components/Tooltip"
 import { usePetEditForm } from "@/hooks/usePetEditForm"
 import Loader from "@/components/Loader"
 import { toast } from "sonner";
+import { findAddress } from "@/services/cepService";
+import type { ViaCepResponse } from "@/types/types";
+import InputLoader from "@/components/InputLoader";
 
 function EditPetPage() {
+  const [isSearching, setIsSearching] = useState(false);
+  const [petCepValue, setPetCepValue] = useState("");
   const formRef = useRef<HTMLFormElement>(null);
   const navigate = useNavigate();
-  const { formData, errors, loading, error, handleChange, validatePetForm, updatePet } = usePetEditForm();
+  const {
+      formData,
+      errors,
+      loading,
+      error,
+      handleChange,
+      validatePetForm,
+      updatePet,
+      setErrors,
+      setFormData
+  } = usePetEditForm();
 
   const ufs = ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"];
+
+  const healthCharCount = formData.health?.length || 0;
+  const aboutCharCount = formData.about?.length || 0;
+  const minChars = 100;
+
+  const handlePetCepChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value.replace(/\D/g, '');
+    if (value.length > 8) {
+      value = value.slice(0, 8);
+    }
+    if (value.length > 5) {
+      value = value.slice(0, 5) + '-' + value.slice(5, 8);
+    }
+    setPetCepValue(value);
+
+    if ((errors as any).petCep) {
+        setErrors((prev: typeof errors) => {
+            const newErrors = { ...prev };
+            delete (newErrors as any).petCep;
+            return newErrors;
+        });
+    }
+  };
+
+  const searchCep = async () => {
+    const cep = petCepValue.replace(/\D/g, '');
+
+    if (cep.length === 0) return;
+
+    if (cep.length == 8) {
+      try {
+        setIsSearching(true)
+        const data: ViaCepResponse = await findAddress(cep)
+
+        if ((data as any).erro) {
+            toast.error("CEP não encontrado. Por favor, verifique o número.");
+            setErrors((prev: typeof errors) => ({ ...prev, petCep: "CEP não encontrado." } as any));
+            setFormData(prev => ({ ...prev, petAddress: "", petNeighborhood: "", petCity: "", petState: "" }));
+        } else {
+            setErrors((prev: typeof errors) => {
+                const newErrors = { ...prev };
+                delete (newErrors as any).petCep;
+                return newErrors;
+            });
+            setFormData(prev => ({
+                ...prev,
+                petAddress: data.logradouro,
+                petNeighborhood: data.bairro,
+                petCity: data.localidade,
+                petState: data.uf
+            }));
+        }
+
+      } catch (e) {
+        toast.error("Não foi possível consultar o CEP. Tente novamente.");
+        setErrors((prev: typeof errors) => ({ ...prev, petCep: "Falha ao consultar o CEP." } as any));
+      } finally {
+        setIsSearching(false)
+      }
+    } else if (cep.length > 0 && cep.length < 8) {
+        setErrors((prev: typeof errors) => ({ ...prev, petCep: "CEP incompleto. Deve ter 8 dígitos." } as any));
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const isPetFormValid = validatePetForm();
-    if (isPetFormValid) {
+
+    let isCepValid = true;
+    const cep = petCepValue.replace(/\D/g, '');
+    if (cep.length === 0) {
+        setErrors((prev: typeof errors) => ({
+            ...prev,
+            petCep: "CEP é obrigatório."
+        } as any));
+        isCepValid = false;
+    }
+
+    if (isPetFormValid && isCepValid) {
       try {
         const result = await updatePet();
         if (result.success) {
@@ -152,25 +241,40 @@ function EditPetPage() {
                 {errors.vaccinationReceipt && <p className="text-red-500 text-xs mt-1">{errors.vaccinationReceipt}</p>}
               </div>
 
+              <div className="col-span-2 relative">
+                <Label htmlFor="petCep" className="mb-1 font-semibold">CEP</Label>
+                <Input
+                    id="petCep"
+                    name="petCep"
+                    placeholder="00000-000"
+                    maxLength={9}
+                    value={petCepValue}
+                    onChange={handlePetCepChange}
+                    onBlur={searchCep}
+                />
+                {(errors as any).petCep && <p className="text-red-500 text-xs mt-1">{(errors as any).petCep}</p>}
+                {isSearching && <InputLoader />}
+              </div>
+
               <div className="col-span-2">
                 <Label htmlFor="petAddress" className="mb-1 font-semibold">Endereço</Label>
                 <Input id="petAddress" name="petAddress" placeholder="Rua, Avenida, etc." required value={formData.petAddress} onChange={handleChange} />
-                {errors.petAddress && <p className="text-xs text-red-600">{errors.petAddress}</p>}
+                {errors.petAddress && <p className="text-red-500 text-xs mt-1">{errors.petAddress}</p>}
               </div>
               <div className="col-span-2 sm:col-span-1">
                 <Label htmlFor="petNumber" className="mb-1 font-semibold">Número</Label>
                 <Input id="petNumber" name="petNumber" placeholder="123 ou S/N" required value={formData.petNumber} onChange={handleChange} />
-                {errors.petNumber && <p className="text-xs text-red-600">{errors.petNumber}</p>}
+                {errors.petNumber && <p className="text-red-500 text-xs mt-1">{errors.petNumber}</p>}
               </div>
               <div className="col-span-2 sm:col-span-1">
                 <Label htmlFor="petNeighborhood" className="mb-1 font-semibold">Bairro</Label>
                 <Input id="petNeighborhood" name="petNeighborhood" placeholder="Seu bairro" required value={formData.petNeighborhood} onChange={handleChange} />
-                {errors.petNeighborhood && <p className="text-xs text-red-600">{errors.petNeighborhood}</p>}
+                {errors.petNeighborhood && <p className="text-red-500 text-xs mt-1">{errors.petNeighborhood}</p>}
               </div>
               <div className="col-span-2 sm:col-span-1">
                 <Label htmlFor="petCity" className="mb-1 font-semibold">Cidade</Label>
                 <Input id="petCity" name="petCity" placeholder="Sua cidade" required value={formData.petCity} onChange={handleChange} />
-                {errors.petCity && <p className="text-xs text-red-600">{errors.petCity}</p>}
+                {errors.petCity && <p className="text-red-500 text-xs mt-1">{errors.petCity}</p>}
               </div>
               <div className="col-span-2 sm:col-span-1">
                 <Label htmlFor="petState" className="mb-1 font-semibold">Estado</Label>
@@ -180,7 +284,7 @@ function EditPetPage() {
                     <option key={uf} value={uf}>{uf}</option>
                   ))}
                 </select>
-                {errors.petState && <p className="text-xs text-red-600">{errors.petState}</p>}
+                {errors.petState && <p className="text-red-500 text-xs mt-1">{errors.petState}</p>}
               </div>
 
               <div className="col-span-2">
@@ -193,7 +297,14 @@ function EditPetPage() {
                   rows={8}
                   placeholder="Detalhes sobre o histórico de saúde do pet, se precisa de cuidados, etc..."
                   className="resize-none w-full rounded-md border bg-transparent px-3 py-1 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-[color,box-shadow] md:text-sm"></textarea>
-                {errors.health && <p className="text-red-500 text-xs mt-1">{errors.health}</p>}
+                <div className="flex justify-between items-start w-full mt-1">
+                  {errors.health ? (
+                    <p className="text-red-500 text-xs">{errors.health}</p>
+                  ) : <span></span>}
+                  <span className={`text-xs ml-auto ${healthCharCount >= minChars ? "text-green-600 font-semibold" : "text-gray-500"}`}>
+                    {healthCharCount}/{minChars}
+                  </span>
+                </div>
               </div>
 
               <div className="col-span-2">
@@ -206,7 +317,14 @@ function EditPetPage() {
                   rows={8}
                   placeholder="Detalhes sobre a história do pet, características dele, etc..."
                   className="resize-none w-full rounded-md border bg-transparent px-3 py-1 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-[color,box-shadow] md:text-sm"></textarea>
-                {errors.about && <p className="text-red-500 text-xs mt-1">{errors.about}</p>}
+                <div className="flex justify-between items-start w-full mt-1">
+                  {errors.about ? (
+                    <p className="text-red-500 text-xs">{errors.about}</p>
+                  ) : <span></span>}
+                  <span className={`text-xs ml-auto ${aboutCharCount >= minChars ? "text-green-600 font-semibold" : "text-gray-500"}`}>
+                    {aboutCharCount}/{minChars}
+                  </span>
+                </div>
               </div>
             </div>
           </section>

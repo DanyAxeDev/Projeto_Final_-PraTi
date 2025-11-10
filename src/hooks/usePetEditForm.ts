@@ -32,6 +32,8 @@ const initialPetFormData: PetRegistrationData = {
         active: false, goodWithPets: false, calm: false, goodWithKids: false,
         extrovert: false, introvert: false,
     },
+    latitude: null,
+    longitude: null,
 };
 
 // Define o limite de tamanho em bytes (10MB)
@@ -91,7 +93,9 @@ export const usePetEditForm = () => {
                             goodWithKids: pet.goodWithKids || false,
                             extrovert: pet.extrovert || false,
                             introvert: pet.introvert || false,
-                        }
+                        },
+                        latitude: null,
+                        longitude: null,
                     };
 
                     setFormData(petFormData);
@@ -175,6 +179,14 @@ export const usePetEditForm = () => {
 
     const validatePetForm = () => {
         const validationErrors = validatePetRegistration(formData);
+
+        // Remove erros de arquivos
+        delete validationErrors.castrationReceipt;
+        delete validationErrors.vaccinationReceipt;
+        delete validationErrors.photo1;
+        delete validationErrors.photo2;
+        delete validationErrors.photo3;
+
         setErrors(validationErrors);
         return Object.keys(validationErrors).length === 0;
     };
@@ -303,6 +315,8 @@ export const usePetEditForm = () => {
         error,
         handleChange,
         validatePetForm,
-        updatePet
+        updatePet,
+        setErrors,
+        setFormData
     };
 };

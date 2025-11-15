@@ -18,8 +18,8 @@ const TeamPage: React.FC = () => {
             githubUrl={member.githubUrl}
             linkedinUrl={member.linkedinUrl}
             image={member.image}
-            description={member.description}
-            stage={member.stage}
+            stack={member.stack}
+            state={member.state}
           />
         ))}
       </div>

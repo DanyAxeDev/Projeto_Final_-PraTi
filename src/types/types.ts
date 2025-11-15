@@ -41,8 +41,8 @@ export type Member = {
   githubUrl: string;
   linkedinUrl: string;
   image: string;
-  description: string;
-  stage: string;
+  stack: string;
+  state: string;
 }
 
 export type ViaCepResponse = {

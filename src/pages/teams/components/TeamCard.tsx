@@ -6,11 +6,11 @@ type MemberCard = {
   githubUrl: string;
   linkedinUrl: string;
   image: string;
-  description: string;
-  stage: string;
+  stack: string;
+  state: string;
 };
 
-export default function Card({ image, linkedinUrl, githubUrl, name, description, stage }: MemberCard) {
+export default function Card({ image, linkedinUrl, githubUrl, name, stack, state }: MemberCard) {
   return (
     <article className="bg-white rounded-[5px] shadow-md p-5 w-[300px] flex flex-col font-raleway font-medium">
       <div className="relative flex items-center">
@@ -29,8 +29,8 @@ export default function Card({ image, linkedinUrl, githubUrl, name, description,
 
       <div className="mt-4 space-y-1">
         <h2 className="font-bold text-xl">{name}</h2>
-        <p>{description}</p>
-        <p>{stage}</p>
+        <p className="font-semibold">{stack}</p>
+        <p className="text-gray-500">{state}</p>
       </div>
     </article>
   );

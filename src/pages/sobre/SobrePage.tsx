@@ -109,7 +109,7 @@ function SobrePage() {
           <section className="flex justify-center flex-wrap gap-10 bg-white rounded-[5px] py-8 px-10 w-full max-w-[790px] mx-auto md:justify-between md:px-16">
             <NumberInfoItem number="60+" info="Pets adotados" />
             <NumberInfoItem number="100+" info="Pets cadastrados" />
-            <NumberInfoItem number="8" info="Estados do Brasil participantes" />
+            <NumberInfoItem number="6" info="Estados do Brasil participantes" />
           </section>
         </div>
       </section>

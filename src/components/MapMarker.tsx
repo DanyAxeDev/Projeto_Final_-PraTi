@@ -116,6 +116,7 @@ function Map({ onLocationChange, initialLocation }: { onLocationChange?: (coords
                 {/* Botão para centralizar no usuário */}
                 <button
                     onClick={handleCenterOnUser}
+                    aria-label="centralizar no meu local."
                     style={{
                         position: "absolute",
                         bottom: "168px",
@@ -137,14 +138,16 @@ function Map({ onLocationChange, initialLocation }: { onLocationChange?: (coords
                 </button>
 
                 {/* box da caixa de seleção */}
-                <div style={{
-                    position: "absolute",
-                    top: "10px",
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                    zIndex: 10,
-                    width: "300px",
-                }}
+                <div className="col-span-2"
+                    style={{
+                        position: "absolute",
+                        top: "10px",
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        zIndex: 10,
+                        width: "48.41%",
+                        height: "36px"
+                    }}
                 >
                     <PlacesAutocomplete setSelected={setSelected} />
                 </div>
@@ -187,10 +190,10 @@ const PlacesAutocomplete = ({ setSelected }: { setSelected: (position: LatLngLit
             <input value={value} onChange={(e) => setValue(e.target.value)} disabled={!ready} placeholder="Escolha um local de encontro" className="suggestions-input"
                 style={{
                     width: "100%",
-                    padding: "8px",
+                    padding: "4px 12px",
                     fontSize: "16px",
                     borderRadius: "4px",
-                    backgroundColor: "#33333377"
+                    backgroundColor: "rgba(255, 255, 255, 0.5)"
                 }}
             />
             {status === "OK" && (
@@ -199,7 +202,7 @@ const PlacesAutocomplete = ({ setSelected }: { setSelected: (position: LatLngLit
                     listStyleType: "none",
                     margin: 0,
                     padding: 0,
-                    background: "#ffffff80",
+                    background: "rgba(255, 255, 255, 0.3)",
                     maxHeight: "200px",
                     overflowY: "scroll", //clipar?
                 }}>

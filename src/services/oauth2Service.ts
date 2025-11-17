@@ -1,4 +1,4 @@
-import type { ApiResponse, Token } from '@/types/api';
+import type { Token } from '@/types/api';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 

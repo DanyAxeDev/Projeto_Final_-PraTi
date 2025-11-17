@@ -1,5 +1,5 @@
 import ValueCard from "./components/ValueCard";
-import NumberInfoItem from "./components/NumberInfoItem";
+import NumberInfoItem from "./components/NumberInfoitem";
 import handAndPaw from "@/assets/imgs/sobre-img-1.jpg";
 import adoptMeDog from "@/assets/imgs/sobre-img-2.jpg";
 import responsabilidade from "@/assets/icons/responsabilidade.png";

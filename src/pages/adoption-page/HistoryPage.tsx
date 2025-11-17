@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
 import RoundButton from "../../components/RoundButton"
 import Card from "./components/Card"
 import HeadingWithLine from "@/components/HeadingWithLine"
@@ -7,7 +7,7 @@ import stories from "@/data/stories"
 import type { Story } from "@/types/types"
 
 function HistoryPage() {
-    const [historias, setHistorias] = useState<Story[]>(stories)
+    const [historias] = useState<Story[]>(stories)
 
     const navigate = useNavigate()
     /* const loadMoreRef = useRef<HTMLDivElement | null>(null)

@@ -4,6 +4,7 @@ import { useState, useMemo, useRef, useEffect } from "react";
 import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
 import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete';
 import useOnclickOutside from "react-cool-onclickoutside";
+import iconHeart from "@/assets/icons/icon-heart-paw.png";
 
 type LatLngLiteral = google.maps.LatLngLiteral;
 
@@ -134,7 +135,7 @@ function Map({ onLocationChange, initialLocation }: { onLocationChange?: (coords
                         fontWeight: "bold",
                     }}
                 >
-                    <img src="../assets/icons/icon-heart-paw.png" />
+                    <img src={iconHeart} />
                 </button>
 
                 {/* box da caixa de seleção */}

@@ -4,6 +4,7 @@ import { useState, useMemo, useRef, useEffect } from "react";
 import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
 import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete';
 import useOnclickOutside from "react-cool-onclickoutside";
+import notFound from "@/assets/imgs/not-found-cat.png"
 import iconHeart from "@/assets/icons/icon-heart-paw.png";
 
 type LatLngLiteral = google.maps.LatLngLiteral;
@@ -23,7 +24,7 @@ export default function MapMarker({ onLocationChange, initialLocation = null }: 
     //checa se a api foi carregada e exibe mensagem de carregando
     if (!isLoaded) return (
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", width: "100vw", height: "100vh" }}>
-            <img src="src\assets\imgs\not-found-cat.png" style={{ width: "25em" }}></img>
+            <img src={notFound} style={{ width: "25em" }}></img>
             <p style={{ fontSize: "36px" }}>Carregando...</p>
         </div >
     )

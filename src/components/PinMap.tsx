@@ -2,6 +2,8 @@
 
 import { useMemo, useRef } from "react";
 import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
+import notFound from "@/assets/imgs/not-found-cat.png"
+import iconHeart from "@/assets/icons/amor.png";
 
 type LatLngLiteral = google.maps.LatLngLiteral;
 
@@ -31,7 +33,7 @@ export default function PinMap({ latitude, longitude }: PinMapProps) {
     //checa se a api foi carregada e exibe mensagem de carregando
     if (!isLoaded) return (
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", width: "100vw", height: "100vh" }}>
-            <img src="src\assets\imgs\not-found-cat.png" style={{ width: "25em" }}></img>
+            <img src={notFound} style={{ width: "25em" }}></img>
             <p style={{ fontSize: "36px" }}>Carregando...</p>
         </div >
     )
@@ -39,7 +41,7 @@ export default function PinMap({ latitude, longitude }: PinMapProps) {
     if (!markerPosition) {
         return (
             <div className="flex flex-col items-center justify-center text-center gap-2 p-6 h-[40vh] w-full bg-gray-100 rounded-md">
-                <img src="src/assets/icons/icon-heart-paw.png" alt="Localização" className="w-10 h-10 opacity-70" />
+                <img src={iconHeart} alt="Localização" className="w-10 h-10 opacity-70" />
                 <p className="text-sm text-gray-600">
                     Localização não informada para este pet.
                 </p>

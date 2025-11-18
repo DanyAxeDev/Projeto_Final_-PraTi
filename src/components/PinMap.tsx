@@ -72,7 +72,7 @@ function Map({ center, markerPosition }: { center: LatLngLiteral; markerPosition
                     mapId: '6c1220e1a6152c58d27c0920'
                 }}
             >
-                <Marker position={markerPosition} icon={{url:'/icons/amor.png', scaledSize: new google.maps.Size(40, 40)}} />
+                <Marker position={markerPosition} icon={{url:amor, scaledSize: new google.maps.Size(40, 40)}} />
             </GoogleMap>
         </>
     );

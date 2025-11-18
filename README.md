@@ -5,7 +5,7 @@
 <h1 align="center">PetConect</h1>
 
 <p align="center">
-  <a href="#" target="_blank">Site do PetConect</a> •
+  <a href="https://petconnect-wine.vercel.app/" target="_blank">Site do PetConect</a> •
   <a href="https://github.com/DanyAxeDev/PetConnect_backend" target="_blank">Backend</a> •
   <a href="https://github.com/DanyAxeDev/Projeto_Final_-PraTi/blob/main/style-guide.md" target="_blank">Identidade visual</a>
 </p>

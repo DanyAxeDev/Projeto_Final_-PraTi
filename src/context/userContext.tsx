@@ -60,15 +60,24 @@ function UserContextProvider({ children }: { children: ReactNode }) {
           if (userResult.success && userResult.data) {
             setUser(userResult.data)
             setIsLoggedIn(true)
+            // Limpar a URL para remover parâmetros OAuth2
+            window.history.replaceState({}, document.title, window.location.pathname)
+            // Redirecionar para home após login bem-sucedido
+            if (window.location.pathname === '/login') {
+              window.location.href = '/home'
+            }
+          } else {
+            console.error('Erro ao buscar dados do usuário:', userResult.error)
+            // Limpar a URL mesmo em caso de erro
+            window.history.replaceState({}, document.title, window.location.pathname)
           }
-          // Limpar a URL para remover parâmetros OAuth2
-          window.history.replaceState({}, document.title, window.location.pathname)
           setIsLoading(false)
           return
         } catch (error) {
           console.error('Erro no callback OAuth2:', error)
           // Limpar a URL mesmo em caso de erro
           window.history.replaceState({}, document.title, window.location.pathname)
+          setIsLoading(false)
         }
       }
 

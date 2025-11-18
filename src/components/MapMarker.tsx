@@ -4,7 +4,7 @@ import { useState, useMemo, useRef, useEffect } from "react";
 import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
 import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete';
 import useOnclickOutside from "react-cool-onclickoutside";
-import HeartIcon from "src/assets/icons/icon-heart-paw.png"
+import HeartIcon from "../assets/icons/icon-heart-paw.png"
 
 type LatLngLiteral = google.maps.LatLngLiteral;
 

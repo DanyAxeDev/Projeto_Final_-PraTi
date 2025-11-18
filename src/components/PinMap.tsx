@@ -3,7 +3,7 @@
 import { useMemo, useRef } from "react";
 import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
 import notFound from "@/assets/imgs/not-found-cat.png"
-import iconHeart from "@/assets/icons/amor.png";
+import amor from "@/assets/icons/amor.png";
 
 type LatLngLiteral = google.maps.LatLngLiteral;
 
@@ -41,7 +41,7 @@ export default function PinMap({ latitude, longitude }: PinMapProps) {
     if (!markerPosition) {
         return (
             <div className="flex flex-col items-center justify-center text-center gap-2 p-6 h-[40vh] w-full bg-gray-100 rounded-md">
-                <img src={iconHeart} alt="Localização" className="w-10 h-10 opacity-70" />
+                <img src={amor} alt="Localização" className="w-10 h-10 opacity-70" />
                 <p className="text-sm text-gray-600">
                     Localização não informada para este pet.
                 </p>
